@@ -7,203 +7,146 @@
 <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.7/dist/chart.umd.min.js"></script>
 <style>
 *{margin:0;padding:0;box-sizing:border-box}
-:root{
-  --bg:#0a0e17;--card:#131a2b;--border:#1e2a42;--text:#e0e6f0;--dim:#6b7a99;
-  --red:#ff4d6a;--green:#00d68f;--yellow:#ffc107;--blue:#4dabf7;--purple:#b197fc;--orange:#ff922b;
-  --r:12px;--rs:8px
-}
-body{background:var(--bg);color:var(--text);font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;line-height:1.6;padding:24px;max-width:1280px;margin:0 auto}
+:root{--bg:#0a0e17;--card:#131a2b;--border:#1e2a42;--text:#e0e6f0;--dim:#6b7a99;--red:#ff4d6a;--green:#00d68f;--yellow:#ffc107;--blue:#4dabf7;--purple:#b197fc;--orange:#ff922b}
+body{background:var(--bg);color:var(--text);font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;line-height:1.6;padding:20px;max-width:1200px;margin:0 auto}
 h1{font-size:1.8rem;font-weight:700;margin-bottom:4px}
-.subtitle{color:var(--dim);font-size:.9rem;margin-bottom:28px}
-.section{margin-bottom:36px}
-.section-title{font-size:1.05rem;font-weight:600;margin-bottom:16px;padding-left:12px;border-left:3px solid var(--blue)}
-
-/* Grid */
-.grid{display:grid;gap:14px}
-.g5{grid-template-columns:repeat(5,1fr)}
-.g3{grid-template-columns:repeat(3,1fr)}
-.g2{grid-template-columns:1fr 1fr}
-
-/* Card */
-.card{background:var(--card);border:1px solid var(--border);border-radius:var(--r);padding:18px}
+.subtitle{color:var(--dim);font-size:.95rem;margin-bottom:24px}
+.section{margin-bottom:32px}
+.section-title{font-size:1.1rem;font-weight:600;margin-bottom:16px;padding-left:12px;border-left:3px solid var(--blue)}
+.grid{display:grid;gap:16px}
+.grid-5{grid-template-columns:repeat(5,1fr)}
+.grid-3{grid-template-columns:repeat(3,1fr)}
+.grid-2{grid-template-columns:repeat(2,1fr)}
+.card{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:20px}
 .kpi{text-align:center}
-.kpi .label{font-size:.78rem;color:var(--dim);margin-bottom:4px}
-.kpi .value{font-size:1.5rem;font-weight:700}
-.kpi .sub{font-size:.72rem;color:var(--dim);margin-top:2px}
-
-/* Color helpers */
-.c-red{color:var(--red)}.c-green{color:var(--green)}.c-yellow{color:var(--yellow)}.c-blue{color:var(--blue)}
-
-/* Scenario cards */
+.kpi .label{font-size:.8rem;color:var(--dim);margin-bottom:4px}
+.kpi .value{font-size:1.6rem;font-weight:700}
+.kpi .sub{font-size:.75rem;color:var(--dim);margin-top:2px}
+.red{color:var(--red)}.green{color:var(--green)}.yellow{color:var(--yellow)}.blue{color:var(--blue)}
 .scenario-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:12px;margin-bottom:20px}
-.scenario{background:var(--card);border:1px solid var(--border);border-radius:10px;padding:14px;text-align:center;transition:border-color .2s}
-.scenario:hover{border-color:var(--blue)}
-.scenario .tag{display:inline-block;font-size:.68rem;padding:2px 8px;border-radius:4px;margin-bottom:6px;font-weight:600}
-.scenario .name{font-size:.82rem;font-weight:600;margin-bottom:4px}
-.scenario .prob{font-size:1.3rem;font-weight:700;margin-bottom:2px}
-.scenario .recover{font-size:.78rem;color:var(--dim)}
-.scenario .ret{font-size:.88rem;font-weight:600;margin-top:4px}
-
-/* Chart */
-.chart-row{display:grid;grid-template-columns:1fr 1fr;gap:14px}
-.chart-box{background:var(--card);border:1px solid var(--border);border-radius:var(--r);padding:18px;position:relative}
+.scenario{background:var(--card);border:1px solid var(--border);border-radius:10px;padding:16px;text-align:center}
+.scenario .tag{display:inline-block;font-size:.7rem;padding:2px 8px;border-radius:4px;margin-bottom:8px;font-weight:600}
+.scenario .name{font-size:.85rem;font-weight:600;margin-bottom:6px}
+.scenario .prob{font-size:1.4rem;font-weight:700;margin-bottom:2px}
+.scenario .recover{font-size:.8rem;color:var(--dim)}
+.scenario .ret{font-size:.9rem;font-weight:600;margin-top:4px}
+.chart-row{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.chart-box{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:20px;position:relative}
 .chart-box canvas{max-height:300px}
-
-/* Explain block */
-.explain{background:#0d1220;border:1px solid var(--border);border-radius:var(--rs);padding:12px 14px;margin-bottom:12px;font-size:.86rem;line-height:1.7}
-.explain p{margin-bottom:5px}
+.explain{background:#0d1220;border:1px solid var(--border);border-radius:8px;padding:14px 16px;margin-bottom:14px;font-size:.88rem;line-height:1.7}
+.explain p{margin-bottom:6px}
 .explain p:last-child{margin-bottom:0}
-
-/* Calculation steps */
-.calc-step{background:var(--card);border:1px solid var(--border);border-radius:var(--r);padding:22px;margin-top:14px}
-.calc-step h3{font-size:.98rem;margin-bottom:12px;color:var(--blue)}
-.formula{background:#0d1220;border:1px solid var(--border);border-radius:var(--rs);padding:14px;font-family:"SF Mono",Monaco,Consolas,monospace;font-size:.82rem;margin:10px 0;overflow-x:auto;white-space:pre;line-height:1.8}
-.formula .cm{color:var(--dim)}
-.formula .hl{color:var(--yellow);font-weight:600}
+.calc-step{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:24px;margin-top:16px}
+.calc-step h3{font-size:1rem;margin-bottom:12px;color:var(--blue)}
+.formula{background:#0d1220;border:1px solid var(--border);border-radius:8px;padding:16px;font-family:"SF Mono",Monaco,Consolas,monospace;font-size:.85rem;margin:12px 0;overflow-x:auto;white-space:pre;line-height:1.8}
+.formula .comment{color:var(--dim)}
+.formula .highlight{color:var(--yellow);font-weight:600}
 .formula .neg{color:var(--red)}
 .formula .pos{color:var(--green)}
-.step-num{display:inline-flex;align-items:center;justify-content:center;width:22px;height:22px;border-radius:50%;background:var(--blue);color:#000;font-size:.72rem;font-weight:700;margin-right:8px;flex-shrink:0}
-
-/* Slider panel */
-.prob-panel{background:var(--card);border:1px solid var(--border);border-radius:var(--r);padding:22px;margin-bottom:20px}
-.prob-panel h3{font-size:.95rem;margin-bottom:16px;display:flex;align-items:center;gap:8px}
-.prob-row{display:grid;grid-template-columns:120px 1fr 60px 80px;align-items:center;gap:10px;margin-bottom:10px}
-.prob-row:last-child{margin-bottom:0}
-.prob-row .prob-label{font-size:.85rem;font-weight:500;display:flex;align-items:center;gap:6px}
-.prob-row .prob-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0}
-.prob-row input[type=range]{width:100%;accent-color:var(--blue);height:6px}
-.prob-row .prob-val{font-size:.9rem;font-weight:700;text-align:right}
-.prob-row .recover-input{background:#0d1220;border:1px solid var(--border);border-radius:6px;color:var(--text);font-size:.85rem;padding:4px 8px;width:70px;text-align:right}
-.prob-row .recover-input:focus{outline:none;border-color:var(--blue)}
-.prob-sum{margin-top:12px;padding-top:12px;border-top:1px solid var(--border);display:flex;justify-content:space-between;font-size:.85rem}
-.prob-sum .sum-val{font-weight:700}
-.prob-sum .sum-ok{color:var(--green)}
-.prob-sum .sum-warn{color:var(--red)}
-
-/* Buy price slider */
-.price-panel{background:var(--card);border:1px solid var(--border);border-radius:var(--r);padding:18px;margin-bottom:20px}
-.price-panel label{display:flex;justify-content:space-between;margin-bottom:8px;font-size:.88rem}
-.price-panel input[type=range]{width:100%;accent-color:var(--purple)}
-
-/* Decision box */
-.decision-box{background:var(--card);border:2px solid var(--red);border-radius:var(--r);padding:22px;text-align:center;margin-bottom:16px;transition:border-color .3s}
+.step-num{display:inline-flex;align-items:center;justify-content:center;width:24px;height:24px;border-radius:50%;background:var(--blue);color:#000;font-size:.75rem;font-weight:700;margin-right:8px;flex-shrink:0}
+.step-row{display:flex;align-items:flex-start;margin-bottom:10px}
+.step-text{font-size:.9rem}
+.threshold-table{width:100%;border-collapse:collapse;font-size:.85rem}
+.threshold-table th{text-align:left;padding:8px 12px;border-bottom:2px solid var(--border);color:var(--dim);font-weight:500}
+.threshold-table td{padding:8px 12px;border-bottom:1px solid var(--border)}
+.threshold-table tr.active td{background:rgba(77,171,247,0.1);font-weight:600}
+.threshold-table .bar{height:6px;border-radius:3px;display:inline-block;vertical-align:middle;margin-right:8px}
+.decision-box{background:var(--card);border:2px solid var(--red);border-radius:12px;padding:24px;text-align:center;margin-bottom:16px}
 .decision-box.positive{border-color:var(--green)}
-.decision-box .verdict{font-size:1.6rem;font-weight:700;margin-bottom:4px}
-.decision-box .reason{color:var(--dim);font-size:.88rem}
-
-/* Trigger cards */
-.trigger-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px}
-.trigger{background:var(--card);border:1px solid var(--border);border-radius:10px;padding:18px}
-.trigger .condition{font-size:.78rem;color:var(--yellow);font-weight:600;margin-bottom:6px}
-.trigger .desc{font-size:.83rem}
-
-/* Live badge */
-.live-badge{display:inline-flex;align-items:center;gap:4px;font-size:.72rem;color:var(--green);background:rgba(0,214,143,.1);padding:2px 8px;border-radius:10px;margin-left:8px}
-.live-badge::before{content:'';width:6px;height:6px;border-radius:50%;background:var(--green);animation:pulse 2s infinite}
-@keyframes pulse{0%,100%{opacity:1}50%{opacity:.4}}
-
-/* Reset button */
-.btn-reset{background:transparent;border:1px solid var(--border);border-radius:6px;color:var(--dim);font-size:.78rem;padding:4px 12px;cursor:pointer;margin-left:8px;transition:all .2s}
-.btn-reset:hover{border-color:var(--blue);color:var(--text)}
-
-@media(max-width:900px){
-  .g5,.g3,.chart-row,.trigger-grid{grid-template-columns:1fr}
-  .scenario-grid{grid-template-columns:repeat(3,1fr)}
-  .prob-row{grid-template-columns:100px 1fr 50px 70px}
-}
-@media(max-width:600px){
-  .scenario-grid{grid-template-columns:repeat(2,1fr)}
-  .prob-row{grid-template-columns:1fr;gap:4px}
-}
+.decision-box .verdict{font-size:1.8rem;font-weight:700;margin-bottom:4px}
+.decision-box .reason{color:var(--dim);font-size:.9rem}
+.trigger-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.trigger{background:var(--card);border:1px solid var(--border);border-radius:10px;padding:20px}
+.trigger .condition{font-size:.8rem;color:var(--yellow);font-weight:600;margin-bottom:6px}
+.trigger .desc{font-size:.85rem}
+.slider-container{padding:20px;background:var(--card);border:1px solid var(--border);border-radius:12px;margin-bottom:16px}
+.slider-container label{display:flex;justify-content:space-between;margin-bottom:8px;font-size:.9rem}
+.slider-container input[type=range]{width:100%;accent-color:var(--blue)}
+.slider-result{text-align:center;margin-top:12px;font-size:1.2rem;font-weight:700}
+@media(max-width:768px){.grid-5,.grid-3,.chart-row,.trigger-grid{grid-template-columns:1fr}.scenario-grid{grid-template-columns:repeat(3,1fr)}}
 </style>
 </head>
 <body>
 
-<h1>闻泰转债 <span style="color:var(--dim);font-size:.95rem;font-weight:400">110081</span></h1>
-<p class="subtitle">凯利公式困境转债分析 · 拖动滑块实时重算 · 数据日期 <span style="color:var(--text);font-weight:500">2026-05-23</span></p>
+<h1>闻泰转债 <span style="color:var(--dim);font-size:1rem;font-weight:400">110081</span></h1>
+<p class="subtitle">凯利公式困境转债分析 · 2026-05-23</p>
 
-<!-- KPI -->
+<!-- KPI卡片 -->
 <div class="section">
-<div class="grid g5">
-  <div class="card kpi"><div class="label">转债价格</div><div class="value" id="kpiPrice">87.34</div><div class="sub">全价</div></div>
-  <div class="card kpi"><div class="label">正股</div><div class="value c-red">16.20</div><div class="sub">*ST闻泰 · 跌2.26%</div></div>
-  <div class="card kpi"><div class="label">YTM税前</div><div class="value c-yellow">21.75%</div><div class="sub">纯债价值 101.96</div></div>
-  <div class="card kpi"><div class="label">剩余规模</div><div class="value c-blue">86亿</div><div class="sub">到期 2027-07-27</div></div>
-  <div class="card kpi"><div class="label">信用评级</div><div class="value c-red">A / 负面</div><div class="sub">AA→AA-→A 一年降两级</div></div>
+<div class="grid grid-5">
+  <div class="card kpi"><div class="label">转债价格</div><div class="value">87.34</div><div class="sub">全价</div></div>
+  <div class="card kpi"><div class="label">正股</div><div class="value red">16.20</div><div class="sub">*ST闻泰 · 跌2.26%</div></div>
+  <div class="card kpi"><div class="label">YTM税前</div><div class="value yellow">21.75%</div><div class="sub">纯债价值 101.96</div></div>
+  <div class="card kpi"><div class="label">剩余规模</div><div class="value blue">86亿</div><div class="sub">到期 2027-07-27</div></div>
+  <div class="card kpi"><div class="label">信用评级</div><div class="value red">A / 负面</div><div class="sub">AA→AA-→A 一年降两级</div></div>
 </div>
 </div>
 
 <!-- 核心矛盾 -->
 <div class="section">
 <div class="section-title">核心矛盾：安世半导体控制权</div>
-<div class="grid g3">
+<div class="grid grid-3">
   <div class="card">
-    <div style="font-size:.78rem;color:var(--dim);margin-bottom:4px">安世状况</div>
-    <div style="font-size:.9rem;margin-bottom:8px">荷兰法庭维持临时措施<br>控制权受限 · 期限不确定</div>
-    <div style="font-size:.78rem;color:var(--dim)">安世欧洲不听闻泰指令<br>暂停向中国供应晶圆</div>
+    <div style="font-size:.8rem;color:var(--dim);margin-bottom:4px">安世状况</div>
+    <div style="font-size:.95rem;margin-bottom:8px">荷兰法庭维持临时措施<br>控制权受限 · 期限不确定</div>
+    <div style="font-size:.8rem;color:var(--dim)">安世欧洲不听闻泰指令<br>暂停向中国供应晶圆</div>
   </div>
   <div class="card">
-    <div style="font-size:.78rem;color:var(--dim);margin-bottom:4px">资产厚度</div>
-    <div style="font-size:.9rem;margin-bottom:4px">总资产 <b class="c-blue">409亿</b> · 净资产 <b class="c-blue">248.5亿</b></div>
-    <div style="font-size:.9rem;margin-bottom:4px">负债率 <b class="c-green">39.3%</b> · 货币资金 <b>33亿</b></div>
-    <div style="font-size:.78rem;color:var(--dim)">Q1半导体：收入8亿 净利0.13亿 毛利27%</div>
+    <div style="font-size:.8rem;color:var(--dim);margin-bottom:4px">资产厚度（vs 龙大）</div>
+    <div style="font-size:.95rem;margin-bottom:4px">总资产 <b class="blue">409亿</b> · 净资产 <b class="blue">248.5亿</b></div>
+    <div style="font-size:.95rem;margin-bottom:4px">负债率 <b class="green">39.3%</b> · 货币资金 <b>33亿</b></div>
+    <div style="font-size:.8rem;color:var(--dim)">Q1半导体：收入8亿 净利0.13亿 毛利27%</div>
   </div>
   <div class="card">
-    <div style="font-size:.78rem;color:var(--dim);margin-bottom:4px">关键动态</div>
-    <div style="font-size:.86rem;margin-bottom:3px">▸ 下修即将触发（10/30天）</div>
-    <div style="font-size:.86rem;margin-bottom:3px">▸ 已下修两次：96.67→43.60→32.66</div>
-    <div style="font-size:.86rem;margin-bottom:3px">▸ 反诉安世索赔<b class="c-yellow">80亿</b></div>
-    <div style="font-size:.86rem">▸ 实控人5月增持</div>
+    <div style="font-size:.8rem;color:var(--dim);margin-bottom:4px">关键动态</div>
+    <div style="font-size:.9rem;margin-bottom:4px">▸ 下修即将触发（10/30天）</div>
+    <div style="font-size:.9rem;margin-bottom:4px">▸ 已下修两次：96.67→43.60→32.66</div>
+    <div style="font-size:.9rem;margin-bottom:4px">▸ 反诉安世索赔<b class="yellow">80亿</b></div>
+    <div style="font-size:.9rem">▸ 实控人5月增持</div>
   </div>
 </div>
 </div>
 
-<!-- ===== 概率调节面板 ===== -->
+<!-- 五情景 -->
 <div class="section">
-<div class="section-title">五情景概率模型 <span class="live-badge">实时联动</span></div>
-
-<div class="prob-panel">
-  <h3>调整情景概率与回收金额 <button class="btn-reset" onclick="resetDefaults()">重置</button></h3>
-
-  <div class="prob-row">
-    <div class="prob-label"><span class="prob-dot" style="background:var(--green)"></span> A 正常兑付</div>
-    <input type="range" id="sA" min="0" max="80" value="30" step="1">
-    <div class="prob-val" id="vA" style="color:var(--green)">30%</div>
-    <input type="number" class="recover-input" id="rA" value="108" min="0" max="200" step="1"> 
+<div class="section-title">五情景概率模型</div>
+<div class="scenario-grid">
+  <div class="scenario">
+    <div class="tag" style="background:rgba(0,214,143,.15);color:var(--green)">A 正常</div>
+    <div class="name">正常兑付/下修转股</div>
+    <div class="prob green">30%</div>
+    <div class="recover">回收 108元</div>
+    <div class="ret green">+23.7%</div>
   </div>
-  <div class="prob-row">
-    <div class="prob-label"><span class="prob-dot" style="background:var(--blue)"></span> B 部分兑付</div>
-    <input type="range" id="sB" min="0" max="80" value="25" step="1">
-    <div class="prob-val" id="vB" style="color:var(--blue)">25%</div>
-    <input type="number" class="recover-input" id="rB" value="100" min="0" max="200" step="1">
+  <div class="scenario">
+    <div class="tag" style="background:rgba(77,171,247,.15);color:var(--blue)">B 偏好</div>
+    <div class="name">部分兑付/部分转股</div>
+    <div class="prob blue">25%</div>
+    <div class="recover">回收 100元</div>
+    <div class="ret green">+14.5%</div>
   </div>
-  <div class="prob-row">
-    <div class="prob-label"><span class="prob-dot" style="background:var(--yellow)"></span> C 安世失控</div>
-    <input type="range" id="sC" min="0" max="80" value="20" step="1">
-    <div class="prob-val" id="vC" style="color:var(--yellow)">20%</div>
-    <input type="number" class="recover-input" id="rC" value="75" min="0" max="200" step="1">
+  <div class="scenario">
+    <div class="tag" style="background:rgba(255,193,7,.15);color:var(--yellow)">C 中性</div>
+    <div class="name">安世永久失控+重整</div>
+    <div class="prob yellow">20%</div>
+    <div class="recover">回收 75元</div>
+    <div class="ret red">-14.1%</div>
   </div>
-  <div class="prob-row">
-    <div class="prob-label"><span class="prob-dot" style="background:var(--orange)"></span> D 面值退市</div>
-    <input type="range" id="sD" min="0" max="80" value="15" step="1">
-    <div class="prob-val" id="vD" style="color:var(--orange)">15%</div>
-    <input type="number" class="recover-input" id="rD" value="50" min="0" max="200" step="1">
+  <div class="scenario">
+    <div class="tag" style="background:rgba(255,146,43,.15);color:var(--orange)">D 偏差</div>
+    <div class="name">面值退市+老三板</div>
+    <div class="prob" style="color:var(--orange)">15%</div>
+    <div class="recover">回收 50元</div>
+    <div class="ret red">-42.8%</div>
   </div>
-  <div class="prob-row">
-    <div class="prob-label"><span class="prob-dot" style="background:var(--red)"></span> E 极端清算</div>
-    <input type="range" id="sE" min="0" max="80" value="10" step="1">
-    <div class="prob-val" id="vE" style="color:var(--red)">10%</div>
-    <input type="number" class="recover-input" id="rE" value="20" min="0" max="200" step="1">
-  </div>
-
-  <div class="prob-sum">
-    <span>概率合计</span>
-    <span id="sumDisplay" class="sum-val sum-ok">100%</span>
+  <div class="scenario">
+    <div class="tag" style="background:rgba(255,77,106,.15);color:var(--red)">E 极端</div>
+    <div class="name">全面崩盘清算</div>
+    <div class="prob red">10%</div>
+    <div class="recover">回收 20元</div>
+    <div class="ret red">-77.1%</div>
   </div>
 </div>
-
-<!-- 5 scenario summary cards -->
-<div class="scenario-grid" id="scenarioCards"></div>
 
 <div class="chart-row">
   <div class="chart-box"><canvas id="scenarioChart"></canvas></div>
@@ -211,282 +154,421 @@ h1{font-size:1.8rem;font-weight:700;margin-bottom:4px}
 </div>
 </div>
 
-<!-- 决策框架（含买入价滑块） -->
+<!-- 凯利公式计算过程 -->
 <div class="section">
-<div class="section-title">决策框架</div>
-<div class="decision-box" id="decisionBox">
-  <div class="verdict" id="decisionVerdict">—</div>
-  <div class="reason" id="decisionReason">—</div>
+<div class="section-title">凯利公式 · 计算过程</div>
+
+<div class="calc-step">
+<h3><span class="step-num">1</span>计算各情景收益率</h3>
+<div class="explain">
+  <p>收益率 = (到期回收金额 - 买入成本) / 买入成本。这是最基础的投入产出比——你花87.34元买入一张转债，最终可能收回多少钱，算出百分比盈亏。</p>
+  <p>关键点：回收价不是拍脑袋，每个情景背后有具体的逻辑支撑 ↓</p>
+</div>
+<div class="formula"><span class="comment">买入价 P = 87.338元</span>
+
+<span class="comment">情景A：安世部分恢复控制权 + 公司下修转股价促转股 → 到期正常赎回108元</span>
+r<sub>A</sub> = (108 - 87.338) / 87.338 = <span class="pos">+0.2366 (+23.7%)</span>
+
+<span class="comment">情景B：下修成功但转股不完全，剩余部分按面值兑付 → 回收约100元</span>
+r<sub>B</sub> = (100 - 87.338) / 87.338 = <span class="pos">+0.1449 (+14.5%)</span>
+
+<span class="comment">情景C：安世彻底脱表，公司仅剩境内业务，进入重整 → 重整方案回收约75元</span>
+r<sub>C</sub> = ( 75 - 87.338) / 87.338 = <span class="neg">-0.1413 (-14.1%)</span>
+
+<span class="comment">情景D：正股跌破1元面值退市，转债随正股退至老三板 → 流动性折价，回收约50元</span>
+r<sub>D</sub> = ( 50 - 87.338) / 87.338 = <span class="neg">-0.4276 (-42.8%)</span>
+
+<span class="comment">情景E：公司全面崩盘进入破产清算，资产打折处置 → 回收约20元</span>
+r<sub>E</sub> = ( 20 - 87.338) / 87.338 = <span class="neg">-0.7710 (-77.1%)</span></div>
 </div>
 
-<div class="price-panel">
+<div class="calc-step">
+<h3><span class="step-num">2</span>计算期望收益率 E[R]</h3>
+<div class="explain">
+  <p>期望收益率 = 每种情景的概率 × 对应收益率，全部加起来。这就是「平均来看，买这张转债赚还是亏」。</p>
+  <p>类比：掷骰子，1-2赢3倍，3-4不赢不亏，5-6输光。期望值 = 2/6×3 + 2/6×0 + 2/6×(-1) = 0.67，正数说明长期玩下去赚钱。</p>
+  <p>但这里算出来是 <b style="color:var(--red)">-6.23%</b>——平均每投1元亏6分钱。</p>
+</div>
+<div class="formula">E[R] = Σ p<sub>i</sub> · r<sub>i</sub>  <span class="comment">（概率加权平均）</span>
+
+    = 0.30 × (+0.2366)  <span class="comment">→ +0.0710  ← 30%概率赚23.7%，贡献+7.1%</span>
+    + 0.25 × (+0.1449)  <span class="comment">→ +0.0362  ← 25%概率赚14.5%，贡献+3.6%</span>
+    + 0.20 × (-0.1413)  <span class="comment">→ -0.0283  ← 20%概率亏14.1%，拖累-2.8%</span>
+    + 0.15 × (-0.4276)  <span class="comment">→ -0.0641  ← 15%概率亏42.8%，拖累-6.4%</span>
+    + 0.10 × (-0.7710)  <span class="comment">→ -0.0771  ← 10%概率亏77.1%，拖累-7.7%</span>
+
+E[R] = <span class="neg highlight">-0.0623 = -6.23%</span>
+
+<span class="comment">解读：正面情景（A+B）贡献 +10.72%，负面情景（C+D+E）拖累 -16.95%</span>
+<span class="comment">负面拖累 > 正面贡献，所以期望值为负</span>
+
+期望回收 = 87.338 × (1 - 0.0623) = <span class="neg">81.9元/张</span>
+<span class="comment">即：花87.34买入，概率加权平均只能拿回81.9元</span></div>
+</div>
+
+<div class="calc-step">
+<h3><span class="step-num">3</span>凯利公式：该投多少仓位？</h3>
+<div class="explain">
+  <p><b>凯利公式解决一个问题</b>：如果一个投资机会你可以反复做，每次该下注多少比例的资金，才能让长期财富增长最快？</p>
+  <p>公式核心思想：<b>几何增长率</b>。假设你每次拿总资金的 f 比例来下注，反复多次后你的资金变成：</p>
+  <p style="text-align:center;font-size:1.05em;margin:8px 0">最终资金 = 初始资金 × (1+f·r₁) × (1+f·r₂) × (1+f·r₃) × ...</p>
+  <p>每一轮乘一个 (1+f·r)，r可能正可能负。要让乘积最大，取对数变成加法：</p>
+  <p style="text-align:center;font-size:1.05em;margin:8px 0">g(f) = Σ p<sub>i</sub> · ln(1 + f · r<sub>i</sub>)</p>
+  <p>g(f) 就是<b>几何增长率</b>，越大越好。找 f* 使 g(f) 最大，就是最优仓位。</p>
+  <p><b>关键性质</b>：g(f) 在 f=0 处的斜率恰好等于 E[R]。如果 E[R]<0，斜率为负，意味着从0开始加仓只会让 g 下降——<b>负期望的投资，任何仓位都不如空仓</b>。</p>
+</div>
+<div class="formula"><span class="comment">连续凯利公式：</span>
+
+g(f) = Σ p<sub>i</sub> · ln(1 + f · r<sub>i</sub>)
+
+<span class="comment">代入本例 5 个情景：</span>
+
+g(f) = 0.30·ln(1 + f·0.2366)
+     + 0.25·ln(1 + f·0.1449)
+     + 0.20·ln(1 + f·(-0.1413))
+     + 0.15·ln(1 + f·(-0.4276))
+     + 0.10·ln(1 + f·(-0.7710))
+
+<span class="comment">对 f 求导：</span>
+
+g'(f) = 0.30 × 0.2366/(1+f·0.2366) + 0.25 × 0.1449/(1+f·0.1449)
+      + 0.20 × (-0.1413)/(1+f·(-0.1413))
+      + 0.15 × (-0.4276)/(1+f·(-0.4276))
+      + 0.10 × (-0.7710)/(1+f·(-0.7710))
+
+<span class="comment">令 g'(f) = 0 求最优 f*</span>
+
+<span class="comment">但在 f=0 处：</span>
+g'(0) = 0.30×0.2366 + 0.25×0.1449 + 0.20×(-0.1413) + 0.15×(-0.4276) + 0.10×(-0.7710)
+      = E[R] = <span class="neg">-0.0623</span>
+
+<span class="comment">斜率 < 0 → g(f) 在 f=0 处就开始下降 → f=0 就是最大值</span>
+
+<span class="highlight">f* = 0%，任何正仓位都降低长期增长率</span>
+
+<span class="comment">直觉理解：你有一个亏钱的游戏，玩得越多亏得越多，最优策略就是不玩。</span>
+<span class="comment">反过来，如果 E[R]>0（比如安世恢复概率升到50%以上），斜率变正，加仓能提升 g，这时候才有正的 f*。</span></div>
+</div>
+
+<div class="calc-step">
+<h3><span class="step-num">4</span>验证：不同仓位的实际增长率</h3>
+<div class="explain">
+  <p>下表把公式算一遍：假设你拿总资金的 f% 来买闻泰转债，经过一轮（到期兑付或违约），几何增长率 g 是多少？</p>
+  <p>所有 g 都是负数，且 f 越大越负 → 印证 f*=0 的结论。</p>
+  <p>注意 f=65% 时 1+f·r<sub>E</sub> = 1+0.65×(-0.771) < 0 → 意味着极端情景下本金归零甚至倒欠，数学上 ln 为负无穷，这就是<b>过度下注的破产风险</b>。</p>
+</div>
+<div class="chart-box" style="margin-top:12px"><canvas id="kellyCurve"></canvas></div>
+</div>
+
+<div class="calc-step">
+<h3><span class="step-num">5</span>敏感性：什么条件下值得买？</h3>
+<div class="explain">
+  <p>f*=0 不是永远不变的结论——它取决于两个输入：情景概率和买入价。如果安世恢复概率升高，或买入价够低，E[R] 可以转正，f* 也会变正。</p>
+  <p>下面的交互滑块让你自己调参数，看 E[R] 和 f* 实时变化。关注两个<b>分水岭</b>：</p>
+  <p>① <b>安世恢复概率 ≥ 50%</b> → E[R] 转正，开始有正仓位</p>
+  <p>② <b>买入价 ≤ 80元</b> → 安全边际足够覆盖悲观情景，E[R] 转正</p>
+</div>
+</div>
+</div>
+
+<!-- 敏感性分析 -->
+<div class="section">
+<div class="section-title">敏感性分析</div>
+
+<div class="slider-container">
+  <label>
+    <span>安世恢复+正常兑付概率</span>
+    <span id="recoveryLabel" style="color:var(--yellow);font-weight:600">30%</span>
+  </label>
+  <input type="range" id="recoverySlider" min="5" max="80" value="30" step="1">
+  <div style="display:flex;justify-content:space-between;font-size:.75rem;color:var(--dim)">
+    <span>5%</span><span>50% 分水岭</span><span>80%</span>
+  </div>
+  <div class="slider-result" id="recoveryResult">E[R] = -6.23% · f* = 0%</div>
+</div>
+
+<div class="slider-container">
   <label>
     <span>买入价（元/张）</span>
-    <span id="priceLabel" style="color:var(--purple);font-weight:600">87.3</span>
+    <span id="priceLabel" style="color:var(--yellow);font-weight:600">87.3</span>
   </label>
-  <input type="range" id="priceSlider" min="20" max="130" value="87" step="0.5">
-  <div style="display:flex;justify-content:space-between;font-size:.72rem;color:var(--dim)">
-    <span>20元</span><span>80元 分水岭</span><span>130元</span>
+  <input type="range" id="priceSlider" min="50" max="108" value="87" step="0.5">
+  <div style="display:flex;justify-content:space-between;font-size:.75rem;color:var(--dim)">
+    <span>50元</span><span>80元 分水岭</span><span>108元</span>
   </div>
+  <div class="slider-result" id="priceResult">E[R] = -6.23% · f* = 0%</div>
+</div>
+
+<div class="chart-row">
+  <div class="chart-box"><canvas id="recoverySensChart"></canvas></div>
+  <div class="chart-box"><canvas id="priceSensChart"></canvas></div>
+</div>
+</div>
+
+<!-- 决策 -->
+<div class="section">
+<div class="section-title">决策框架</div>
+
+<div class="decision-box">
+  <div class="verdict red">当前：f* = 0% · 不买</div>
+  <div class="reason">E[R] = -6.23%，负期望收益，任何正仓位都不理性</div>
 </div>
 
 <div class="trigger-grid">
   <div class="trigger" style="border-color:var(--yellow)">
     <div class="condition">🔓 触发条件 1：价格 ≤ 80元</div>
-    <div class="desc">安全边际足够覆盖50%恢复概率的悲观假设<br>拖动买入价滑块查看</div>
+    <div class="desc">安全边际足够覆盖50%恢复概率的悲观假设<br>f* = 17.26% · 半凯利 ≈ 8.6%<br>100万资金配置约8.6万</div>
   </div>
   <div class="trigger" style="border-color:var(--yellow)">
     <div class="condition">🔓 触发条件 2：安世控制权恢复</div>
-    <div class="desc">法庭撤销限制 / 和解协议签署<br>提高情景A/B概率至50%+查看</div>
+    <div class="desc">法庭撤销限制 / 和解协议签署<br>恢复概率突破50%分水岭<br>即使87元也f*>0</div>
   </div>
   <div class="trigger" style="border-color:var(--green)">
     <div class="condition">🔥 重仓信号：两者同时满足</div>
-    <div class="desc">低价 + 高恢复概率 → f* 可达50%+<br>半凯利提供安全边际</div>
+    <div class="desc">价格 ≤ 80元 + 安世恢复<br>f* 可达 50%+ · 半凯利 25%+<br>属于高确信度机会</div>
   </div>
   <div class="trigger" style="border-color:var(--red)">
     <div class="condition">⚠️ 绝对不碰</div>
-    <div class="desc">安世彻底脱表 + 正股逼近1元<br>退市+违约概率>50%</div>
+    <div class="desc">安世彻底脱表 + 正股逼近1元<br>退市+违约概率>50%<br>与龙大转债同等风险</div>
   </div>
 </div>
 </div>
 
-<!-- 凯利公式计算过程 -->
-<div class="section">
-<div class="section-title">凯利公式 · 实时计算</div>
-
-<div class="calc-step">
-<h3><span class="step-num">1</span>各情景收益率</h3>
-<div id="step1Content" class="formula"></div>
-</div>
-
-<div class="calc-step">
-<h3><span class="step-num">2</span>期望收益率 E[R]</h3>
-<div id="step2Content" class="formula"></div>
-</div>
-
-<div class="calc-step">
-<h3><span class="step-num">3</span>凯利最优仓位 f*</h3>
-<div id="step3Content" class="formula"></div>
-</div>
-
-<div class="calc-step">
-<h3><span class="step-num">4</span>几何增长率 g(f) 曲线</h3>
-<div class="chart-box" style="margin-top:12px"><canvas id="kellyCurve"></canvas></div>
-</div>
-</div>
-
-<p style="text-align:center;color:var(--dim);font-size:.72rem;margin-top:32px">凯利公式基于主观概率模型，不构成投资建议 · 最终决策需自行负责</p>
+<p style="text-align:center;color:var(--dim);font-size:.75rem;margin-top:32px">凯利公式基于主观概率模型，不构成投资建议 · 最终决策需自行负责</p>
 
 <script>
-/* ====== State ====== */
-const COLORS = ['#00d68f','#4dabf7','#ffc107','#ff922b','#ff4d6a'];
-const NAMES = ['A 正常兑付','B 部分兑付','C 安世失控重整','D 面值退市','E 极端清算'];
-const SHORT = ['A','B','C','D','E'];
-const TAGS = ['A 正常','B 偏好','C 中性','D 偏差','E 极端'];
-const TAG_BG = ['rgba(0,214,143,.15)','rgba(77,171,247,.15)','rgba(255,193,7,.15)','rgba(255,146,43,.15)','rgba(255,77,106,.15)'];
-const TAG_FG = ['var(--green)','var(--blue)','var(--yellow)','var(--orange)','var(--red)'];
-
-const DEFAULTS = {probs:[30,25,20,15,10], recovers:[108,100,75,50,20], price:87};
-
-/* ====== Chart.js defaults ====== */
+// 通用配置
 Chart.defaults.color = '#6b7a99';
 Chart.defaults.borderColor = '#1e2a42';
 Chart.defaults.font.family = '-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,sans-serif';
 
-/* ====== Get current values ====== */
-function getProbs(){
-  return ['A','B','C','D','E'].map(c=>parseInt(document.getElementById('s'+c).value));
-}
-function getRecovers(){
-  return ['A','B','C','D','E'].map(c=>parseFloat(document.getElementById('r'+c).value)||0);
-}
-function getPrice(){ return parseFloat(document.getElementById('priceSlider').value); }
-
-/* ====== Normalize probs to 100% ====== */
-function normalize(raw){
-  const sum = raw.reduce((a,b)=>a+b,0);
-  if(sum===0) return raw.map(()=>0);
-  return raw.map(v=>v/sum);
-}
-
-/* ====== Kelly calculation ====== */
-function kellyCalc(probs, recovers, P){
-  const rs = recovers.map(v=>(v-P)/P);
-  const E_R = probs.reduce((s,p,i)=>s+p*rs[i],0);
-  let bf=0, bg=0;
-  for(let f=0;f<=100;f+=0.05){
-    const fv=f/100;
-    const minV=Math.min(...rs.map(r=>1+fv*r));
-    if(minV<=0) break;
-    const g=probs.reduce((s,p,i)=>s+p*Math.log(1+fv*rs[i]),0);
-    if(g>bg){bg=g;bf=fv;}
+// 五情景图
+new Chart(document.getElementById('scenarioChart'),{
+  type:'bar',
+  data:{
+    labels:['A 正常兑付','B 部分兑付','C 安世失控重整','D 面值退市','E 极端清算'],
+    datasets:[{
+      label:'收益率',
+      data:[23.7,14.5,-14.1,-42.8,-77.1],
+      backgroundColor:['#00d68f','#4dabf7','#ffc107','#ff922b','#ff4d6a'],
+      borderRadius:6,
+      barPercentage:.6
+    }]
+  },
+  options:{
+    responsive:true,
+    plugins:{
+      title:{display:true,text:'各情景收益率 (%)',font:{size:14}},
+      legend:{display:false},
+      tooltip:{callbacks:{label:ctx=>ctx.raw.toFixed(1)+'%'}}
+    },
+    scales:{
+      y:{ticks:{callback:v=>v+'%'},grid:{color:'#1e2a42'}},
+      x:{grid:{display:false}}
+    }
   }
-  return {E_R, f:bf, g:bg, rs};
-}
-
-/* ====== Render scenario cards ====== */
-function renderCards(probs, recovers, rs){
-  const el = document.getElementById('scenarioCards');
-  el.innerHTML = SHORT.map((s,i)=>{
-    const ret = rs[i]*100;
-    const retStr = (ret>=0?'+':'')+ret.toFixed(1)+'%';
-    const retCls = ret>=0?'c-green':'c-red';
-    return `<div class="scenario">
-      <div class="tag" style="background:${TAG_BG[i]};color:${TAG_FG[i]}">${TAGS[i]}</div>
-      <div class="name">${NAMES[i]}</div>
-      <div class="prob" style="color:${TAG_FG[i]}">${(probs[i]*100).toFixed(0)}%</div>
-      <div class="recover">回收 ${recovers[i]}元</div>
-      <div class="ret ${retCls}">${retStr}</div>
-    </div>`;
-  }).join('');
-}
-
-/* ====== Render formulas ====== */
-function renderFormulas(probs, recovers, rs, E_R, f_star, P){
-  // Step 1
-  const s1 = SHORT.map((s,i)=>{
-    const sign = rs[i]>=0?'+':'';
-    const cls = rs[i]>=0?'pos':'neg';
-    return `<span class="cm">情景${s}：回收${recovers[i]}元</span>\nr${s} = (${recovers[i]} - ${P.toFixed(1)}) / ${P.toFixed(1)} = <span class="${cls}">${sign}${(rs[i]*100).toFixed(2)}%</span>`;
-  }).join('\n\n');
-  document.getElementById('step1Content').innerHTML = `<span class="cm">买入价 P = ${P.toFixed(1)}元</span>\n\n${s1}`;
-
-  // Step 2
-  const lines = probs.map((p,i)=>{
-    const sign = rs[i]>=0?'+':'';
-    const cls = rs[i]>=0?'pos':'neg';
-    return `    ${(p*100).toFixed(0).padStart(2)}% × ${sign}${(rs[i]*100).toFixed(2).padStart(7)}%  →  <span class="${cls}">${sign}${(p*rs[i]*100).toFixed(2)}%</span>`;
-  });
-  const sign = E_R>=0?'+':'';
-  const eCls = E_R>=0?'pos':'neg';
-  document.getElementById('step2Content').innerHTML = `E[R] = Σ pᵢ · rᵢ\n\n${lines.join('\n')}\n\nE[R] = <span class="${eCls} hl">${sign}${(E_R*100).toFixed(2)}%</span>\n\n<span class="cm">期望回收 = ${P.toFixed(1)} × (1 + ${(E_R).toFixed(4)}) = ${(P*(1+E_R)).toFixed(1)}元/张</span>`;
-
-  // Step 3
-  const kellyLines = probs.map((p,i)=>{
-    const sign = rs[i]>=0?'+':'';
-    return `     ${p.toFixed(2)}·ln(1 + f·${sign}${rs[i].toFixed(4)})`;
-  });
-  const verdict = f_star > 0 
-    ? `<span class="pos hl">f* = ${(f_star*100).toFixed(1)}%，半凯利 = ${(f_star*50).toFixed(1)}%</span>`
-    : `<span class="neg hl">f* = 0%，任何正仓位都降低长期增长率</span>`;
-  const slopeNote = E_R >= 0 
-    ? `<span class="cm">斜率 > 0 → g(f) 从0开始上升 → 存在正的最优仓位</span>`
-    : `<span class="cm">斜率 < 0 → g(f) 从0开始下降 → f=0 就是最大值</span>`;
-  document.getElementById('step3Content').innerHTML = `g(f) = Σ pᵢ · ln(1 + f · rᵢ)\n\n     = ${kellyLines.join('\n     + ')}\n\n<span class="cm">在 f=0 处的斜率 g'(0) = E[R] = ${E_R>=0?'+':''}${(E_R*100).toFixed(2)}%</span>\n${slopeNote}\n\n${verdict}`;
-}
-
-/* ====== Render decision ====== */
-function renderDecision(E_R, f_star){
-  const box = document.getElementById('decisionBox');
-  const verdict = document.getElementById('decisionVerdict');
-  const reason = document.getElementById('decisionReason');
-  if(f_star > 0){
-    box.className = 'decision-box positive';
-    verdict.className = 'c-green';
-    verdict.textContent = `f* = ${(f_star*100).toFixed(1)}% · 半凯利 ${(f_star*50).toFixed(1)}%`;
-    reason.textContent = `E[R] = +${(E_R*100).toFixed(2)}%，正期望收益，建议半凯利仓位`;
-  } else {
-    box.className = 'decision-box';
-    verdict.className = 'c-red';
-    verdict.textContent = `f* = 0% · 不买`;
-    reason.textContent = `E[R] = ${(E_R*100).toFixed(2)}%，负期望收益，任何正仓位都不理性`;
-  }
-}
-
-/* ====== Update sum display ====== */
-function updateSum(raw){
-  const sum = raw.reduce((a,b)=>a+b,0);
-  const el = document.getElementById('sumDisplay');
-  el.textContent = sum + '%';
-  el.className = 'sum-val ' + (sum===100?'sum-ok':'sum-warn');
-}
-
-/* ====== Charts (created once, updated via .data) ====== */
-let chartScenario, chartWaterfall, chartKelly;
-
-function initCharts(){
-  chartScenario = new Chart(document.getElementById('scenarioChart'),{
-    type:'bar', data:{labels:NAMES, datasets:[{label:'收益率',data:[0,0,0,0,0],backgroundColor:COLORS,borderRadius:6,barPercentage:.6}]},
-    options:{responsive:true,plugins:{title:{display:true,text:'各情景收益率 (%)',font:{size:13}},legend:{display:false},tooltip:{callbacks:{label:c=>c.raw.toFixed(1)+'%'}}},scales:{y:{ticks:{callback:v=>v+'%'},grid:{color:'#1e2a42'}},x:{grid:{display:false}}}}
-  });
-  chartWaterfall = new Chart(document.getElementById('waterfallChart'),{
-    type:'bar', data:{labels:['A贡献','B贡献','C贡献','D贡献','E贡献','E[R]'], datasets:[{data:[0,0,0,0,0,0],backgroundColor:COLORS.concat(['#ff4d6a']),borderRadius:6,barPercentage:.6}]},
-    options:{responsive:true,plugins:{title:{display:true,text:'期望收益率分解 (pp)',font:{size:13}},legend:{display:false},tooltip:{callbacks:{label:c=>(c.raw>=0?'+':'')+c.raw.toFixed(2)+'pp'}}},scales:{y:{ticks:{callback:v=>v+'pp'},grid:{color:'#1e2a42'}},x:{grid:{display:false}}}}
-  });
-  chartKelly = new Chart(document.getElementById('kellyCurve'),{
-    type:'line', data:{labels:[],datasets:[{label:'g(f)',data:[],borderColor:'#4dabf7',backgroundColor:'rgba(77,171,247,0.1)',fill:true,pointRadius:0,borderWidth:2}]},
-    options:{responsive:true,plugins:{title:{display:true,text:'几何增长率 g(f) vs 仓位 f',font:{size:13}},legend:{display:false},tooltip:{callbacks:{title:c=>'f = '+c[0].label+'%',label:c=>'g = '+c.raw.toFixed(4)+'%'}}},scales:{y:{title:{display:true,text:'g(f) (%)'},grid:{color:'#1e2a42'}},x:{title:{display:true,text:'f (%)'},grid:{color:'#1e2a42'},ticks:{maxTicksLimit:15}}}}
-  });
-}
-
-/* ====== Master update ====== */
-function update(){
-  const raw = getProbs();
-  const recovers = getRecovers();
-  const P = getPrice();
-  const probs = normalize(raw);
-  const {E_R, f: f_star, g, rs} = kellyCalc(probs, recovers, P);
-
-  // Update labels
-  SHORT.forEach((s,i)=>{
-    document.getElementById('v'+s).textContent = raw[i]+'%';
-  });
-  document.getElementById('priceLabel').textContent = P.toFixed(1);
-  document.getElementById('kpiPrice').textContent = P.toFixed(1);
-  updateSum(raw);
-
-  // Scenario cards
-  renderCards(probs, recovers, rs);
-
-  // Scenario bar chart
-  chartScenario.data.datasets[0].data = rs.map(r=>+(r*100).toFixed(1));
-  chartScenario.update('none');
-
-  // Waterfall chart
-  const contribs = probs.map((p,i)=>+(p*rs[i]*100).toFixed(2));
-  chartWaterfall.data.datasets[0].data = [...contribs, +(E_R*100).toFixed(2)];
-  chartWaterfall.data.datasets[0].backgroundColor = [...COLORS, E_R>=0?'#00d68f':'#ff4d6a'];
-  chartWaterfall.update('none');
-
-  // Kelly curve
-  const fVals=[], gVals=[];
-  for(let f=0;f<=100;f+=0.5){
-    const fv=f/100;
-    const minV=Math.min(...rs.map(r=>1+fv*r));
-    if(minV<=0) break;
-    const gVal=probs.reduce((s,p,i)=>s+p*Math.log(1+fv*rs[i]),0);
-    fVals.push(f);
-    gVals.push(+(gVal*100).toFixed(4));
-  }
-  chartKelly.data.labels = fVals;
-  chartKelly.data.datasets[0].data = gVals;
-  chartKelly.update('none');
-
-  // Formulas
-  renderFormulas(probs, recovers, rs, E_R, f_star, P);
-
-  // Decision
-  renderDecision(E_R, f_star);
-}
-
-/* ====== Reset ====== */
-function resetDefaults(){
-  SHORT.forEach((s,i)=>{
-    document.getElementById('s'+s).value = DEFAULTS.probs[i];
-    document.getElementById('r'+s).value = DEFAULTS.recovers[i];
-  });
-  document.getElementById('priceSlider').value = DEFAULTS.price;
-  update();
-}
-
-/* ====== Bind events ====== */
-['sA','sB','sC','sD','sE','rA','rB','rC','rD','rE','priceSlider'].forEach(id=>{
-  document.getElementById(id).addEventListener('input', update);
 });
 
-/* ====== Init ====== */
-initCharts();
-update();
+// 瀑布图（期望收益分解）
+new Chart(document.getElementById('waterfallChart'),{
+  type:'bar',
+  data:{
+    labels:['起始','A贡献','B贡献','C贡献','D贡献','E贡献','E[R]'],
+    datasets:[{
+      data:[0,7.10,3.62,-2.83,-6.41,-7.71,-6.23],
+      backgroundColor:['#6b7a99','#00d68f','#4dabf7','#ffc107','#ff922b','#ff4d6a','#ff4d6a'],
+      borderRadius:6,
+      barPercentage:.6
+    }]
+  },
+  options:{
+    responsive:true,
+    plugins:{
+      title:{display:true,text:'期望收益率分解 (pp)',font:{size:14}},
+      legend:{display:false},
+      tooltip:{callbacks:{label:ctx=>(ctx.raw>=0?'+':'')+ctx.raw.toFixed(2)+'pp'}}
+    },
+    scales:{
+      y:{ticks:{callback:v=>v+'pp'},grid:{color:'#1e2a42'}},
+      x:{grid:{display:false}}
+    }
+  }
+});
+
+// 凯利曲线
+const fVals=[], gVals=[];
+for(let f=0;f<=65;f+=0.5){
+  const fv=f/100;
+  const r=[0.2366,0.1449,-0.1413,-0.4276,-0.7710];
+  const p=[0.30,0.25,0.20,0.15,0.10];
+  const minVal=Math.min(...r.map(ri=>1+fv*ri));
+  if(minVal<=0)break;
+  const g=p.reduce((s,pi,i)=>s+pi*Math.log(1+fv*r[i]),0);
+  fVals.push(f);
+  gVals.push(g*100);
+}
+new Chart(document.getElementById('kellyCurve'),{
+  type:'line',
+  data:{
+    labels:fVals,
+    datasets:[{
+      label:'g(f)',
+      data:gVals,
+      borderColor:'#4dabf7',
+      backgroundColor:'rgba(77,171,247,0.1)',
+      fill:true,
+      pointRadius:0,
+      borderWidth:2
+    }]
+  },
+  options:{
+    responsive:true,
+    plugins:{
+      title:{display:true,text:'几何增长率 g(f) vs 仓位 f',font:{size:14}},
+      legend:{display:false},
+      tooltip:{callbacks:{title:ctx=>'f = '+ctx[0].label+'%',label:ctx=>'g = '+ctx.raw.toFixed(4)+'%'}},
+      annotation:{}
+    },
+    scales:{
+      y:{title:{display:true,text:'g(f) (%)'},grid:{color:'#1e2a42'}},
+      x:{title:{display:true,text:'f (%)'},grid:{color:'#1e2a42'},ticks:{maxTicksLimit:15}}
+    }
+  }
+});
+
+// 敏感性计算函数
+function kellyCalc(scenarios){
+  const E_R=scenarios.reduce((s,[p,r])=>s+p*r,0);
+  let bf=0,bg=0;
+  for(let f=0;f<=100;f+=0.05){
+    const fv=f/100;
+    const minV=Math.min(...scenarios.map(([_,r])=>1+fv*r));
+    if(minV<=0)break;
+    const g=scenarios.reduce((s,[p,r])=>s+p*Math.log(1+fv*r),0);
+    if(g>bg){bg=g;bf=fv;}
+  }
+  return{E_R,f:bf,g:bg};
+}
+
+// 安世恢复概率敏感性
+const recoveryData=[];
+for(let pA=5;pA<=80;pA+=1){
+  const remain=1-pA/100;
+  const base=[0.25,0.20,0.15,0.10];
+  const scenarios=[[pA/100,0.2366],...base.map((pb,i)=>{
+    const r=[0.1449,-0.1413,-0.4276,-0.7710][i];
+    return[remain*pb/0.70,r];
+  })];
+  const res=kellyCalc(scenarios);
+  recoveryData.push({x:pA,y:res.E_R*100,f:res.f*100});
+}
+new Chart(document.getElementById('recoverySensChart'),{
+  type:'line',
+  data:{
+    labels:recoveryData.map(d=>d.x),
+    datasets:[{
+      label:'E[R]',
+      data:recoveryData.map(d=>d.y),
+      borderColor:'#ffc107',
+      backgroundColor:recoveryData.map(d=>d.y>=0?'rgba(0,214,143,0.1)':'rgba(255,77,106,0.1)'),
+      fill:true,
+      pointRadius:0,
+      borderWidth:2,
+      segment:{
+        borderColor:ctx=>ctx.p0.parsed.y>=0?'#00d68f':'#ff4d6a'
+      }
+    }]
+  },
+  options:{
+    responsive:true,
+    plugins:{
+      title:{display:true,text:'安世恢复概率 vs E[R]',font:{size:14}},
+      legend:{display:false},
+      tooltip:{callbacks:{title:ctx=>'恢复概率 = '+ctx[0].label+'%',label:ctx=>'E[R] = '+ctx.raw.toFixed(2)+'%'}}
+    },
+    scales:{
+      y:{title:{display:true,text:'E[R] (%)'},grid:{color:'#1e2a42'}},
+      x:{title:{display:true,text:'恢复概率 (%)'},grid:{color:'#1e2a42'}}
+    }
+  }
+});
+
+// 买入价敏感性
+const priceData=[];
+for(let P=50;P<=108;P+=0.5){
+  const vals=[108,100,75,50,20];
+  const probs=[0.30,0.25,0.20,0.15,0.10];
+  const scenarios=vals.map((v,i)=>[probs[i],(v-P)/P]);
+  const res=kellyCalc(scenarios);
+  priceData.push({x:P,y:res.E_R*100,f:res.f*100});
+}
+new Chart(document.getElementById('priceSensChart'),{
+  type:'line',
+  data:{
+    labels:priceData.map(d=>d.x),
+    datasets:[{
+      label:'E[R]',
+      data:priceData.map(d=>d.y),
+      borderColor:'#b197fc',
+      backgroundColor:priceData.map(d=>d.y>=0?'rgba(0,214,143,0.1)':'rgba(255,77,106,0.1)'),
+      fill:true,
+      pointRadius:0,
+      borderWidth:2,
+      segment:{
+        borderColor:ctx=>ctx.p0.parsed.y>=0?'#00d68f':'#ff4d6a'
+      }
+    }]
+  },
+  options:{
+    responsive:true,
+    plugins:{
+      title:{display:true,text:'买入价 vs E[R]',font:{size:14}},
+      legend:{display:false},
+      tooltip:{callbacks:{title:ctx=>'买入价 = '+ctx[0].label+'元',label:ctx=>'E[R] = '+ctx.raw.toFixed(2)+'%'}}
+    },
+    scales:{
+      y:{title:{display:true,text:'E[R] (%)'},grid:{color:'#1e2a42'}},
+      x:{title:{display:true,text:'买入价 (元)'},grid:{color:'#1e2a42'}}
+    }
+  }
+});
+
+// 交互滑块
+const recoverySlider=document.getElementById('recoverySlider');
+const priceSlider=document.getElementById('priceSlider');
+
+recoverySlider.addEventListener('input',function(){
+  const pA=parseInt(this.value)/100;
+  document.getElementById('recoveryLabel').textContent=(pA*100).toFixed(0)+'%';
+  const remain=1-pA;
+  const base=[0.25,0.20,0.15,0.10];
+  const scenarios=[[pA,0.2366],...base.map((pb,i)=>{
+    const r=[0.1449,-0.1413,-0.4276,-0.7710][i];
+    return[remain*pb/0.70,r];
+  })];
+  const res=kellyCalc(scenarios);
+  const el=document.getElementById('recoveryResult');
+  const sign=res.E_R>=0?'+':'';
+  el.innerHTML=`E[R] = <span style="color:${res.E_R>=0?'var(--green)':'var(--red)'}">${sign}${(res.E_R*100).toFixed(2)}%</span> · f* = <span style="color:${res.f>0?'var(--green)':'var(--red)'}">${(res.f*100).toFixed(1)}%</span>`;
+  const box=el.closest('.slider-container').nextElementSibling?.previousElementSibling;
+});
+
+priceSlider.addEventListener('input',function(){
+  const P=parseFloat(this.value);
+  document.getElementById('priceLabel').textContent=P.toFixed(1);
+  const vals=[108,100,75,50,20];
+  const probs=[0.30,0.25,0.20,0.15,0.10];
+  const scenarios=vals.map((v,i)=>[probs[i],(v-P)/P]);
+  const res=kellyCalc(scenarios);
+  const el=document.getElementById('priceResult');
+  const sign=res.E_R>=0?'+':'';
+  el.innerHTML=`E[R] = <span style="color:${res.E_R>=0?'var(--green)':'var(--red)'}">${sign}${(res.E_R*100).toFixed(2)}%</span> · f* = <span style="color:${res.f>0?'var(--green)':'var(--red)'}">${(res.f*100).toFixed(1)}%</span>`;
+});
+
+// 初始化滑块结果
+recoverySlider.dispatchEvent(new Event('input'));
+priceSlider.dispatchEvent(new Event('input'));
 </script>
+
 </body>
 </html>
