@@ -202,6 +202,23 @@ h1{font-size:1.8rem;font-weight:700;margin-bottom:4px}
   </div>
 </div>
 
+<!-- 5 scenario summary cards -->
+<div class="scenario-grid" id="scenarioCards"></div>
+
+<div class="chart-row">
+  <div class="chart-box"><canvas id="scenarioChart"></canvas></div>
+  <div class="chart-box"><canvas id="waterfallChart"></canvas></div>
+</div>
+</div>
+
+<!-- 决策框架（含买入价滑块） -->
+<div class="section">
+<div class="section-title">决策框架</div>
+<div class="decision-box" id="decisionBox">
+  <div class="verdict" id="decisionVerdict">—</div>
+  <div class="reason" id="decisionReason">—</div>
+</div>
+
 <div class="price-panel">
   <label>
     <span>买入价（元/张）</span>
@@ -213,12 +230,23 @@ h1{font-size:1.8rem;font-weight:700;margin-bottom:4px}
   </div>
 </div>
 
-<!-- 5 scenario summary cards -->
-<div class="scenario-grid" id="scenarioCards"></div>
-
-<div class="chart-row">
-  <div class="chart-box"><canvas id="scenarioChart"></canvas></div>
-  <div class="chart-box"><canvas id="waterfallChart"></canvas></div>
+<div class="trigger-grid">
+  <div class="trigger" style="border-color:var(--yellow)">
+    <div class="condition">🔓 触发条件 1：价格 ≤ 80元</div>
+    <div class="desc">安全边际足够覆盖50%恢复概率的悲观假设<br>拖动买入价滑块查看</div>
+  </div>
+  <div class="trigger" style="border-color:var(--yellow)">
+    <div class="condition">🔓 触发条件 2：安世控制权恢复</div>
+    <div class="desc">法庭撤销限制 / 和解协议签署<br>提高情景A/B概率至50%+查看</div>
+  </div>
+  <div class="trigger" style="border-color:var(--green)">
+    <div class="condition">🔥 重仓信号：两者同时满足</div>
+    <div class="desc">低价 + 高恢复概率 → f* 可达50%+<br>半凯利提供安全边际</div>
+  </div>
+  <div class="trigger" style="border-color:var(--red)">
+    <div class="condition">⚠️ 绝对不碰</div>
+    <div class="desc">安世彻底脱表 + 正股逼近1元<br>退市+违约概率>50%</div>
+  </div>
 </div>
 </div>
 
@@ -244,33 +272,6 @@ h1{font-size:1.8rem;font-weight:700;margin-bottom:4px}
 <div class="calc-step">
 <h3><span class="step-num">4</span>几何增长率 g(f) 曲线</h3>
 <div class="chart-box" style="margin-top:12px"><canvas id="kellyCurve"></canvas></div>
-</div>
-</div>
-
-<!-- 决策 -->
-<div class="section">
-<div class="section-title">决策框架</div>
-<div class="decision-box" id="decisionBox">
-  <div class="verdict" id="decisionVerdict">—</div>
-  <div class="reason" id="decisionReason">—</div>
-</div>
-<div class="trigger-grid">
-  <div class="trigger" style="border-color:var(--yellow)">
-    <div class="condition">🔓 触发条件 1：价格 ≤ 80元</div>
-    <div class="desc">安全边际足够覆盖50%恢复概率的悲观假设<br>调整上方买入价滑块查看</div>
-  </div>
-  <div class="trigger" style="border-color:var(--yellow)">
-    <div class="condition">🔓 触发条件 2：安世控制权恢复</div>
-    <div class="desc">法庭撤销限制 / 和解协议签署<br>提高情景A/B概率至50%+查看</div>
-  </div>
-  <div class="trigger" style="border-color:var(--green)">
-    <div class="condition">🔥 重仓信号：两者同时满足</div>
-    <div class="desc">低价 + 高恢复概率 → f* 可达50%+<br>半凯利提供安全边际</div>
-  </div>
-  <div class="trigger" style="border-color:var(--red)">
-    <div class="condition">⚠️ 绝对不碰</div>
-    <div class="desc">安世彻底脱表 + 正股逼近1元<br>退市+违约概率>50%</div>
-  </div>
 </div>
 </div>
 
