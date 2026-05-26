@@ -1,0 +1,774 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>新奥能源私有化套利分析 — 投行研报</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap');
+
+:root {
+  --navy: #0d1b2a;
+  --navy-light: #1b2d45;
+  --navy-mid: #243b55;
+  --gold: #c9a84c;
+  --gold-light: #dfc06f;
+  --gold-dim: rgba(201,168,76,0.15);
+  --gold-border: rgba(201,168,76,0.35);
+  --cream: #f8f6f0;
+  --white: #ffffff;
+  --text-primary: #1a1a1a;
+  --text-secondary: #4a4a4a;
+  --text-muted: #7a7a7a;
+  --green: #1a7a4c;
+  --green-bg: #e8f5e9;
+  --red: #b71c1c;
+  --red-bg: #fde8e8;
+  --amber: #b8860b;
+  --amber-bg: #fef9e7;
+  --blue: #1565c0;
+  --blue-bg: #e3f2fd;
+  --border: #d4cfc4;
+  --border-light: #e8e4da;
+  --shadow: 0 1px 3px rgba(0,0,0,0.08), 0 4px 12px rgba(0,0,0,0.04);
+}
+
+* { margin:0; padding:0; box-sizing:border-box; }
+
+body {
+  background: #e8e4da;
+  color: var(--text-primary);
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+}
+
+.page {
+  max-width: 960px;
+  margin: 40px auto;
+  background: var(--white);
+  box-shadow: 0 8px 40px rgba(0,0,0,0.12);
+}
+
+/* ── HEADER ── */
+.report-header {
+  background: linear-gradient(135deg, var(--navy) 0%, var(--navy-light) 100%);
+  color: var(--white);
+  padding: 48px 56px 40px;
+  position: relative;
+  overflow: hidden;
+}
+.report-header::before {
+  content: '';
+  position: absolute;
+  top: -60px; right: -60px;
+  width: 240px; height: 240px;
+  border: 1px solid rgba(201,168,76,0.12);
+  border-radius: 50%;
+}
+.report-header::after {
+  content: '';
+  position: absolute;
+  bottom: -80px; right: 60px;
+  width: 200px; height: 200px;
+  border: 1px solid rgba(201,168,76,0.08);
+  border-radius: 50%;
+}
+
+.header-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 28px;
+  position: relative;
+  z-index: 1;
+}
+.firm-id {
+  font-size: 11px;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  color: var(--gold);
+  font-weight: 500;
+}
+.header-meta {
+  text-align: right;
+  font-size: 11px;
+  color: rgba(255,255,255,0.5);
+  line-height: 1.8;
+}
+
+.report-header h1 {
+  font-family: 'Playfair Display', Georgia, serif;
+  font-size: 32px;
+  font-weight: 700;
+  letter-spacing: -0.5px;
+  line-height: 1.25;
+  margin-bottom: 8px;
+  position: relative;
+  z-index: 1;
+}
+.report-header .subtitle {
+  font-size: 14px;
+  color: rgba(255,255,255,0.65);
+  font-weight: 400;
+  position: relative;
+  z-index: 1;
+}
+
+.header-badge {
+  display: inline-block;
+  margin-top: 20px;
+  padding: 6px 18px;
+  background: var(--gold);
+  color: var(--navy);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  position: relative;
+  z-index: 1;
+}
+
+.gold-line {
+  height: 1px;
+  background: linear-gradient(90deg, var(--gold), transparent);
+  margin-top: 24px;
+  position: relative;
+  z-index: 1;
+}
+
+/* ── BODY ── */
+.report-body {
+  padding: 40px 56px 48px;
+}
+
+/* Section */
+.section {
+  margin-bottom: 36px;
+}
+.section-head {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 20px;
+  padding-bottom: 10px;
+  border-bottom: 2px solid var(--navy);
+}
+.section-num {
+  font-family: 'Playfair Display', Georgia, serif;
+  font-size: 22px;
+  font-weight: 700;
+  color: var(--gold);
+}
+.section-title {
+  font-family: 'Playfair Display', Georgia, serif;
+  font-size: 20px;
+  font-weight: 600;
+  color: var(--navy);
+}
+
+/* KPI row */
+.kpi-row {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1px;
+  background: var(--border-light);
+  border: 1px solid var(--border);
+  margin-bottom: 36px;
+}
+.kpi-cell {
+  background: var(--white);
+  padding: 24px 20px;
+  text-align: center;
+}
+.kpi-label {
+  font-size: 10px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  color: var(--text-muted);
+  margin-bottom: 8px;
+}
+.kpi-value {
+  font-family: 'Playfair Display', Georgia, serif;
+  font-size: 30px;
+  font-weight: 700;
+  color: var(--navy);
+}
+.kpi-value.green { color: var(--green); }
+.kpi-value.blue { color: var(--blue); }
+.kpi-value.amber { color: var(--amber); }
+.kpi-value.red { color: var(--red); }
+.kpi-sub {
+  font-size: 11px;
+  color: var(--text-muted);
+  margin-top: 4px;
+}
+
+/* Formula block */
+.formula-box {
+  background: var(--cream);
+  border: 1px solid var(--border);
+  border-left: 4px solid var(--gold);
+  padding: 24px 28px;
+  margin-bottom: 28px;
+}
+.formula-box .eq {
+  font-family: 'JetBrains Mono', 'SF Mono', monospace;
+  font-size: 13px;
+  line-height: 2.2;
+  color: var(--text-secondary);
+}
+.formula-box .eq .hl {
+  color: var(--navy);
+  font-weight: 600;
+}
+.formula-box .eq .val {
+  color: var(--green);
+  font-weight: 600;
+}
+.formula-box .comment {
+  font-size: 11px;
+  color: var(--text-muted);
+  font-style: italic;
+  margin-bottom: 4px;
+}
+
+/* Table */
+.ib-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 13px;
+  margin-bottom: 28px;
+}
+.ib-table thead th {
+  background: var(--navy);
+  color: var(--white);
+  font-weight: 500;
+  font-size: 10px;
+  letter-spacing: 0.8px;
+  text-transform: uppercase;
+  padding: 12px 16px;
+  text-align: left;
+  border: none;
+}
+.ib-table thead th:first-child { border-radius: 0; }
+.ib-table thead th:last-child { border-radius: 0; }
+.ib-table tbody td {
+  padding: 12px 16px;
+  border-bottom: 1px solid var(--border-light);
+  font-variant-numeric: tabular-nums;
+}
+.ib-table tbody tr:nth-child(even) { background: var(--cream); }
+.ib-table tbody tr:last-child td { border-bottom: 2px solid var(--navy); }
+
+.tag {
+  display: inline-block;
+  padding: 3px 10px;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+  border-radius: 2px;
+}
+.tag-green { background: var(--green-bg); color: var(--green); }
+.tag-blue { background: var(--blue-bg); color: var(--blue); }
+.tag-amber { background: var(--amber-bg); color: var(--amber); }
+.tag-red { background: var(--red-bg); color: var(--red); }
+
+.return-pos { color: var(--green); font-weight: 700; }
+.return-neg { color: var(--red); font-weight: 700; }
+.return-zero { color: var(--text-muted); }
+
+/* Dividend floor */
+.floor-block {
+  border: 1px solid var(--border);
+  padding: 24px 28px;
+  margin-bottom: 28px;
+}
+.floor-block .floor-intro {
+  font-size: 13px;
+  color: var(--text-secondary);
+  margin-bottom: 20px;
+  padding-bottom: 12px;
+  border-bottom: 1px solid var(--border-light);
+}
+.floor-row {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  margin-bottom: 10px;
+}
+.floor-label {
+  width: 120px;
+  font-size: 12px;
+  color: var(--text-muted);
+  text-align: right;
+  flex-shrink: 0;
+}
+.floor-bar {
+  height: 28px;
+  border-radius: 2px;
+  display: flex;
+  align-items: center;
+  padding: 0 12px;
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--white);
+  min-width: 50px;
+}
+.floor-callout {
+  margin-top: 16px;
+  padding: 12px 16px;
+  background: var(--red-bg);
+  border-left: 3px solid var(--red);
+  font-size: 12px;
+  color: var(--red);
+  line-height: 1.7;
+}
+
+/* Two col */
+.two-col {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 24px;
+  margin-bottom: 36px;
+}
+.col-card {
+  border: 1px solid var(--border);
+}
+.col-card-head {
+  background: var(--navy);
+  color: var(--white);
+  padding: 12px 20px;
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+}
+.col-card-body {
+  padding: 20px;
+}
+
+/* Timeline */
+.tl-item {
+  display: flex;
+  gap: 14px;
+  padding: 10px 0;
+  border-bottom: 1px solid var(--border-light);
+  font-size: 13px;
+}
+.tl-item:last-child { border-bottom: none; }
+.tl-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  margin-top: 6px;
+  flex-shrink: 0;
+}
+.tl-dot.done { background: var(--green); }
+.tl-dot.pending { background: var(--gold); box-shadow: 0 0 0 3px var(--gold-dim); }
+.tl-date {
+  color: var(--text-muted);
+  font-variant-numeric: tabular-nums;
+  width: 80px;
+  flex-shrink: 0;
+  font-size: 12px;
+  font-weight: 500;
+}
+.tl-desc { color: var(--text-secondary); }
+
+/* Key-value list */
+.kv-list { list-style: none; }
+.kv-list li {
+  display: flex;
+  justify-content: space-between;
+  padding: 8px 0;
+  border-bottom: 1px solid var(--border-light);
+  font-size: 13px;
+}
+.kv-list li:last-child { border-bottom: none; }
+.kv-label { color: var(--text-muted); }
+.kv-val { font-weight: 600; color: var(--text-primary); }
+
+/* Risk grid */
+.risk-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 0;
+  border: 1px solid var(--border);
+  margin-bottom: 36px;
+}
+.risk-card {
+  padding: 24px 20px;
+  border-right: 1px solid var(--border);
+}
+.risk-card:last-child { border-right: none; }
+.risk-level {
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  margin-bottom: 6px;
+}
+.risk-level.high { color: var(--red); }
+.risk-level.med { color: var(--amber); }
+.risk-level.low { color: var(--green); }
+.risk-title {
+  font-family: 'Playfair Display', Georgia, serif;
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--navy);
+  margin-bottom: 8px;
+}
+.risk-desc {
+  font-size: 12px;
+  color: var(--text-muted);
+  line-height: 1.7;
+}
+
+/* Conclusion */
+.conclusion-box {
+  background: var(--navy);
+  color: var(--white);
+  padding: 32px 36px;
+  margin-bottom: 24px;
+}
+.conclusion-box h3 {
+  font-family: 'Playfair Display', Georgia, serif;
+  font-size: 18px;
+  color: var(--gold);
+  margin-bottom: 20px;
+  padding-bottom: 12px;
+  border-bottom: 1px solid rgba(201,168,76,0.25);
+}
+.conclusion-box .concl-item {
+  margin-bottom: 12px;
+  padding-left: 20px;
+  position: relative;
+  font-size: 13px;
+  line-height: 1.8;
+  color: rgba(255,255,255,0.85);
+}
+.conclusion-box .concl-item::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 9px;
+  width: 6px;
+  height: 6px;
+  background: var(--gold);
+  transform: rotate(45deg);
+}
+.concl-key {
+  color: var(--gold-light);
+  font-weight: 600;
+}
+
+/* Disclaimer */
+.disclaimer {
+  margin-top: 32px;
+  padding-top: 20px;
+  border-top: 1px solid var(--border);
+}
+.disclaimer p {
+  font-size: 10px;
+  color: var(--text-muted);
+  line-height: 1.7;
+  margin-bottom: 4px;
+}
+
+/* Footer */
+.report-footer {
+  background: var(--cream);
+  padding: 20px 56px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 10px;
+  color: var(--text-muted);
+  border-top: 1px solid var(--border);
+}
+.footer-left {
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  font-weight: 600;
+}
+
+@media (max-width: 768px) {
+  .report-header, .report-body { padding-left: 24px; padding-right: 24px; }
+  .kpi-row { grid-template-columns: repeat(2, 1fr); }
+  .two-col, .risk-grid { grid-template-columns: 1fr; }
+  .risk-card { border-right: none; border-bottom: 1px solid var(--border); }
+  .risk-card:last-child { border-bottom: none; }
+  .report-header h1 { font-size: 24px; }
+}
+</style>
+</head>
+<body>
+
+<div class="page">
+
+<!-- ═══ HEADER ═══ -->
+<div class="report-header">
+  <div class="header-top">
+    <div class="firm-id">Meridian Research</div>
+    <div class="header-meta">
+      Event-Driven Strategy<br>
+      2026年5月<br>
+      For Professional Investors Only
+    </div>
+  </div>
+  <h1>新奥能源(02688.HK)<br>私有化套利深度分析</h1>
+  <div class="subtitle">新奥股份(600803.SH) 协议安排私有化 + H股介绍上市</div>
+  <div class="header-badge">套利窗口开启</div>
+  <div class="gold-line"></div>
+</div>
+
+<!-- ═══ BODY ═══ -->
+<div class="report-body">
+
+  <!-- KPI -->
+  <div class="kpi-row">
+    <div class="kpi-cell">
+      <div class="kpi-label">盈亏平衡 H股价</div>
+      <div class="kpi-value green">11.60</div>
+      <div class="kpi-sub">港元 · 跌破即亏损</div>
+    </div>
+    <div class="kpi-cell">
+      <div class="kpi-label">隐含 H/A 折价</div>
+      <div class="kpi-value blue">48.4%</div>
+      <div class="kpi-sub">市场极度悲观定价</div>
+    </div>
+    <div class="kpi-cell">
+      <div class="kpi-label">确定性现金回收</div>
+      <div class="kpi-value amber">26.85</div>
+      <div class="kpi-sub">港元/股 = 24.5现金 + 2.35股息</div>
+    </div>
+    <div class="kpi-cell">
+      <div class="kpi-label">中性预期回报率</div>
+      <div class="kpi-value green">19.9%</div>
+      <div class="kpi-sub">30%折价情景</div>
+    </div>
+  </div>
+
+  <!-- Section 1: Model -->
+  <div class="section">
+    <div class="section-head">
+      <span class="section-num">01</span>
+      <span class="section-title">套利回收模型</span>
+    </div>
+    <div class="formula-box">
+      <div class="comment">// 每股新奥能源回收价值</div>
+      <div class="eq">Total = 24.50(现金) + 2.9427 × P<sub>H</sub>(H股价值) + 2.35(股息)</div>
+      <div class="comment">// 扣除确定性现金后，H股期权净成本</div>
+      <div class="eq">Net_Cost = 61.00 − 24.50 − 2.35 = <span class="val">34.15 港元</span></div>
+      <div class="comment">// 盈亏平衡：H股不能低于</div>
+      <div class="eq">Breakeven = 34.15 ÷ 2.9427 = <span class="val">11.60 港元</span></div>
+      <div class="comment">// A股锚定价(20.80 CNY × 1.08汇率)</div>
+      <div class="eq">A_anchor = <span class="val">22.46 港元</span> → 11.60 对应 48.4% 折价</div>
+    </div>
+  </div>
+
+  <!-- Section 2: Scenario -->
+  <div class="section">
+    <div class="section-head">
+      <span class="section-num">02</span>
+      <span class="section-title">情景收益矩阵</span>
+    </div>
+    <table class="ib-table">
+      <thead>
+        <tr>
+          <th>情景</th>
+          <th>H/A折价</th>
+          <th>H股价(港元)</th>
+          <th>换股价值</th>
+          <th>总回收</th>
+          <th>绝对价差</th>
+          <th>回报率</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><span class="tag tag-green">财顾预测</span></td>
+          <td>16.0%</td>
+          <td>18.86</td>
+          <td>55.50</td>
+          <td>82.35</td>
+          <td>+21.35</td>
+          <td class="return-pos">+35.0%</td>
+        </tr>
+        <tr>
+          <td><span class="tag tag-blue">中性保守</span></td>
+          <td>30.0%</td>
+          <td>15.72</td>
+          <td>46.26</td>
+          <td>73.11</td>
+          <td>+12.11</td>
+          <td style="color:var(--blue);font-weight:700">+19.9%</td>
+        </tr>
+        <tr>
+          <td><span class="tag tag-amber">深幅折价</span></td>
+          <td>40.0%</td>
+          <td>13.48</td>
+          <td>39.67</td>
+          <td>66.52</td>
+          <td>+5.52</td>
+          <td style="color:var(--amber);font-weight:600">+9.0%</td>
+        </tr>
+        <tr>
+          <td><span class="tag tag-amber">盈亏平衡</span></td>
+          <td>48.4%</td>
+          <td>11.60</td>
+          <td>34.15</td>
+          <td>61.00</td>
+          <td>0.00</td>
+          <td class="return-zero">0.0%</td>
+        </tr>
+        <tr>
+          <td><span class="tag tag-red">极端踩踏</span></td>
+          <td>55.0%</td>
+          <td>10.11</td>
+          <td>29.75</td>
+          <td>56.60</td>
+          <td>−4.40</td>
+          <td class="return-neg">−7.2%</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- Section 3: Dividend Floor -->
+  <div class="section">
+    <div class="section-head">
+      <span class="section-num">03</span>
+      <span class="section-title">股息率托底逻辑 — H/A折价不可能无底线</span>
+    </div>
+    <div class="floor-block">
+      <div class="floor-intro">
+        承诺 2026-2028 年分红≥核心利润50%，并表后年核心利润≈90亿 → 年派息≈45亿
+      </div>
+      <div class="floor-row">
+        <div class="floor-label">0% 折价(平价)</div>
+        <div class="floor-bar" style="width:100%;background:var(--green);">4.4%</div>
+      </div>
+      <div class="floor-row">
+        <div class="floor-label">30% 折价</div>
+        <div class="floor-bar" style="width:75%;background:var(--blue);">6.3%</div>
+      </div>
+      <div class="floor-row">
+        <div class="floor-label">40% 折价</div>
+        <div class="floor-bar" style="width:60%;background:var(--amber);">7.3%</div>
+      </div>
+      <div class="floor-row">
+        <div class="floor-label">50% 折价</div>
+        <div class="floor-bar" style="width:50%;background:var(--red);">8.8%</div>
+      </div>
+      <div class="floor-callout">
+        ⚠ 50%折价 → 税后股息率7.5%+ → 南下资金+险资必然填平 → <strong>"估值铁底"</strong>
+      </div>
+    </div>
+  </div>
+
+  <!-- Section 4: Two col -->
+  <div class="section">
+    <div class="two-col">
+      <div class="col-card">
+        <div class="col-card-head">审批时间线</div>
+        <div class="col-card-body">
+          <div class="tl-item">
+            <div class="tl-dot done"></div>
+            <div class="tl-date">2025.03.19</div>
+            <div class="tl-desc">停牌筹划重组</div>
+          </div>
+          <div class="tl-item">
+            <div class="tl-dot done"></div>
+            <div class="tl-date">2025.03.24</div>
+            <div class="tl-desc">正式发布重组公告</div>
+          </div>
+          <div class="tl-item">
+            <div class="tl-dot done"></div>
+            <div class="tl-date">2025.05.28</div>
+            <div class="tl-desc">股东大会 99.9%高票通过</div>
+          </div>
+          <div class="tl-item">
+            <div class="tl-dot done"></div>
+            <div class="tl-date">2025.08-12</div>
+            <div class="tl-desc">发改委/商务部/外汇局备案全部完成</div>
+          </div>
+          <div class="tl-item">
+            <div class="tl-dot pending"></div>
+            <div class="tl-date">2026至今</div>
+            <div class="tl-desc">证监会境外上市备案 + 联交所介绍上市 ⏳</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-card">
+        <div class="col-card-head">私有化失败 — 独立估值底部</div>
+        <div class="col-card-body">
+          <ul class="kv-list">
+            <li><span class="kv-label">当前股价</span><span class="kv-val">~60 港元</span></li>
+            <li><span class="kv-label">动态PE</span><span class="kv-val">~10x</span></li>
+            <li><span class="kv-label">PB</span><span class="kv-val">~1.24x</span></li>
+            <li><span class="kv-label">2025自由现金流</span><span class="kv-val">38.7亿(+3.7%)</span></li>
+            <li><span class="kv-label">独立股息率</span><span class="kv-val">~5.0%</span></li>
+            <li><span class="kv-label">估值分位</span><span class="kv-val">逼近2004年以来底部</span></li>
+            <li><span class="kv-label">失败下行空间</span><span class="kv-val" style="color:var(--amber)">约10% → 50-55港元</span></li>
+            <li><span class="kv-label">系统性崩盘风险</span><span class="kv-val" style="color:var(--green)">极低</span></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Section 5: Risk -->
+  <div class="section">
+    <div class="section-head">
+      <span class="section-num">04</span>
+      <span class="section-title">尾部风险识别</span>
+    </div>
+    <div class="risk-grid">
+      <div class="risk-card">
+        <div class="risk-level high">高风险</div>
+        <div class="risk-title">H股首日流动性踩踏</div>
+        <div class="risk-desc">介绍上市无绿鞋，受限基金可能市价单强平，H股瞬间击穿盈亏平衡线。对策：准备备用资金，跌破7.5%股息率对应价时加仓。</div>
+      </div>
+      <div class="risk-card">
+        <div class="risk-level med">中风险</div>
+        <div class="risk-title">审批继续拖延</div>
+        <div class="risk-desc">证监会备案+联交所审批已滞后超预期，每多拖1个月，5%年化资金成本持续侵蚀IRR。时间是最确定的敌人。</div>
+      </div>
+      <div class="risk-card">
+        <div class="risk-level low">低风险</div>
+        <div class="risk-title">交易彻底破裂</div>
+        <div class="risk-desc">发改委/商务部/外汇局已过，内资审批无碍。开曼法院"数人头"测试是程序风险，但管理层期权补偿已绑定利益。下行有限(≈10%)。</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Conclusion -->
+  <div class="conclusion-box">
+    <h3>核心结论</h3>
+    <div class="concl-item"><span class="concl-key">安全边际极厚</span>：扣除现金+股息后，H股盈亏平衡价仅11.60港元，对应A股48.4%折价。这个折价在港股公用事业中几乎不可能持续。</div>
+    <div class="concl-item"><span class="concl-key">股息率构成铁底</span>：50%分红承诺 + 90亿核心利润 → 即使50%折价，H股税后股息率仍达7.5%+。南下资金和险资必然填平。</div>
+    <div class="concl-item"><span class="concl-key">下行有限，上行可观</span>：私有化失败仅约10%亏损(50-55港元)，30%折价中性情景回报+19.9%，乐观情景+35%。盈亏比约 3:1。</div>
+    <div class="concl-item"><span class="concl-key">核心变量</span>：证监会境外上市备案何时落地。这是当前唯一实质性阻塞项。一旦通过，套利弹簧将向公允价值剧烈修复。</div>
+  </div>
+
+  <!-- Disclaimer -->
+  <div class="disclaimer">
+    <p>⚠ 以上为基于公开信息的理论分析，不构成投资建议。投资决策需自行负责。</p>
+    <p>本报告仅供专业投资者参考，不面向一般公众发布。报告中的分析和结论基于公开可得信息，可能存在滞后或偏差。</p>
+  </div>
+
+</div>
+
+<!-- ═══ FOOTER ═══ -->
+<div class="report-footer">
+  <div class="footer-left">Meridian Research</div>
+  <div>新奥能源(02688.HK) × 新奥股份(600803.SH) ｜ 数据截至 2026年5月</div>
+</div>
+
+</div>
+</body>
+</html>
