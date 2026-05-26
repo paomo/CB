@@ -1,0 +1,331 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>新奥能源套利分析</title>
+<style>
+:root {
+  --bg: #0f1117;
+  --card: #1a1d28;
+  --card2: #222639;
+  --border: #2a2e42;
+  --text: #e4e4e7;
+  --dim: #8b8fa3;
+  --green: #22c55e;
+  --green-bg: rgba(34,197,94,0.12);
+  --red: #ef4444;
+  --red-bg: rgba(239,68,68,0.12);
+  --amber: #f59e0b;
+  --amber-bg: rgba(245,158,11,0.12);
+  --blue: #3b82f6;
+  --blue-bg: rgba(59,130,246,0.12);
+  --accent: #8b5cf6;
+}
+* { margin:0; padding:0; box-sizing:border-box; }
+body { background:var(--bg); color:var(--text); font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif; line-height:1.6; padding:24px; max-width:1200px; margin:0 auto; }
+h1 { font-size:28px; font-weight:700; margin-bottom:4px; }
+.subtitle { color:var(--dim); font-size:14px; margin-bottom:32px; }
+.grid2 { display:grid; grid-template-columns:1fr 1fr; gap:16px; margin-bottom:20px; }
+.grid3 { display:grid; grid-template-columns:1fr 1fr 1fr; gap:16px; margin-bottom:20px; }
+.grid4 { display:grid; grid-template-columns:1fr 1fr 1fr 1fr; gap:16px; margin-bottom:20px; }
+.card { background:var(--card); border:1px solid var(--border); border-radius:12px; padding:20px; }
+.card h3 { font-size:13px; color:var(--dim); text-transform:uppercase; letter-spacing:0.5px; margin-bottom:12px; font-weight:500; }
+.big-num { font-size:32px; font-weight:700; line-height:1.2; }
+.big-num.sm { font-size:24px; }
+.label { font-size:13px; color:var(--dim); margin-top:4px; }
+.green { color:var(--green); }
+.red { color:var(--red); }
+.amber { color:var(--amber); }
+.blue { color:var(--blue); }
+.tag { display:inline-block; padding:2px 8px; border-radius:4px; font-size:12px; font-weight:600; }
+.tag-green { background:var(--green-bg); color:var(--green); }
+.tag-red { background:var(--red-bg); color:var(--red); }
+.tag-amber { background:var(--amber-bg); color:var(--amber); }
+.tag-blue { background:var(--blue-bg); color:var(--blue); }
+section { margin-bottom:28px; }
+section h2 { font-size:18px; font-weight:600; margin-bottom:16px; padding-bottom:8px; border-bottom:1px solid var(--border); }
+table { width:100%; border-collapse:collapse; font-size:14px; }
+th { text-align:left; color:var(--dim); font-weight:500; font-size:12px; text-transform:uppercase; letter-spacing:0.5px; padding:8px 12px; border-bottom:1px solid var(--border); }
+td { padding:10px 12px; border-bottom:1px solid var(--border); }
+tr:hover { background:rgba(255,255,255,0.02); }
+.highlight-row { background:var(--card2); }
+.bar-container { display:flex; align-items:center; gap:8px; }
+.bar { height:8px; border-radius:4px; min-width:2px; }
+.risk-grid { display:grid; grid-template-columns:1fr 1fr; gap:12px; }
+.risk-item { padding:14px; border-radius:8px; border-left:3px solid; }
+.risk-high { border-color:var(--red); background:var(--red-bg); }
+.risk-med { border-color:var(--amber); background:var(--amber-bg); }
+.risk-low { border-color:var(--green); background:var(--green-bg); }
+.risk-item h4 { font-size:14px; margin-bottom:4px; }
+.risk-item p { font-size:13px; color:var(--dim); margin:0; }
+.timeline { position:relative; padding-left:32px; }
+.timeline::before { content:''; position:absolute; left:11px; top:8px; bottom:8px; width:2px; background:var(--border); }
+.tl-item { position:relative; padding-bottom:20px; }
+.tl-item::before { content:''; position:absolute; left:-25px; top:6px; width:12px; height:12px; border-radius:50%; border:2px solid; }
+.tl-done::before { border-color:var(--green); background:var(--green); }
+.tl-pending::before { border-color:var(--amber); background:transparent; }
+.tl-future::before { border-color:var(--dim); background:transparent; }
+.tl-item h4 { font-size:14px; font-weight:600; }
+.tl-item p { font-size:13px; color:var(--dim); margin-top:2px; }
+.formula-box { background:var(--card2); border:1px solid var(--border); border-radius:8px; padding:16px; font-family:"SF Mono",Monaco,Consolas,monospace; font-size:14px; margin:12px 0; line-height:1.8; }
+.note { font-size:13px; color:var(--dim); margin-top:8px; font-style:italic; }
+.verdict { background:linear-gradient(135deg,var(--card),var(--card2)); border:1px solid var(--accent); border-radius:12px; padding:24px; margin-top:8px; }
+.verdict h3 { color:var(--accent); font-size:16px; margin-bottom:8px; }
+.dividend-chart { display:flex; align-items:flex-end; gap:8px; height:160px; padding:0 4px; margin:16px 0; }
+.div-bar { display:flex; flex-direction:column; align-items:center; flex:1; }
+.div-bar-fill { width:100%; border-radius:4px 4px 0 0; background:linear-gradient(180deg,var(--green),rgba(34,197,94,0.4)); transition:height 0.3s; }
+.div-bar-label { font-size:11px; color:var(--dim); margin-top:4px; }
+.div-bar-value { font-size:12px; font-weight:600; margin-bottom:4px; }
+.discount-table td:first-child { font-weight:600; }
+@media(max-width:768px) {
+  .grid2,.grid3,.grid4,.risk-grid { grid-template-columns:1fr; }
+  .big-num { font-size:24px; }
+  body { padding:12px; }
+}
+</style>
+</head>
+<body>
+
+<h1>新奥能源 (2688.HK) 套利机会分析</h1>
+<p class="subtitle">数据日期：2026年5月26日 · 新奥股份 A股 19.67 CNY · 新奥能源 H股 56.30 HKD · 汇率 0.92</p>
+
+<!-- KPI Cards -->
+<div class="grid4">
+  <div class="card">
+    <h3>私有化总对价（AH折让40%）</h3>
+    <div class="big-num green">62.25 <span style="font-size:16px">HKD</span></div>
+    <div class="label">理论套利空间 +10.6%</div>
+  </div>
+  <div class="card">
+    <h3>盈亏平衡H股价</h3>
+    <div class="big-num amber">10.80 <span style="font-size:16px">HKD</span></div>
+    <div class="label">低于此价则亏损（AH折让49%）</div>
+  </div>
+  <div class="card">
+    <h3>2025年末期股息</h3>
+    <div class="big-num blue">2.35 <span style="font-size:16px">HKD</span></div>
+    <div class="label">除息6月1日 · 派息7月31日</div>
+  </div>
+  <div class="card">
+    <h3>先决条件进度</h3>
+    <div class="big-num">2<span style="font-size:20px;color:var(--dim)">/4</span></div>
+    <div class="label"><span class="tag tag-amber">港交所+证监会待批</span></div>
+  </div>
+</div>
+
+<!-- 交易方案 -->
+<section>
+<h2>📋 交易方案详解</h2>
+<div class="grid2">
+  <div class="card">
+    <h3>对价结构（每股新奥能源）</h3>
+    <div style="margin:16px 0">
+      <div style="display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px solid var(--border)">
+        <span>现金对价</span><span style="font-weight:600">24.50 HKD</span>
+      </div>
+      <div style="display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px solid var(--border)">
+        <span>换股比例</span><span style="font-weight:600">× 2.9427 股新奥股份H股</span>
+      </div>
+      <div style="display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px solid var(--border)">
+        <span>方案理论价值</span><span style="font-weight:600;color:var(--green)">~80 HKD</span>
+      </div>
+      <div style="display:flex;justify-content:space-between;padding:8px 0">
+        <span>公告前溢价</span><span style="font-weight:600;color:var(--green)">+34.6%</span>
+      </div>
+    </div>
+    <div class="formula-box">
+1股新奥能源 = 24.5 HKD现金 + 2.9427 × H股价
+总对价 = 24.5 + 2.9427 × H
+    </div>
+  </div>
+  <div class="card">
+    <h3>AH折让敏感性分析</h3>
+    <table style="margin-top:4px">
+      <tr><th>AH折让</th><th>H股价</th><th>总对价</th><th>套利空间</th></tr>
+      <tr><td>50%</td><td>10.69</td><td>55.96</td><td class="red">-0.6%</td></tr>
+      <tr class="highlight-row"><td>40%</td><td>12.83</td><td>62.25</td><td class="green">+10.6%</td></tr>
+      <tr><td>30%</td><td>14.97</td><td>68.54</td><td class="green">+21.7%</td></tr>
+      <tr><td>20%</td><td>17.10</td><td>74.83</td><td class="green">+32.9%</td></tr>
+      <tr><td>0%（平价）</td><td>21.38</td><td>87.42</td><td class="green">+55.3%</td></tr>
+    </table>
+    <p class="note">能源/公用事业行业AH平均折让约30-40%，花旗采用40%</p>
+  </div>
+</div>
+</section>
+
+<!-- 分红分析 -->
+<section>
+<h2>💰 分红能力与稳定性分析</h2>
+<div class="grid2">
+  <div class="card">
+    <h3>新奥能源历年分红（HKD/股）</h3>
+    <div class="dividend-chart">
+      <div class="div-bar"><div class="div-bar-value">1.08</div><div class="div-bar-fill" style="height:36px"></div><div class="div-bar-label">2018</div></div>
+      <div class="div-bar"><div class="div-bar-value">1.19</div><div class="div-bar-fill" style="height:40px"></div><div class="div-bar-label">2019</div></div>
+      <div class="div-bar"><div class="div-bar-value">2.42</div><div class="div-bar-fill" style="height:81px"></div><div class="div-bar-label">2020</div></div>
+      <div class="div-bar"><div class="div-bar-value">2.70</div><div class="div-bar-fill" style="height:90px"></div><div class="div-bar-label">2021</div></div>
+      <div class="div-bar"><div class="div-bar-value">2.91</div><div class="div-bar-fill" style="height:97px"></div><div class="div-bar-label">2022</div></div>
+      <div class="div-bar"><div class="div-bar-value">2.95</div><div class="div-bar-fill" style="height:98px"></div><div class="div-bar-label">2023</div></div>
+      <div class="div-bar"><div class="div-bar-value">3.00</div><div class="div-bar-fill" style="height:100px"></div><div class="div-bar-label">2024</div></div>
+      <div class="div-bar"><div class="div-bar-value" style="color:var(--blue)">3.00</div><div class="div-bar-fill" style="height:100px;background:linear-gradient(180deg,var(--blue),rgba(59,130,246,0.4))"></div><div class="div-bar-label">2025</div></div>
+    </div>
+    <div style="margin-top:12px;font-size:13px">
+      <div style="display:flex;justify-content:space-between;padding:4px 0"><span>5年复合增长率</span><span class="green">+8.9%</span></div>
+      <div style="display:flex;justify-content:space-between;padding:4px 0"><span>2024年派息率</span><span>51.8%</span></div>
+      <div style="display:flex;justify-content:space-between;padding:4px 0"><span>当前股息率（56.30 HKD）</span><span class="blue">5.3%</span></div>
+    </div>
+  </div>
+  <div class="card">
+    <h3>合并后分红承诺</h3>
+    <div style="margin:16px 0">
+      <div style="padding:12px;background:var(--green-bg);border-radius:8px;margin-bottom:12px;border-left:3px solid var(--green)">
+        <div style="font-weight:600;margin-bottom:4px">2025年承诺</div>
+        <div style="font-size:14px">每股现金分红 ≥ <strong>1.14 CNY</strong></div>
+        <div style="font-size:12px;color:var(--dim)">不含特别派息，派息率约58%</div>
+      </div>
+      <div style="padding:12px;background:var(--blue-bg);border-radius:8px;margin-bottom:12px;border-left:3px solid var(--blue)">
+        <div style="font-weight:600;margin-bottom:4px">2026-2028年承诺</div>
+        <div style="font-size:14px">每年现金分红 ≥ 核心利润的 <strong>50%</strong></div>
+      </div>
+    </div>
+    <table style="margin-top:8px;font-size:13px">
+      <tr><th>年度</th><th>预计净利润(亿)</th><th>50%分红(CNY/股)</th><th>H股股息率</th></tr>
+      <tr><td>2026E</td><td>53.6</td><td>~0.87</td><td>~4.0%</td></tr>
+      <tr><td>2027E</td><td>60.9</td><td>~0.98</td><td>~4.5%</td></tr>
+      <tr><td>2028E</td><td>68.3</td><td>~1.10</td><td>~5.0%</td></tr>
+    </table>
+    <p class="note">H股股息率基于AH折让40%的H股价估算，港股通需扣20%红利税</p>
+  </div>
+</div>
+<div class="card" style="margin-top:4px">
+  <h3>🔑 分红结论：稳定且可持续</h3>
+  <div style="font-size:14px;line-height:1.8;padding:8px 0">
+    <p>1. <strong>连续增长8年</strong>：2018-2025年每股分红从1.08增至3.00 HKD，CAGR 8.9%</p>
+    <p>2. <strong>派息率稳健</strong>：常年50-55%，既回馈股东又保留再投资空间</p>
+    <p>3. <strong>合并后承诺强化</strong>：50%核心利润保底，东吴/招商等多家券商预计可执行</p>
+    <p>4. <strong>现金流支撑</strong>：天然气分销是现金牛业务，经营性现金流充沛（2025H1同比+15.7%）</p>
+    <p>5. <strong>风险点</strong>：天然气价格剧烈波动可能压缩毛差，但顺价机制已覆盖71.6%居民气量</p>
+  </div>
+</div>
+</section>
+
+<!-- 时间维度 -->
+<section>
+<h2>⏱ 时间维度：重组进度与收益影响</h2>
+<div class="grid2">
+  <div class="card">
+    <h3>先决条件达成进度</h3>
+    <div class="timeline" style="margin-top:16px">
+      <div class="tl-item tl-done">
+        <h4>✅ 中国境内备案/登记/批准 <span class="tag tag-green">已完成</span></h4>
+        <p>发改委备案(8月) → 商务部备案(12月) → 外汇登记(12.26)</p>
+      </div>
+      <div class="tl-item tl-done">
+        <h4>✅ 新奥股份独立股东批准 <span class="tag tag-green">已完成</span></h4>
+        <p>2025.5.28 股东大会 >99.9%高票通过</p>
+      </div>
+      <div class="tl-item tl-pending">
+        <h4>⏳ 港交所上市委员会原则批准 <span class="tag tag-amber">审核中</span></h4>
+        <p>2025.6 递交申请 → 12月更新材料 → 审核中</p>
+      </div>
+      <div class="tl-item tl-pending">
+        <h4>⏳ 中国证监会批准/备案 <span class="tag tag-amber">审核中</span></h4>
+        <p>2025.7 递交备案材料 → 待审批</p>
+      </div>
+      <div class="tl-item tl-future">
+        <h4>◯ 新奥能源法院会议 & 股东大会</h4>
+        <p>先决条件全部达成后 → 寄发通函 → 召开会议</p>
+      </div>
+      <div class="tl-item tl-future">
+        <h4>◯ 协议安排生效 & H股上市</h4>
+        <p>法院批准 → 退市 → H股介绍上市</p>
+      </div>
+    </div>
+  </div>
+  <div class="card">
+    <h3>时间对收益的影响</h3>
+    <div style="margin:16px 0">
+      <div style="padding:14px;background:var(--card2);border-radius:8px;margin-bottom:12px">
+        <div style="font-weight:600;margin-bottom:8px">📅 2025年股息领取窗口</div>
+        <div style="font-size:14px">
+          <div style="display:flex;justify-content:space-between;padding:4px 0"><span>除息日</span><span style="color:var(--amber)">2026年6月1日</span></div>
+          <div style="display:flex;justify-content:space-between;padding:4px 0"><span>派息日</span><span>2026年7月31日</span></div>
+          <div style="display:flex;justify-content:space-between;padding:4px 0"><span>股息金额</span><span style="color:var(--blue)">2.35 HKD/股</span></div>
+        </div>
+        <p style="font-size:12px;color:var(--dim);margin-top:8px">⚠️ 若私有化在6月1日前生效，H股股东可能错过此股息（并入合并对价）</p>
+      </div>
+    </div>
+    <table style="margin-top:8px;font-size:13px">
+      <tr><th>完成时间</th><th>持有期年化</th><th>含股息</th><th>判断</th></tr>
+      <tr><td>2026 Q3</td><td class="green">~38%</td><td>+2.35 HKD</td><td><span class="tag tag-green">最优</span></td></tr>
+      <tr class="highlight-row"><td>2026 Q4</td><td class="green">~26%</td><td>+2.35 HKD</td><td><span class="tag tag-green">良好</span></td></tr>
+      <tr><td>2027 Q1</td><td class="amber">~18%</td><td>+2.35 HKD</td><td><span class="tag tag-amber">一般</span></td></tr>
+      <tr><td>2027 Q2</td><td class="amber">~13%</td><td>+2.35 HKD</td><td><span class="tag tag-amber">偏慢</span></td></tr>
+      <tr><td>2027 Q3+</td><td class="red">< 10%</td><td>+2.35 HKD</td><td><span class="tag tag-red">不划算</span></td></tr>
+    </table>
+    <p class="note">年化收益基于AH折让40%的套利空间10.6% + 股息2.35 HKD，按56.30 HKD成本计算</p>
+  </div>
+</div>
+<div class="card" style="margin-top:4px">
+  <h3>🔑 时间结论</h3>
+  <div style="font-size:14px;line-height:1.8;padding:8px 0">
+    <p>1. <strong>最可能时间</strong>：2026 Q4 - 2027 Q1。港交所+证监会审批通常需6-12个月，已递交给近1年</p>
+    <p>2. <strong>决议有效期</strong>：已延长至2027年5月，时间充裕但不可无限期拖延</p>
+    <p>3. <strong>6月1日除息是关键节点</strong>：在此之前私有化不太可能完成（还差2个先决条件），大概率可领取2.35 HKD股息</p>
+    <p>4. <strong>越快越好</strong>：年化收益对时间高度敏感，6个月内完成年化>25%，超过1年则降至<15%</p>
+  </div>
+</div>
+</section>
+
+<!-- 风险分析 -->
+<section>
+<h2>⚠️ 风险评估</h2>
+<div class="risk-grid">
+  <div class="risk-item risk-high">
+    <h4>🔴 监管审批失败</h4>
+    <p>港交所或证监会拒绝H股介绍上市。概率低但影响致命——私有化流产，股价回落至45-50 HKD区间</p>
+  </div>
+  <div class="risk-item risk-high">
+    <h4>🔴 H股折价超预期</h4>
+    <p>AH折让>49%则套利归零。港股市场低迷、资金面紧张时折让可能扩大</p>
+  </div>
+  <div class="risk-item risk-med">
+    <h4>🟡 A股下跌</h4>
+    <p>新奥股份A股从21跌至16，H股跟随下跌，套利空间收窄。A股已从21.6跌至19.7</p>
+  </div>
+  <div class="risk-item risk-med">
+    <h4>🟡 时间超预期</h4>
+    <p>审批拖延至2027下半年，年化收益降至个位数，资金机会成本上升</p>
+  </div>
+  <div class="risk-item risk-low">
+    <h4>🟢 汇率波动</h4>
+    <p>CNY/HKD波动影响实际收益，但港币挂钩美元，波动幅度有限</p>
+  </div>
+  <div class="risk-item risk-low">
+    <h4>🟢 新奥能源股东否决</h4>
+    <p>控股股东持股65.72%已支持，小股东否决概率极低。需75%出席股东同意</p>
+  </div>
+</div>
+</section>
+
+<!-- 综合判断 -->
+<section>
+<h2>📊 综合判断</h2>
+<div class="verdict">
+  <h3>套利机会评估：中性偏积极</h3>
+  <div style="font-size:14px;line-height:2;padding:8px 0">
+    <p><strong>核心逻辑</strong>：以56.30 HKD买入，获得24.5 HKD现金+2.9427股H股+2.35 HKD股息。即使H股折让40%（行业平均），仍有约10.6%套利空间。</p>
+    <p><strong>分红加成</strong>：新奥能源8年连续增息，合并后50%核心利润保底承诺，分红确定性高。股息提供额外安全垫。</p>
+    <p><strong>关键变量</strong>：①H股定价（AH折让幅度）；②审批时间（决定年化收益）。</p>
+    <p><strong>乐观情景</strong>：Q4完成，AH折让30%，总收益~24%（含股息），年化>40%</p>
+    <p><strong>中性情景</strong>：2027 Q1完成，AH折让40%，总收益~15%（含股息），年化~12%</p>
+    <p><strong>悲观情景</strong>：2027 H2完成，AH折让50%，总收益~4%，年化<5%</p>
+    <p><strong>建议</strong>：轻仓参与（不超过总资金15%），关注港交所/证监会审批进展。审批通过后可加仓。设止损位50 HKD（-11%）。</p>
+  </div>
+</div>
+<p class="note" style="margin-top:12px;font-style:normal;color:var(--dim)">⚠️ 以上分析不构成投资建议。投资决策需自行负责。数据来源：公司公告、花旗/东吴/招商研报、新浪财经。</p>
+</section>
+
+</body>
+</html>
