@@ -1,0 +1,364 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>新奥能源(2688.HK)私有化套利分析</title>
+<style>
+  :root {
+    --bg: #0d1117; --card: #161b22; --border: #30363d;
+    --text: #c9d1d9; --text-muted: #8b949e; --accent: #58a6ff;
+    --green: #3fb950; --red: #f85149; --yellow: #d29922; --orange: #db6d28;
+    --blue: #58a6ff; --purple: #bc8cff;
+  }
+  * { margin:0; padding:0; box-sizing:border-box; }
+  body { background:var(--bg); color:var(--text); font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Helvetica,Arial,sans-serif; line-height:1.6; padding:20px; max-width:1200px; margin:0 auto; }
+  h1 { font-size:1.8em; margin-bottom:4px; color:#fff; }
+  h2 { font-size:1.3em; margin:24px 0 12px; color:#fff; border-bottom:1px solid var(--border); padding-bottom:8px; }
+  h3 { font-size:1.1em; margin:16px 0 8px; color:var(--accent); }
+  .subtitle { color:var(--text-muted); font-size:0.95em; margin-bottom:20px; }
+  .card { background:var(--card); border:1px solid var(--border); border-radius:8px; padding:16px; margin:12px 0; }
+  .grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(280px,1fr)); gap:12px; }
+  .metric { text-align:center; padding:20px 12px; }
+  .metric .value { font-size:2em; font-weight:700; }
+  .metric .label { font-size:0.85em; color:var(--text-muted); margin-top:4px; }
+  .green { color:var(--green); } .red { color:var(--red); } .yellow { color:var(--yellow); } .orange { color:var(--orange); } .blue { color:var(--blue); } .purple { color:var(--purple); }
+  table { width:100%; border-collapse:collapse; font-size:0.9em; }
+  th { background:#1c2129; text-align:left; padding:10px 12px; color:var(--text-muted); font-weight:600; border-bottom:2px solid var(--border); }
+  td { padding:10px 12px; border-bottom:1px solid var(--border); }
+  tr:hover td { background:#1c2129; }
+  .tag { display:inline-block; padding:2px 8px; border-radius:4px; font-size:0.8em; font-weight:600; }
+  .tag-green { background:#1a3a2a; color:var(--green); }
+  .tag-red { background:#3a1a1a; color:var(--red); }
+  .tag-yellow { background:#3a2a1a; color:var(--yellow); }
+  .tag-blue { background:#1a2a3a; color:var(--blue); }
+  .progress-bar { background:#21262d; border-radius:4px; height:8px; overflow:hidden; margin-top:6px; }
+  .progress-fill { height:100%; border-radius:4px; transition:width 0.3s; }
+  .verdict { font-size:1.2em; padding:20px; text-align:center; border-radius:8px; margin:16px 0; }
+  .verdict-caution { background:linear-gradient(135deg,#3a2a1a,#2a1a0a); border:1px solid var(--orange); }
+  .risk-matrix { display:grid; grid-template-columns:1fr 1fr; gap:8px; }
+  .risk-item { padding:12px; border-radius:6px; border:1px solid var(--border); }
+  .risk-item h4 { margin-bottom:4px; font-size:0.95em; }
+  .risk-item p { font-size:0.85em; color:var(--text-muted); }
+  .chart-container { position:relative; height:300px; margin:12px 0; }
+  canvas { width:100%!important; height:100%!important; }
+  .disclaimer { color:var(--text-muted); font-size:0.8em; margin-top:30px; padding:12px; border-top:1px solid var(--border); }
+  .highlight-box { border-left:3px solid var(--accent); padding:12px 16px; background:#0d1926; margin:12px 0; }
+  .formula { font-family:'SF Mono',Monaco,Consolas,monospace; background:#161b22; padding:12px; border-radius:6px; margin:8px 0; font-size:0.9em; overflow-x:auto; }
+  @media(max-width:600px) { .grid{grid-template-columns:1fr;} .risk-matrix{grid-template-columns:1fr;} body{padding:12px;} }
+</style>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4"></script>
+</head>
+<body>
+
+<h1>新奥能源 (2688.HK) 私有化套利分析</h1>
+<p class="subtitle">数据截至 2026年5月26日收盘 · 非投资建议，仅供参考</p>
+
+<!-- 核心数据卡片 -->
+<div class="grid">
+  <div class="card metric">
+    <div class="value red">56.50 <span style="font-size:0.5em">HKD</span></div>
+    <div class="label">2688.HK 现价 · 今日 -2.25% · 52周新低</div>
+  </div>
+  <div class="card metric">
+    <div class="value orange">67.8 <span style="font-size:0.5em">HKD</span></div>
+    <div class="label">花旗估值（20% A-H折价假设）</div>
+  </div>
+  <div class="card metric">
+    <div class="value yellow">20.0%</div>
+    <div class="label">隐含套利空间（花旗基准）</div>
+  </div>
+  <div class="card metric">
+    <div class="value red">-23.5%</div>
+    <div class="label">私有化失败最大下行风险</div>
+  </div>
+</div>
+
+<!-- 交易方案 -->
+<h2>交易方案</h2>
+<div class="card">
+  <h3>要约结构：混合对价（现金 + H股换股）</h3>
+  <p>每1股新奥能源 (2688.HK) 可获得：</p>
+  <div class="formula">
+    2.9427 股新发行的新奥股份(600803) H股 + 24.50 港元现金
+  </div>
+  
+  <table>
+    <tr><th>项目</th><th>数值</th><th>说明</th></tr>
+    <tr><td>换股比例</td><td>2.9427 股 H股/股</td><td>新奥股份新发H股</td></tr>
+    <tr><td>现金部分</td><td>24.50 HKD/股</td><td>固定现金</td></tr>
+    <tr><td>总交易估值</td><td>~600 亿港元</td><td>含已持有股份</td></tr>
+    <tr><td>现金总额</td><td>~182 亿港元</td><td>独立股东部分</td></tr>
+    <tr><td>公告时溢价</td><td>34%</td><td>相对公告前收盘价</td></tr>
+    <tr><td>要约方</td><td>新奥股份 (600803.SH)</td><td>实控人：王玉锁</td></tr>
+  </table>
+</div>
+
+<!-- 关键难点：H股定价 -->
+<h2>核心问题：H股还没上市，值多少钱？</h2>
+<div class="card highlight-box">
+  <strong>新奥股份目前只在A股上市（600803.SH），H股尚未挂牌。</strong>
+  <p style="margin-top:8px">这意味着：你收到的2.9427股H股，未来在港交所以什么价格交易，决定了这笔套利的真实回报。A-H折价是最大的不确定性来源。</p>
+</div>
+
+<div class="grid">
+  <div class="card">
+    <h3>600803.SH 现价</h3>
+    <div style="font-size:2em;font-weight:700;color:#fff">19.67 <span style="font-size:0.5em">RMB</span></div>
+    <div class="label">折合 22.72 HKD（汇率1.1549）</div>
+  </div>
+  <div class="card">
+    <h3>要约隐含价值推算</h3>
+    <table style="font-size:0.85em">
+      <tr><th>A-H折价</th><th>H股价</th><th>要约价值</th><th>套利空间</th></tr>
+      <tr><td>0%（平价）</td><td>22.72</td><td class="green">91.33</td><td class="green">+61.6%</td></tr>
+      <tr><td>20%</td><td>18.18</td><td class="green">77.98</td><td class="green">+38.0%</td></tr>
+      <tr><td>30%</td><td>15.90</td><td class="green">71.29</td><td class="green">+26.2%</td></tr>
+      <tr><td>40%</td><td>13.63</td><td class="yellow">64.61</td><td class="yellow">+14.4%</td></tr>
+      <tr><td>50%</td><td>11.36</td><td class="red">57.92</td><td class="red">+2.5%</td></tr>
+    </table>
+  </div>
+</div>
+
+<div class="card">
+  <h3>花旗的测算</h3>
+  <p>花旗报告给出的要约价值为 <strong>67.8 HKD</strong>，相当于假设约 <strong>37% 的 A-H 折价</strong>。这接近于公用事业股A-H折价的上限。维持「买入」评级，目标价 72 HKD。</p>
+  <p style="margin-top:4px">摩通则更关注私有化审批进展，认为一季度运营符合预期，但私有化是更关键的变量。</p>
+</div>
+
+<!-- 股价走势图 -->
+<h2>价格走势</h2>
+<div class="card">
+  <h3>2688.HK vs 600803.SH（近一年）</h3>
+  <div class="chart-container">
+    <canvas id="priceChart"></canvas>
+  </div>
+</div>
+
+<div class="card">
+  <h3>套利价差演变</h3>
+  <div class="chart-container">
+    <canvas id="spreadChart"></canvas>
+  </div>
+</div>
+
+<!-- 风险分析 -->
+<h2>风险矩阵</h2>
+<div class="risk-matrix">
+  <div class="risk-item" style="border-color:var(--red)">
+    <h4 class="red">① H股上市不确定 <span class="tag tag-red">高</span></h4>
+    <p>新奥股份"二闯港交所"——第一次申请未成功。若H股无法上市，整个私有化方案可能需要重新设计。这是当前最大的不确定性。</p>
+  </div>
+  <div class="risk-item" style="border-color:var(--red)">
+    <h4 class="red">② 监管审批风险 <span class="tag tag-red">高</span></h4>
+    <p>需通过证监会、商务部反垄断审查、外管局等多重审批。重组方案已被监管问询，"80港元/股估值遭质疑"。</p>
+  </div>
+  <div class="risk-item" style="border-color:var(--orange)">
+    <h4 class="orange">③ A-H折价超预期 <span class="tag tag-yellow">中高</span></h4>
+    <p>即使H股成功上市，折价可能超过40%。公用事业类公司A-H折价中位数约30-40%，但市场情绪差时可超50%。</p>
+  </div>
+  <div class="risk-item" style="border-color:var(--orange)">
+    <h4 class="orange">④ 时间拖延 <span class="tag tag-yellow">中</span></h4>
+    <p>从公告（2025年8月）至今已9个月，尚未完成。每拖一个季度，年化收益率显著下降。</p>
+  </div>
+  <div class="risk-item" style="border-color:var(--yellow)">
+    <h4 class="yellow">⑤ 母公司财务风险 <span class="tag tag-yellow">中</span></h4>
+    <p>新奥股份营收利润双下滑，需融资182亿港元现金。若资金安排出问题，交易可能失败。</p>
+  </div>
+  <div class="risk-item" style="border-color:var(--yellow)">
+    <h4 class="yellow">⑥ 股东表决风险 <span class="tag tag-yellow">中低</span></h4>
+    <p>需75%独立股东赞成且反对票不超10%。大股东持股比例高，但仍有被否决的可能。</p>
+  </div>
+</div>
+
+<!-- 情景分析 -->
+<h2>情景分析</h2>
+<div class="card">
+  <table>
+    <tr><th>情景</th><th>概率(估)</th><th>要约兑现价值</th><th>收益率</th><th>加权贡献</th></tr>
+    <tr>
+      <td><strong>乐观</strong>：H股上市+低折价(20%)+半年内完成</td>
+      <td>15%</td>
+      <td>78.0 HKD</td>
+      <td class="green">+38.1%</td>
+      <td>+5.7%</td>
+    </tr>
+    <tr>
+      <td><strong>基准</strong>：H股上市+中折价(35%)+1年内完成</td>
+      <td>30%</td>
+      <td>68.5 HKD</td>
+      <td class="green">+21.2%</td>
+      <td>+6.4%</td>
+    </tr>
+    <tr>
+      <td><strong>悲观</strong>：H股上市+高折价(45%)+1年以上</td>
+      <td>20%</td>
+      <td>60.5 HKD</td>
+      <td class="yellow">+7.1%</td>
+      <td>+1.4%</td>
+    </tr>
+    <tr>
+      <td><strong>延迟</strong>：审批卡住，股价持续低迷</td>
+      <td>20%</td>
+      <td>52.0 HKD</td>
+      <td class="red">-8.0%</td>
+      <td>-1.6%</td>
+    </tr>
+    <tr>
+      <td><strong>失败</strong>：交易终止，回到公告前水平</td>
+      <td>15%</td>
+      <td>44.0 HKD</td>
+      <td class="red">-22.1%</td>
+      <td>-3.3%</td>
+    </tr>
+    <tr style="font-weight:700;border-top:2px solid var(--border)">
+      <td>概率加权期望</td><td>100%</td><td>~62.5 HKD</td><td class="yellow">+10.6%</td><td>+8.6%</td>
+    </tr>
+  </table>
+  <p style="margin-top:12px;font-size:0.85em;color:var(--text-muted)">注：概率为个人主观估计，仅供参考。失败情景假设股价回到公告前约44 HKD水平。</p>
+</div>
+
+<!-- 关键时间线 -->
+<h2>关键时间线</h2>
+<div class="card">
+  <table>
+    <tr><th>时间</th><th>事件</th><th>状态</th></tr>
+    <tr><td>2025-08-30</td><td>新奥股份停牌公告私有化意向</td><td><span class="tag tag-green">已完成</span></td></tr>
+    <tr><td>2025-09</td><td>"现金+换股"方案正式披露</td><td><span class="tag tag-green">已完成</span></td></tr>
+    <tr><td>2025-Q4</td><td>方案遭监管问询，估值被质疑</td><td><span class="tag tag-yellow">已回应</span></td></tr>
+    <tr><td>2025-12</td><td>2688.HK股价升至73.8（52周高点）</td><td><span class="tag tag-blue">市场乐观</span></td></tr>
+    <tr><td>2026-Q1</td><td>摩通/花旗发布报告关注审批进展</td><td><span class="tag tag-blue">推进中</span></td></tr>
+    <tr><td>2026-05-26</td><td>股价跌至56.5，创52周新低</td><td><span class="tag tag-red">⚠ 市场悲观</span></td></tr>
+    <tr><td>待定</td><td>新奥股份H股港交所挂牌</td><td><span class="tag tag-yellow">⏳ 待完成</span></td></tr>
+    <tr><td>待定</td><td>法院会议独立股东表决</td><td><span class="tag tag-yellow">⏳ 待完成</span></td></tr>
+    <tr><td>待定</td><td>各项监管审批（证监会/商务部/外管局）</td><td><span class="tag tag-yellow">⏳ 推进中</span></td></tr>
+    <tr><td>待定</td><td>香港高等法院批准协议安排</td><td><span class="tag tag-yellow">⏳ 待完成</span></td></tr>
+  </table>
+</div>
+
+<!-- 决策框架 -->
+<h2>决策框架</h2>
+<div class="card verdict verdict-caution">
+  <h3 style="color:var(--orange)">⚠️ 高赔率，低确定性</h3>
+  <p style="margin-top:8px">20%的价差看着诱人，但背后是多重不确定性的叠加。这不是一个"买入等收钱"的无风险套利——它更像一个<strong>条件概率游戏</strong>。</p>
+</div>
+
+<div class="card">
+  <h3>三个关键问题</h3>
+  <ol style="padding-left:20px">
+    <li style="margin-bottom:12px"><strong>新奥股份H股能不能上？</strong>——如果H股上不了，整个私有化方案逻辑崩塌。这是单点故障。</li>
+    <li style="margin-bottom:12px"><strong>监管会不会放行？</strong>——方案已被问询过一次，说明监管有顾虑。如果二次问询，时间会继续拖延。</li>
+    <li style="margin-bottom:12px"><strong>就算都过了，H股折价多少？</strong>——50%折价下你只赚2.5%，不如买货币基金。</li>
+  </ol>
+</div>
+
+<div class="card">
+  <h3>操作建议参考</h3>
+  <table>
+    <tr><th>如果你</th><th>建议</th><th>理由</th></tr>
+    <tr><td>已持有，成本 > 60</td><td>持有等待，设止损线 48 HKD</td><td>套利空间仍存，但需防范失败</td></tr>
+    <tr><td>已持有，成本 < 55</td><td>可适当加仓，但不超过总仓位15%</td><td>安全边际较好，但不确定性仍高</td></tr>
+    <tr><td>未持有，想入场</td><td>等待两个信号再行动</td><td>见下方触发条件</td></tr>
+    <tr><td>风险偏好低</td><td>不参与</td><td>不确定性太多，这不是无风险套利</td></tr>
+  </table>
+  
+  <div class="highlight-box" style="margin-top:12px">
+    <strong>两个关键信号（出现后再入场更安全）：</strong>
+    <ol style="padding-left:20px;margin-top:8px">
+      <li>新奥股份H股成功挂牌上市（消除最大不确定性）</li>
+      <li>证监会/商务部审批通过（消除监管风险）</li>
+    </ol>
+    <p style="margin-top:8px;font-size:0.9em;color:var(--yellow)">代价：这两个信号出现时，股价可能已涨至 65-70 HKD，套利空间缩窄。但确定性大幅提高。</p>
+  </div>
+</div>
+
+<!-- 类比案例 -->
+<h2>历史类比</h2>
+<div class="card">
+  <table>
+    <tr><th>案例</th><th>结果</th><th>A-H折价</th><th>启示</th></tr>
+    <tr><td>中国石油H股回归</td><td>完成</td><td>~30%</td><td>大盘蓝筹折价相对可控</td></tr>
+    <tr><td>海尔电器私有化</td><td>完成（2020）</td><td>N/A（纯现金）</td><td>纯现金方案确定性更高</td></tr>
+    <tr><td>中粮家佳康私有化</td><td>失败（2023）</td><td>N/A</td><td>审批风险真实存在</td></tr>
+    <tr><td>通达集团私有化</td><td>失败（2020）</td><td>N/A</td><td>股东否决是真实风险</td></tr>
+  </table>
+</div>
+
+<div class="disclaimer">
+  <p><strong>免责声明</strong>：本分析基于公开信息，不构成投资建议。套利交易存在重大风险，包括但不限于私有化失败导致的股价大幅下跌。所有概率估计为主观判断。投资前请自行核实最新公告并咨询专业顾问。最终决策需自行负责。</p>
+  <p style="margin-top:4px">数据来源：AASTOCKS、新浪财经、腾讯财经、Yahoo Finance、Google News。分析日期：2026年5月26日。</p>
+</div>
+
+<script>
+// Price chart
+const ctx1 = document.getElementById('priceChart').getContext('2d');
+new Chart(ctx1, {
+  type: 'line',
+  data: {
+    labels: ['2025-05','06','07','08','09','10','11','12','2026-01','02','03','04','05'],
+    datasets: [{
+      label: '2688.HK (HKD)',
+      data: [62.7,64.0,63.5,63.5,65.0,66.5,69.5,71.5,68.0,68.5,66.0,62.0,56.5],
+      borderColor: '#58a6ff',
+      backgroundColor: 'rgba(88,166,255,0.1)',
+      fill: true, tension: 0.3, pointRadius: 3, borderWidth: 2
+    },{
+      label: '600803.SH (RMB, 右轴)',
+      data: [19.0,19.0,19.2,18.8,18.5,18.5,20.5,21.5,19.6,19.3,22.0,20.5,19.7],
+      borderColor: '#bc8cff',
+      backgroundColor: 'rgba(188,140,255,0.05)',
+      fill: false, tension: 0.3, pointRadius: 3, borderWidth: 2,
+      yAxisID: 'y1'
+    }]
+  },
+  options: {
+    responsive: true, maintainAspectRatio: false,
+    plugins: { legend: { labels: { color: '#8b949e' } } },
+    scales: {
+      x: { ticks: { color: '#8b949e' }, grid: { color: '#21262d' } },
+      y: { ticks: { color: '#8b949e' }, grid: { color: '#21262d' }, title: { display: true, text: 'HKD', color: '#8b949e' } },
+      y1: { position: 'right', ticks: { color: '#bc8cff' }, grid: { display: false }, title: { display: true, text: 'RMB', color: '#bc8cff' } }
+    }
+  }
+});
+
+// Spread chart
+const ctx2 = document.getElementById('spreadChart').getContext('2d');
+// Calculate implied offer value at each point using 35% A-H discount and exchange rate ~1.15
+const hkPrices = [62.7,64.0,63.5,63.5,65.0,66.5,69.5,71.5,68.0,68.5,66.0,62.0,56.5];
+const aPrices  = [19.0,19.0,19.2,18.8,18.5,18.5,20.5,21.5,19.6,19.3,22.0,20.5,19.7];
+const cashPart = 24.50;
+const ratio = 2.9427;
+const discount = 0.35;
+const rmb2hkd = 1.1549;
+
+const offerValues = aPrices.map(p => {
+  const hPrice = p * rmb2hkd * (1 - discount);
+  return ratio * hPrice + cashPart;
+});
+const spreads = hkPrices.map((p, i) => ((offerValues[i] - p) / p * 100));
+
+new Chart(ctx2, {
+  type: 'bar',
+  data: {
+    labels: ['2025-05','06','07','08','09','10','11','12','2026-01','02','03','04','05'],
+    datasets: [{
+      label: '套利空间%（35%折价假设）',
+      data: spreads,
+      backgroundColor: spreads.map(s => s > 20 ? 'rgba(63,185,80,0.7)' : s > 10 ? 'rgba(210,153,34,0.7)' : 'rgba(248,81,73,0.7)'),
+      borderRadius: 4
+    }]
+  },
+  options: {
+    responsive: true, maintainAspectRatio: false,
+    plugins: { legend: { labels: { color: '#8b949e' } } },
+    scales: {
+      x: { ticks: { color: '#8b949e' }, grid: { color: '#21262d' } },
+      y: { ticks: { color: '#8b949e' }, grid: { color: '#21262d' }, title: { display: true, text: '%', color: '#8b949e' } }
+    }
+  }
+});
+</script>
+
+</body>
+</html>
