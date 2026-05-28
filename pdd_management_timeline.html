@@ -1,331 +1,331 @@
-<!DOCTYPE html>
-<html lang="zh-CN">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>PDD 管理层发言时间线 2024Q1–2026Q1</title>
-<style>
-:root{--bg:#0a0e17;--card:#111827;--card2:#1a2332;--bdr:#1e293b;--tx:#e2e8f0;--dim:#94a3b8;--acc:#f59e0b;--grn:#10b981;--red:#ef4444;--blu:#3b82f6;--pur:#8b5cf6;--cyn:#06b6d4;--pink:#ec4899}
-*{margin:0;padding:0;box-sizing:border-box}
-body{background:var(--bg);color:var(--tx);font-family:-apple-system,'PingFang SC','Microsoft YaHei',sans-serif;line-height:1.6}
-.C{max-width:1100px;margin:0 auto;padding:24px}
-.hero{text-align:center;padding:48px 20px 32px;border-bottom:1px solid var(--bdr);margin-bottom:36px}
-.hero h1{font-size:2rem;font-weight:800;background:linear-gradient(135deg,var(--acc),#fbbf24);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
-.hero .sub{font-size:.95rem;color:var(--dim);margin:6px 0 16px}
-.hero .badge{display:inline-block;background:var(--card);border:1px solid var(--bdr);border-radius:20px;padding:4px 14px;font-size:.78rem;color:var(--cyn)}
-
-/* Timeline */
-.tl{position:relative;padding-left:48px}
-.tl::before{content:'';position:absolute;left:22px;top:0;bottom:0;width:2px;background:linear-gradient(to bottom,var(--acc),var(--blu),var(--pur))}
-.tl-item{position:relative;margin-bottom:28px}
-.tl-item::before{content:'';position:absolute;left:-33px;top:14px;width:14px;height:14px;border-radius:50%;border:2px solid var(--acc);background:var(--bg);z-index:1}
-.tl-item:nth-child(even)::before{border-color:var(--blu)}
-.tl-item:last-child::before{border-color:var(--pur);background:var(--pur)}
-.tl-card{background:var(--card);border:1px solid var(--bdr);border-radius:10px;padding:20px;transition:.2s}
-.tl-card:hover{border-color:var(--acc);background:var(--card2)}
-.tl-quarter{font-size:1.05rem;font-weight:700;color:var(--acc);margin-bottom:12px;display:flex;align-items:center;gap:8px}
-.tl-quarter .date{font-size:.72rem;color:var(--dim);font-weight:400}
-.tl-quarter .tag{font-size:.65rem;padding:1px 8px;border-radius:8px;font-weight:600}
-.tl-quarter .tag.turn{background:rgba(239,68,68,.15);color:var(--red)}
-.tl-quarter .tag.deep{background:rgba(139,92,246,.15);color:var(--pur)}
-.tl-quarter .tag.steady{background:rgba(16,185,129,.15);color:var(--grn)}
-.tl-quarter .tag.shift{background:rgba(245,158,11,.15);color:var(--acc)}
-
-/* Speaker */
-.spk{margin-bottom:14px;padding:12px 14px;border-radius:8px;border-left:3px solid var(--bdr);background:rgba(255,255,255,.02)}
-.spk.cl{border-left-color:var(--acc)}
-.spk.zjz{border-left-color:var(--blu)}
-.spk.lj{border-left-color:var(--grn)}
-.spk .name{font-size:.78rem;font-weight:700;margin-bottom:4px;display:flex;align-items:center;gap:6px}
-.spk .name .role{font-size:.65rem;color:var(--dim);font-weight:400}
-.spk.cl .name{color:var(--acc)}
-.spk.zjz .name{color:var(--blu)}
-.spk.lj .name{color:var(--grn)}
-.spk .quote{font-size:.82rem;color:var(--tx);line-height:1.7;padding-left:8px;border-left:2px solid var(--bdr);margin-top:6px;font-style:italic}
-.spk .quote-zh{font-size:.78rem;color:var(--dim);line-height:1.6;margin-top:4px;font-style:normal}
-
-/* Section */
-.sec{margin-bottom:36px}
-.st{font-size:1.2rem;font-weight:700;margin-bottom:16px;padding-left:12px;border-left:3px solid var(--acc)}
-
-/* Analysis grid */
-.ag{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:20px}
-.ac{background:var(--card);border:1px solid var(--bdr);border-radius:10px;padding:18px}
-.ac h4{font-size:.9rem;margin-bottom:8px}
-.ac p{font-size:.8rem;color:var(--dim);line-height:1.7}
-.ac .t{display:inline-block;font-size:.65rem;padding:1px 8px;border-radius:8px;margin-bottom:8px;font-weight:600}
-.ac .t.w{background:rgba(245,158,11,.15);color:var(--acc)}
-.ac .t.b{background:rgba(239,68,68,.15);color:var(--red)}
-.ac .t.g{background:rgba(16,185,129,.15);color:var(--grn)}
-.ac .t.i{background:rgba(59,130,246,.15);color:var(--blu)}
-.ac .t.p{background:rgba(139,92,246,.15);color:var(--pur)}
-
-/* Keyword evolution table */
-.tw{background:var(--card);border:1px solid var(--bdr);border-radius:10px;overflow:hidden;margin-bottom:20px}
-.tw h3{padding:12px 16px;font-size:.85rem;color:var(--dim);border-bottom:1px solid var(--bdr)}
-table{width:100%;border-collapse:collapse;font-size:.78rem}
-th{text-align:left;padding:8px 12px;background:#0f172a;color:var(--dim);font-weight:600;border-bottom:1px solid var(--bdr);white-space:nowrap}
-td{padding:7px 12px;border-bottom:1px solid var(--bdr);line-height:1.5}
-tr:last-child td{border-bottom:none}
-tr:hover td{background:rgba(245,158,11,.04)}
-.n{font-variant-numeric:tabular-nums}
-.hl{background:rgba(245,158,11,.05)}
-
-/* Consistency meter */
-.meter{height:6px;border-radius:3px;background:var(--bdr);overflow:hidden;margin-top:6px}
-.meter-fill{height:100%;border-radius:3px;transition:.3s}
-
-.ft{text-align:center;padding:32px 20px;color:var(--dim);font-size:.72rem;border-top:1px solid var(--bdr);margin-top:32px}
-
-@media(max-width:768px){.ag{grid-template-columns:1fr}.tl{padding-left:36px}.tl::before{left:16px}.tl-item::before{left:-27px;width:12px;height:12px}}
-
-/* Earnings Call */
-.ec{margin-top:12px;padding:10px 14px;border-radius:8px;background:rgba(6,182,212,.04);border:1px solid rgba(6,182,212,.12)}
-.ec .ec-title{font-size:.72rem;color:var(--cyn);font-weight:700;margin-bottom:6px;display:flex;align-items:center;gap:4px}
-.ec .ec-title::before{content:'📞';font-size:.7rem}
-.ec .qa{font-size:.75rem;color:var(--dim);line-height:1.7;margin-bottom:4px;padding-left:8px;border-left:2px solid rgba(6,182,212,.15)}
-.ec .qa .q{color:var(--cyn);font-weight:600}
-.ec .qa .a{color:var(--tx);opacity:.85}
-.ec .fin{font-size:.68rem;color:var(--dim);margin-bottom:6px;display:flex;gap:12px;flex-wrap:wrap}
-.ec .fin span{padding:2px 8px;background:rgba(255,255,255,.03);border-radius:4px;border:1px solid var(--bdr)}
-.ec .src{font-size:.62rem;color:var(--dim);opacity:.6;margin-top:6px}
-
-/* Earnings Call */
-.ec{margin-top:12px;padding:10px 14px;border-radius:8px;background:rgba(6,182,212,.04);border:1px solid rgba(6,182,212,.12)}
-.ec .ec-title{font-size:.72rem;color:var(--cyn);font-weight:700;margin-bottom:6px;display:flex;align-items:center;gap:4px}
-.ec .ec-title::before{content:'📞';font-size:.7rem}
-.ec .qa{font-size:.75rem;color:var(--dim);line-height:1.7;margin-bottom:4px;padding-left:8px;border-left:2px solid rgba(6,182,212,.15)}
-.ec .qa .q{color:var(--cyn);font-weight:600}
-.ec .qa .a{color:var(--tx);opacity:.85}
-.ec .fin{font-size:.68rem;color:var(--dim);margin-bottom:6px;display:flex;gap:12px;flex-wrap:wrap}
-.ec .fin span{padding:2px 8px;background:rgba(255,255,255,.03);border-radius:4px;border:1px solid var(--bdr)}
-.ec .src{font-size:.62rem;color:var(--dim);opacity:.6;margin-top:6px}
-</style>
-</head>
-<body>
-<div class="C">
-
-<div class="hero">
-<h1>PDD 管理层发言时间线</h1>
-<div class="sub">陈磊 · 赵佳臻 · 刘珺 — 2024 Q1 至 2026 Q1 逐季追踪</div>
-<div class="badge">9 个季度 ｜ 27 条引言 ｜ 9 场电话会 ｜ 一致性分析</div>
-</div>
-
-<!-- Timeline -->
-<div class="sec">
-<div class="st">发言时间线</div>
-<div class="tl">
-
-<!-- Q1 2024 -->
-<div class="tl-item">
-<div class="tl-card">
-<div class="tl-quarter">Q1 2024 <span class="date">2024.05.22</span> <span class="tag steady">开局年</span></div>
-<div class="spk cl"><div class="name">陈磊 <span class="role">董事长 & 联席CEO</span></div>
-<div class="quote">"We are committed to offering a trustworthy shopping environment for our users around the world. We will keep focusing on growing our long-term intrinsic value through investing in initiatives that bring sustainable impacts to our communities."</div></div>
-<div class="spk zjz"><div class="name">赵佳臻 <span class="role">执行董事 & 联席CEO</span></div>
-<div class="quote">"This year is critical for us to deepen the execution of our high-quality development strategy. We will focus our efforts on improving the overall consumer experience, strengthening our supply chain capabilities, and fostering a healthy platform ecosystem."</div></div>
-<div class="spk lj"><div class="name">刘珺 <span class="role">财务副总裁</span></div>
-<div class="quote">"In the first quarter, we continued our investment in key areas critical to our high-quality development strategy. Rather than focusing on short-term results, we prioritize long-term value creation and remain committed to further deepening our investments in the future."</div></div>
-<div class="ec"><div class="ec-title">Q1 2024 财报电话会</div><div class="fin"><span>营收 868亿 +131%</span><span>净利 280亿 +246%</span><span>交易服务 444亿 +327%</span></div><div class="qa"><span class="q">国内竞争：</span><span class="a">消费者跨平台比较，以消费者为中心提供价值主张</span></div><div class="qa"><span class="q">全球业务：</span><span class="a">成长阶段，覆盖70+市场，专注合规</span></div><div class="src">来源：雪球</div></div>
-</div>
-</div>
-
-<!-- Q2 2024 -->
-<div class="tl-item">
-<div class="tl-card">
-<div class="tl-quarter">Q2 2024 <span class="date">2024.08.26</span> <span class="tag turn">⚠️ 转折点</span></div>
-<div class="spk cl"><div class="name">陈磊</div>
-<div class="quote-zh">"市场竞争日益激烈，高收入增长将不可持续。再加上全球化业务面临更严峻的国际环境，未来业务的发展充满不确定性，收入逐渐放缓是必然的结果。"</div>
-<div class="quote-zh">"未来12个月，我们将以平台商家生态建设为重点，这可能会在短期内影响公司营收和利润，但长期来看，利润的下降将是大趋势。"</div>
-<div class="quote-zh">"从第三季度开始，利润将逐渐呈下降趋势，并且短期内会出现波动或反弹。从长远来看，盈利能力下降是不可避免的。"</div></div>
-<div class="spk zjz"><div class="name">赵佳臻</div>
-<div class="quote-zh">"在这个过程中，牺牲短期的利润是必须的。管理层已经达成共识，愿意为长期的健康付出巨大的当下代价。未来几个季度的利润也许会有波动、反弹，但长期利润降低的趋势是不可避免的。"</div></div>
-<div class="spk lj"><div class="name">刘珺</div>
-<div class="quote">"Revenue growth rate has slowed quarter-to-quarter, and the trend is likely to continue because of intensified competition and external challenges."</div>
-<div class="quote-zh">"我们的业务不会遵循线性发展。过去几个季度的盈利并不代表未来。我们的盈利能力在短期有所上升，但长期来看我们会逐渐走低。"</div>
-<div class="quote-zh">"当前没有必要进行资本层面的回购或分红。在可预见的未来几年内，这种措施也没有必要。"</div></div>
-<div class="ec"><div class="ec-title">Q2 2024 财报电话会 ⚠️ 关键转折</div><div class="fin"><span>营收 971亿 +86%</span><span>净利 320亿</span><span>Non-GAAP 344亿</span></div><div class="qa"><span class="q">美银-股东回报：</span><span class="a">利润长期下降通道；不回购不分红</span></div><div class="qa"><span class="q">中金-全球风险：</span><span class="a">非商业因素干扰增加；高增长不可持续</span></div><div class="qa"><span class="q">百亿减免：</span><span class="a">为优质商家提供100亿交易费减免</span></div><div class="src">来源：雪球完整翻译</div></div>
-</div>
-</div>
-
-<!-- Q3 2024 -->
-<div class="tl-item">
-<div class="tl-card">
-<div class="tl-quarter">Q3 2024 <span class="date">2024.11.21</span> <span class="tag steady">延续</span></div>
-<div class="spk cl"><div class="name">陈磊</div>
-<div class="quote">"Over the past quarter, our focus remained on driving the high-quality development of the platforms. We are committed to investing consistently and patiently in our platform ecosystem to deliver impactful results over the long run."</div></div>
-<div class="spk zjz"><div class="name">赵佳臻</div>
-<div class="quote">"In the third quarter, we stepped up the investments in our platform ecosystem through merchant support policies and trust and safety updates. High-quality merchants are encouraged to further strengthen their product and service offerings, thereby fostering a virtuous cycle."</div>
-<div class="quote-zh">电话会议补充："电子商务整体竞争依然激烈。我们的增长在长期内不会呈线性发展。我们团队的逐渐老化和能力不足可能会导致我们错失一些宏观机会。"</div></div>
-<div class="spk lj"><div class="name">刘珺</div>
-<div class="quote">"Our topline growth further moderated quarter-on-quarter amid intensified competition and ongoing external challenges. In our pursuit of high-quality development, we will continue to invest resolutely in building a healthy and sustainable ecosystem, which will be reflected in our results."</div></div>
-<div class="ec"><div class="ec-title">Q3 2024 财报电话会</div><div class="fin"><span>营收 993.5亿 +44% ⚠️低于预期</span><span>净利 249.8亿</span><span>盘前跌超16%</span></div><div class="qa"><span class="q">团队老化：</span><span class="a">赵佳臻坦承"团队逐渐老化和能力不足"，此后再未提及</span></div><div class="qa"><span class="q">增速放缓：</span><span class="a">广告+24%↓，交易服务+72%↓</span></div><div class="src">来源：第一财经</div></div>
-</div>
-</div>
-
-<!-- Q4 2024 -->
-<div class="tl-item">
-<div class="tl-card">
-<div class="tl-quarter">Q4 2024 <span class="date">2025.03.20</span> <span class="tag steady">全年总结</span></div>
-<div class="spk cl"><div class="name">陈磊</div>
-<div class="quote">"In 2024, we remained committed to driving sustainable growth for both our platform ecosystem and the broader supply chain. Through targeted innovations in platform operations and industry support policies, we continue to drive our high-quality development strategy to benefit the broader e-commerce ecosystem."</div></div>
-<div class="spk zjz"><div class="name">赵佳臻</div>
-<div class="quote">"Over the past year, we invested consistently in our platform ecosystem. Leveraging our digital capabilities, we continued to give back to consumers and support quality merchants, building an inclusive ecosystem that creates value for all participants."</div></div>
-<div class="spk lj"><div class="name">刘珺</div>
-<div class="quote">"This quarter, we delivered stable financial results supported by the resolute execution of our high-quality development strategy. Looking ahead, we will continue to prioritize investments in the platform ecosystem as the cornerstone of our long-term value creation strategy."</div>
-<div class="quote-zh">电话会议补充："仅通过短期财务表现或资本回报来评估公司业绩，并不符合我们当前的发展阶段。"</div></div>
-<div class="ec"><div class="ec-title">Q4 2024 财报电话会（全年）</div><div class="fin"><span>营收 1106亿 +24%</span><span>Non-GAAP净利 298.5亿 +17%</span><span>全年 3938亿 +59%</span></div><div class="qa"><span class="q">美银-生态目标：</span><span class="a">供给侧深度变革是重心，同质化竞争需打破</span></div><div class="qa"><span class="q">花旗-竞争：</span><span class="a">竞争是行业常态；合规经营，积极沟通</span></div><div class="qa"><span class="q">瑞银-利润波动：</span><span class="a">短期波动是建立健康生态必经之路</span></div><div class="src">来源：新浪财经</div></div>
-</div>
-</div>
-
-<!-- Q1 2025 -->
-<div class="tl-item">
-<div class="tl-card">
-<div class="tl-quarter">Q1 2025 <span class="date">2025.05.27</span> <span class="tag shift">千亿扶持</span></div>
-<div class="spk cl"><div class="name">陈磊</div>
-<div class="quote-zh">"在外部环境不确定性加剧的情况下，拼多多果断支持消费者和商家，将他们的需求放在平台之前。从长远来看，这些努力可能会在短期甚至相当长的一段时间内对我们的盈利能力产生影响。然而，我们是一家注重长期价值的公司，不会根据季度财务结果评估战略决策。相反，我们的重点是五年、十年甚至更长时间内的长期内在价值。"</div></div>
-<div class="spk zjz"><div class="name">赵佳臻</div>
-<div class="quote-zh">"将百亿减免等举措升级为千亿扶持，要求公司上下共同努力，全面投入这一新战略。当然，这样的投入意味着我们平台的收益短期会下降。但是我们平台的中小商家将收获增长的稳定性和高质量差异化发展的窗口期，我认为这样做是应该的，也是非常值得的。"</div></div>
-<div class="spk lj"><div class="name">刘珺</div>
-<div class="quote-zh">"在第一季度，我们看到收入增长放缓。展望未来，我们的财务业绩可能会继续反映生态系统持续投资的影响，因为我们在不确定的时期支持商家和消费者。"</div></div>
-<div class="ec"><div class="ec-title">Q1 2025 财报电话会</div><div class="fin"><span>营收 ~957亿 +10.2%</span><span>EPS 远低预期</span></div><div class="qa"><span class="q">百亿→千亿：</span><span class="a">"百亿减免"升级为"千亿扶持"</span></div><div class="qa"><span class="q">短期影响：</span><span class="a">可能在短期甚至相当长时间内影响盈利能力</span></div><div class="src">来源：6-K文件</div></div>
-</div>
-</div>
-
-<!-- Q2 2025 -->
-<div class="tl-item">
-<div class="tl-card">
-<div class="tl-quarter">Q2 2025 <span class="date">2025.08.25</span> <span class="tag steady">延续</span></div>
-<div class="spk cl"><div class="name">陈磊</div>
-<div class="quote-zh">"在过去一个季度，我们继续投资于商家支持计划，并对在更健康和更可持续的平台生态系统方面取得的进展感到鼓舞。我们仍然坚定地致力于支持生态系统的活力，将长期影响优先于短期结果。"</div></div>
-<div class="spk zjz"><div class="name">赵佳臻</div>
-<div class="quote-zh">"在第二季度，我们投入了大量资源，推出了一套全面的商户支持措施。我们对未来的机会感到兴奋，因为我们非常注重提高商家的效率。"</div></div>
-<div class="spk lj"><div class="name">刘珺</div>
-<div class="quote-zh">"在激烈的竞争中，收入增长在本季度进一步放缓。由于我们仍然专注于长期价值创造，持续投资可能会继续影响短期盈利能力。"</div></div>
-<div class="ec"><div class="ec-title">Q2 2025 财报电话会</div><div class="qa"><span class="q">千亿扶持落地：</span><span class="a">平台拿出真金白银反哺商家和产业</span></div><div class="qa"><span class="q">百亿费率下调：</span><span class="a">已为商家创造可观成本节约</span></div><div class="qa"><span class="q">全球业务：</span><span class="a">探索新商业模式，与商家共同应对市场周期波动</span></div><div class="src">来源：雪球完整翻译</div></div>
-</div>
-</div>
-
-<!-- Q3 2025 -->
-<div class="tl-item">
-<div class="tl-card">
-<div class="tl-quarter">Q3 2025 <span class="date">2025.11.18</span> <span class="tag deep">十周年</span></div>
-<div class="spk cl"><div class="name">陈磊</div>
-<div class="quote-zh">"今年是公司成立的第十周年。十年前，我们着手创建一个惠及大众的平台。展望未来，随着我们规模的扩大，我们准备承担更大的社会责任，继续我们服务于更广大公共利益和整个电商生态系统长期前景的旅程。"</div></div>
-<div class="spk zjz"><div class="name">赵佳臻</div>
-<div class="quote-zh">"在竞争日益激烈的环境中，我们仍然坚定地坚持长期主义。作为一个公共平台，我们将继续投资于商户支持计划，推动产业升级和平台的长期可持续发展。"</div></div>
-<div class="spk lj"><div class="name">刘珺</div>
-<div class="quote-zh">"在第三季度，收入增长继续放缓，反映了竞争格局的持续演变和外部不确定性。随着我们推出更大的商户支持计划和生态系统投资，财务结果可能会继续逐季度波动。"</div></div>
-<div class="ec"><div class="ec-title">Q3 2025 财报电话会（十周年）</div><div class="fin"><span>营收 1082.8亿 +9% ⚠️首次个位数</span><span>净利 293.3亿 +17%</span><span>研发 37亿 创新高</span></div><div class="qa"><span class="q">美银-广告放缓：</span><span class="a">行业新一轮投入周期，"千亿扶持"将加码</span></div><div class="qa"><span class="q">花旗-监管：</span><span class="a">积极学习适应，但不确定性显著；生态投资正向反馈</span></div><div class="qa"><span class="q">瑞银-利润率：</span><span class="a">同比环比双降，相较同行可能阶段性劣势</span></div><div class="src">来源：新浪财经</div></div>
-</div>
-</div>
-
-<!-- Q4 2025 -->
-<div class="tl-item">
-<div class="tl-card">
-<div class="tl-quarter">Q4 2025 <span class="date">2026.03.25</span> <span class="tag shift">供应链转向</span></div>
-<div class="spk cl"><div class="name">陈磊</div>
-<div class="quote-zh">"过去一年，我们坚定聚焦高质量发展战略。我们将继续秉持长期主义理念，加大对服务各方利益相关方的资源投入，展望未来十年的增长。"</div></div>
-<div class="spk zjz"><div class="name">赵佳臻</div>
-<div class="quote-zh">"2026年是我们下一个十年征程的起点。迈入新篇章，供应链投入是我们最坚定的方向。我们将全力以赴投入大量资源，为整个生态创造长期价值。"</div></div>
-<div class="spk lj"><div class="name">刘珺</div>
-<div class="quote-zh">"外部环境与竞争格局正快速变化。为满足消费者不断升级的需求，我们必须持续探索与投入。这些投入坚定且长期，不可避免会对财务表现产生影响。"</div></div>
-<div class="ec"><div class="ec-title">Q4 2025 财报电话会（供应链转向）</div><div class="qa"><span class="q">供应链投入：</span><span class="a">"供应链投入是最坚定的方向"</span></div><div class="qa"><span class="q">两个方向：</span><span class="a">供应链整合+品牌自营</span></div><div class="src">来源：6-K文件</div></div>
-</div>
-</div>
-
-<!-- Q1 2026 -->
-<div class="tl-item">
-<div class="tl-card">
-<div class="tl-quarter">Q1 2026 <span class="date">2026.05.27</span> <span class="tag deep">深度转型</span></div>
-<div class="spk cl"><div class="name">陈磊</div>
-<div class="quote">"This quarter marks the start of deep transformations in our business, our internal processes and our organization. We are actively stepping up to our responsibilities as a platform enterprise to create greater value for our users, the industries and the society as a whole."</div></div>
-<div class="spk zjz"><div class="name">赵佳臻</div>
-<div class="quote">"As we head into the next decade of our journey, supply chain investments will be our core strategic priority. We will commit significant resources to building the first-party brand business, unlocking new opportunities for our supply chain partners, and driving exceptional value for our customers."</div></div>
-<div class="spk lj"><div class="name">刘珺</div>
-<div class="quote">"We are investing resolutely in our supply chain capabilities. These investments are the cornerstone of a resilient and thriving platform ecosystem, and we are prepared to invest over the long term."</div></div>
-<div class="ec"><div class="ec-title">Q1 2026 财报电话会 ⭐ 深度转型</div><div class="fin"><span>营收 1062亿 +11% 低于预期</span><span>净利 125亿 -15%</span><span>交易服务563亿首超广告499亿</span><span>⚠️财务负责人刘珺→李炯</span></div><div class="qa"><span class="q">花旗-品牌自营转型：</span><span class="a">不是颠覆性转型而是延伸，平台承担风险让制造端专注品质</span></div><div class="qa"><span class="q">高盛-1000亿投向：</span><span class="a">全链路投入，产业带深度整合，快递进村升级，电商西进物流成本降80%</span></div><div class="qa"><span class="q">美银-新模式竞争：</span><span class="a">前端模式无论怎么创新，底层供应链是竞争核心</span></div><div class="qa"><span class="q">新拼姆：</span><span class="a">成立专项公司(上海)，首期150亿注资，三年1000亿</span></div><div class="src">来源：网易/新浪</div></div>
-</div>
-</div>
-
-</div><!-- end tl -->
-</div>
-
-<!-- Keyword Evolution -->
-<div class="sec">
-<div class="st">关键词演变</div>
-<div class="tw">
-<h3>核心关键词逐季追踪</h3>
-<table>
-<thead><tr><th>季度</th><th>陈磊 关键词</th><th>赵佳臻 关键词</th><th>刘珺 关键词</th><th>战略基调</th></tr></thead>
-<tbody>
-<tr><td>Q1 2024</td><td>信赖、长期内在价值</td><td>高质量发展、消费者体验、供应链能力</td><td>短期结果不重要、长期价值</td><td style="color:var(--grn)">温和开局</td></tr>
-<tr class="hl"><td>Q2 2024</td><td style="color:var(--red)">利润下降不可避免、收入放缓必然</td><td style="color:var(--red)">牺牲短期利润是必须的</td><td style="color:var(--red)">不分红不回购、盈利走低</td><td style="color:var(--red)">⚠️ 急转</td></tr>
-<tr><td>Q3 2024</td><td>一致且耐心地投资</td><td>商家支持、良性循环</td><td>收入进一步放缓、投资坚定</td><td style="color:var(--acc)">承压延续</td></tr>
-<tr><td>Q4 2024</td><td>可持续增长、供应链</td><td>回馈消费者、包容生态</td><td>生态投资是长期价值基石</td><td style="color:var(--acc)">全年定调</td></tr>
-<tr class="hl"><td>Q1 2025</td><td>5-10年长期内在价值、不看季度</td><td style="color:var(--acc)">百亿减免→千亿扶持</td><td>收入放缓、投资持续</td><td style="color:var(--acc)">升级加码</td></tr>
-<tr><td>Q2 2025</td><td>长期影响优先于短期</td><td>商家效率、全面支持</td><td>竞争激烈、影响短期盈利</td><td style="color:var(--acc)">延续</td></tr>
-<tr><td>Q3 2025</td><td>十周年、社会责任</td><td>长期主义、产业升级</td><td>季度波动</td><td style="color:var(--pur)">叙事升级</td></tr>
-<tr class="hl"><td>Q4 2025</td><td>长期主义、未来十年</td><td style="color:var(--pur)">供应链投入是最坚定方向</td><td style="color:var(--red)">不可避免影响财务</td><td style="color:var(--pur)">战略转向</td></tr>
-<tr><td>Q1 2026</td><td style="color:var(--pur)">深度转型、社会责任</td><td style="color:var(--pur)">供应链是核心战略优先级、自有品牌</td><td style="color:var(--pur)">坚定投资供应链、长期投入</td><td style="color:var(--pur)">新阶段</td></tr>
-</tbody>
-</table>
-</div>
-</div>
-
-<!-- Consistency Analysis -->
-<div class="sec">
-<div class="st">一致性与变化分析</div>
-<div class="ag">
-<div class="ac"><div class="t g">✅ 高度一致</div><h4>「长期主义」始终如一</h4><p>9个季度中，三位管理层从未偏离"长期价值优先于短期结果"的叙事。从Q1 2024的"prioritize long-term value creation"到Q1 2026的"prepared to invest over the long term"，核心措辞几乎未变。</p>
-<div class="meter"><div class="meter-fill" style="width:95%;background:var(--grn)"></div></div></div>
-
-<div class="ac"><div class="t g">✅ 高度一致</div><h4>「利润下行预期」持续预告</h4><p>从Q2 2024的"利润下降不可避免"开始，每季度都在为利润承压做预期管理。Q1 2025"短期甚至相当长时间影响盈利"，Q4 2025"不可避免影响财务"。兑现率100%——利润确实在持续下降。</p>
-<div class="meter"><div class="meter-fill" style="width:90%;background:var(--grn)"></div></div></div>
-
-<div class="ac"><div class="t w">⚠️ 逐步升级</div><h4>投资规模从"百亿"到"千亿"到"千亿供应链"</h4><p>Q1 2024: 模糊的"key areas"→Q1 2025: "百亿减免→千亿扶持"→Q4 2025: "供应链投入是最坚定方向"→Q1 2026: "自有品牌业务、供应链核心战略优先级"。方向一致但力度持续加码，没有回头迹象。</p>
-<div class="meter"><div class="meter-fill" style="width:75%;background:var(--acc)"></div></div></div>
-
-<div class="ac"><div class="t w">⚠️ 叙事转变</div><h4>从「平台生态」到「供应链+自有品牌」</h4><p>2024全年核心词是"平台生态""商家支持"。Q4 2025突然转向"供应链投入"，Q1 2026正式提出"first-party brand business"（自有品牌/新拼姆）。从做平台到做自营，商业模型在变。</p>
-<div class="meter"><div class="meter-fill" style="width:55%;background:var(--acc)"></div></div></div>
-
-<div class="ac"><div class="t b">❌ 前后矛盾</div><h4>「收入放缓」的说法在Q2 2024最激进，后转为被动承认</h4><p>Q2 2024陈磊主动说"收入逐渐放缓是必然的结果"，但后续季度改为被动式"收入增长继续放缓"（客观描述），不再用"必然""不可避免"修饰收入端，只对利润端用"不可避免"。收入端语气弱化了。</p>
-<div class="meter"><div class="meter-fill" style="width:40%;background:var(--red)"></div></div></div>
-
-<div class="ac"><div class="t b">❌ 兑现存疑</div><h4>「团队老化」「能力不足」——说了然后不再提</h4><p>Q3 2024赵佳臻坦承"团队的逐渐老化和能力不足可能会导致我们错失宏观机会"，此后再未提及。这不是一个被追踪和跟进的承诺，更像是电话会上的失言。</p>
-<div class="meter"><div class="meter-fill" style="width:20%;background:var(--red)"></div></div></div>
-</div>
-
-<!-- Phase summary -->
-<div class="tw">
-<h3>三个阶段</h3>
-<table>
-<thead><tr><th>阶段</th><th>季度</th><th>特征</th><th>核心叙事</th><th>利润走势</th></tr></thead>
-<tbody>
-<tr><td style="color:var(--grn)">1. 温和定调</td><td>24Q1</td><td>高质量发展开局年，措辞克制</td><td>"投资关键领域、不看短期"</td><td style="color:var(--grn)">仍在增长</td></tr>
-<tr class="hl"><td style="color:var(--red)">2. 预期管理</td><td>24Q2–25Q2</td><td>Q2急转"利润下行不可避免"，此后每季重复</td><td>"百亿→千亿扶持、长期主义"</td><td style="color:var(--red)">持续下降</td></tr>
-<tr><td style="color:var(--pur)">3. 战略转向</td><td>25Q3–26Q1</td><td>十周年叙事→供应链→自有品牌</td><td>"深度转型、供应链核心、新拼姆"</td><td style="color:var(--red)">降中反弹？</td></tr>
-</tbody>
-</table>
-</div>
-</div>
-
-<!-- Key Question -->
-<div class="sec">
-<div class="st">待验证问题</div>
-<div class="ag">
-<div class="ac"><div class="t b">核心风险</div><h4>从平台到自营，商业模式在变但未承认</h4><p>"first-party brand business"意味着PDD从撮合交易的平台变成自己也卖货的自营商。这改变了毛利结构、库存风险、资本需求。管理层用"供应链投资"一词包装，但本质是商业模型转型。投资者是否充分理解了这个转变？</p></div>
-<div class="ac"><div class="t p">跟踪指标</div><h4>三个季度后需要验证的承诺</h4><p>①新拼姆1000亿投入的ROI——钱花到哪里了？②自有品牌收入占比——从0到多少？③履约成本占收入比——成本增速是否降到营收增速以下？④4361亿现金+952亿长期投资的回报率——浮亏是否一次性？</p></div>
-<div class="ac"><div class="t i">一致性评分</div><h4>管理层叙事一致但战略方向在变</h4><p>「长期主义」口号9季度不变，但投资方向从"商家生态"→"千亿扶持"→"供应链+自有品牌"，每次加码都有新的叙事包装。一贯的是"要花钱"的结论，变化的是"花在哪里"的理由。</p></div>
-<div class="ac"><div class="t w">段永平式检验</div><h4>说的和做的一致吗？</h4><p>亚马逊说投物流→FBA全球铺开。PDD说投供应链→目前只看到成本在涨、利润在降。四个验证指标（GMV、用户留存、履约成本占比、ROIC）里两个不披露，两个在恶化。还需要2-3个季度观察。</p></div>
-</div>
-</div>
-
-<div class="ft">
-数据来源：PDD Holdings SEC filings (6-K/20-F) + GlobeNewswire 新闻稿 + 财报电话会议 ｜ 2024.05–2026.05<br>
-仅供参考，不构成投资建议
-</div>
-
-</div>
-</body>
-</html>
+     1|<!DOCTYPE html>
+     2|<html lang="zh-CN">
+     3|<head>
+     4|<meta charset="UTF-8">
+     5|<meta name="viewport" content="width=device-width, initial-scale=1.0">
+     6|<title>PDD 管理层发言时间线 2024Q1–2026Q1</title>
+     7|<style>
+     8|:root{--bg:#0a0e17;--card:#111827;--card2:#1a2332;--bdr:#1e293b;--tx:#e2e8f0;--dim:#94a3b8;--acc:#f59e0b;--grn:#10b981;--red:#ef4444;--blu:#3b82f6;--pur:#8b5cf6;--cyn:#06b6d4;--pink:#ec4899}
+     9|*{margin:0;padding:0;box-sizing:border-box}
+    10|body{background:var(--bg);color:var(--tx);font-family:-apple-system,'PingFang SC','Microsoft YaHei',sans-serif;line-height:1.6}
+    11|.C{max-width:1100px;margin:0 auto;padding:24px}
+    12|.hero{text-align:center;padding:48px 20px 32px;border-bottom:1px solid var(--bdr);margin-bottom:36px}
+    13|.hero h1{font-size:2rem;font-weight:800;background:linear-gradient(135deg,var(--acc),#fbbf24);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+    14|.hero .sub{font-size:.95rem;color:var(--dim);margin:6px 0 16px}
+    15|.hero .badge{display:inline-block;background:var(--card);border:1px solid var(--bdr);border-radius:20px;padding:4px 14px;font-size:.78rem;color:var(--cyn)}
+    16|
+    17|/* Timeline */
+    18|.tl{position:relative;padding-left:48px}
+    19|.tl::before{content:'';position:absolute;left:22px;top:0;bottom:0;width:2px;background:linear-gradient(to bottom,var(--acc),var(--blu),var(--pur))}
+    20|.tl-item{position:relative;margin-bottom:28px}
+    21|.tl-item::before{content:'';position:absolute;left:-33px;top:14px;width:14px;height:14px;border-radius:50%;border:2px solid var(--acc);background:var(--bg);z-index:1}
+    22|.tl-item:nth-child(even)::before{border-color:var(--blu)}
+    23|.tl-item:last-child::before{border-color:var(--pur);background:var(--pur)}
+    24|.tl-card{background:var(--card);border:1px solid var(--bdr);border-radius:10px;padding:20px;transition:.2s}
+    25|.tl-card:hover{border-color:var(--acc);background:var(--card2)}
+    26|.tl-quarter{font-size:1.05rem;font-weight:700;color:var(--acc);margin-bottom:12px;display:flex;align-items:center;gap:8px}
+    27|.tl-quarter .date{font-size:.72rem;color:var(--dim);font-weight:400}
+    28|.tl-quarter .tag{font-size:.65rem;padding:1px 8px;border-radius:8px;font-weight:600}
+    29|.tl-quarter .tag.turn{background:rgba(239,68,68,.15);color:var(--red)}
+    30|.tl-quarter .tag.deep{background:rgba(139,92,246,.15);color:var(--pur)}
+    31|.tl-quarter .tag.steady{background:rgba(16,185,129,.15);color:var(--grn)}
+    32|.tl-quarter .tag.shift{background:rgba(245,158,11,.15);color:var(--acc)}
+    33|
+    34|/* Speaker */
+    35|.spk{margin-bottom:14px;padding:12px 14px;border-radius:8px;border-left:3px solid var(--bdr);background:rgba(255,255,255,.02)}
+    36|.spk.cl{border-left-color:var(--acc)}
+    37|.spk.zjz{border-left-color:var(--blu)}
+    38|.spk.lj{border-left-color:var(--grn)}
+    39|.spk .name{font-size:.78rem;font-weight:700;margin-bottom:4px;display:flex;align-items:center;gap:6px}
+    40|.spk .name .role{font-size:.65rem;color:var(--dim);font-weight:400}
+    41|.spk.cl .name{color:var(--acc)}
+    42|.spk.zjz .name{color:var(--blu)}
+    43|.spk.lj .name{color:var(--grn)}
+    44|.spk .quote{font-size:.82rem;color:var(--tx);line-height:1.7;padding-left:8px;border-left:2px solid var(--bdr);margin-top:6px;font-style:italic}
+    45|.spk .quote-zh{font-size:.78rem;color:var(--dim);line-height:1.6;margin-top:4px;font-style:normal}
+    46|
+    47|/* Section */
+    48|.sec{margin-bottom:36px}
+    49|.st{font-size:1.2rem;font-weight:700;margin-bottom:16px;padding-left:12px;border-left:3px solid var(--acc)}
+    50|
+    51|/* Analysis grid */
+    52|.ag{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:20px}
+    53|.ac{background:var(--card);border:1px solid var(--bdr);border-radius:10px;padding:18px}
+    54|.ac h4{font-size:.9rem;margin-bottom:8px}
+    55|.ac p{font-size:.8rem;color:var(--dim);line-height:1.7}
+    56|.ac .t{display:inline-block;font-size:.65rem;padding:1px 8px;border-radius:8px;margin-bottom:8px;font-weight:600}
+    57|.ac .t.w{background:rgba(245,158,11,.15);color:var(--acc)}
+    58|.ac .t.b{background:rgba(239,68,68,.15);color:var(--red)}
+    59|.ac .t.g{background:rgba(16,185,129,.15);color:var(--grn)}
+    60|.ac .t.i{background:rgba(59,130,246,.15);color:var(--blu)}
+    61|.ac .t.p{background:rgba(139,92,246,.15);color:var(--pur)}
+    62|
+    63|/* Keyword evolution table */
+    64|.tw{background:var(--card);border:1px solid var(--bdr);border-radius:10px;overflow:hidden;margin-bottom:20px}
+    65|.tw h3{padding:12px 16px;font-size:.85rem;color:var(--dim);border-bottom:1px solid var(--bdr)}
+    66|table{width:100%;border-collapse:collapse;font-size:.78rem}
+    67|th{text-align:left;padding:8px 12px;background:#0f172a;color:var(--dim);font-weight:600;border-bottom:1px solid var(--bdr);white-space:nowrap}
+    68|td{padding:7px 12px;border-bottom:1px solid var(--bdr);line-height:1.5}
+    69|tr:last-child td{border-bottom:none}
+    70|tr:hover td{background:rgba(245,158,11,.04)}
+    71|.n{font-variant-numeric:tabular-nums}
+    72|.hl{background:rgba(245,158,11,.05)}
+    73|
+    74|/* Consistency meter */
+    75|.meter{height:6px;border-radius:3px;background:var(--bdr);overflow:hidden;margin-top:6px}
+    76|.meter-fill{height:100%;border-radius:3px;transition:.3s}
+    77|
+    78|.ft{text-align:center;padding:32px 20px;color:var(--dim);font-size:.72rem;border-top:1px solid var(--bdr);margin-top:32px}
+    79|
+    80|@media(max-width:768px){.ag{grid-template-columns:1fr}.tl{padding-left:36px}.tl::before{left:16px}.tl-item::before{left:-27px;width:12px;height:12px}}
+    81|
+    82|/* Earnings Call */
+    83|.ec{margin-top:12px;padding:10px 14px;border-radius:8px;background:rgba(6,182,212,.04);border:1px solid rgba(6,182,212,.12)}
+    84|.ec .ec-title{font-size:.72rem;color:var(--cyn);font-weight:700;margin-bottom:6px;display:flex;align-items:center;gap:4px}
+    85|.ec .ec-title::before{content:'📞';font-size:.7rem}
+    86|.ec .qa{font-size:.75rem;color:var(--dim);line-height:1.7;margin-bottom:4px;padding-left:8px;border-left:2px solid rgba(6,182,212,.15)}
+    87|.ec .qa .q{color:var(--cyn);font-weight:600}
+    88|.ec .qa .a{color:var(--tx);opacity:.85}
+    89|.ec .fin{font-size:.68rem;color:var(--dim);margin-bottom:6px;display:flex;gap:12px;flex-wrap:wrap}
+    90|.ec .fin span{padding:2px 8px;background:rgba(255,255,255,.03);border-radius:4px;border:1px solid var(--bdr)}
+    91|.ec .src{font-size:.62rem;color:var(--dim);opacity:.6;margin-top:6px}
+    92|
+    93|/* Earnings Call */
+    94|.ec{margin-top:12px;padding:10px 14px;border-radius:8px;background:rgba(6,182,212,.04);border:1px solid rgba(6,182,212,.12)}
+    95|.ec .ec-title{font-size:.72rem;color:var(--cyn);font-weight:700;margin-bottom:6px;display:flex;align-items:center;gap:4px}
+    96|.ec .ec-title::before{content:'📞';font-size:.7rem}
+    97|.ec .qa{font-size:.75rem;color:var(--dim);line-height:1.7;margin-bottom:4px;padding-left:8px;border-left:2px solid rgba(6,182,212,.15)}
+    98|.ec .qa .q{color:var(--cyn);font-weight:600}
+    99|.ec .qa .a{color:var(--tx);opacity:.85}
+   100|.ec .fin{font-size:.68rem;color:var(--dim);margin-bottom:6px;display:flex;gap:12px;flex-wrap:wrap}
+   101|.ec .fin span{padding:2px 8px;background:rgba(255,255,255,.03);border-radius:4px;border:1px solid var(--bdr)}
+   102|.ec .src{font-size:.62rem;color:var(--dim);opacity:.6;margin-top:6px}
+   103|</style>
+   104|</head>
+   105|<body>
+   106|<div class="C">
+   107|
+   108|<div class="hero">
+   109|<h1>PDD 管理层发言时间线</h1>
+   110|<div class="sub">陈磊 · 赵佳臻 · 刘珺 — 2024 Q1 至 2026 Q1 逐季追踪</div>
+   111|<div class="badge">9 个季度 ｜ 27 条引言 ｜ 9 场电话会原文 ｜ 一致性分析</div>
+   112|</div>
+   113|
+   114|<!-- Timeline -->
+   115|<div class="sec">
+   116|<div class="st">发言时间线</div>
+   117|<div class="tl">
+   118|
+   119|<!-- Q1 2024 -->
+   120|<div class="tl-item">
+   121|<div class="tl-card">
+   122|<div class="tl-quarter">Q1 2024 <span class="date">2024.05.22</span> <span class="tag steady">开局年</span></div>
+   123|<div class="spk cl"><div class="name">陈磊 <span class="role">董事长 & 联席CEO</span></div>
+   124|<div class="quote">"We are committed to offering a trustworthy shopping environment for our users around the world. We will keep focusing on growing our long-term intrinsic value through investing in initiatives that bring sustainable impacts to our communities."</div></div>
+   125|<div class="spk zjz"><div class="name">赵佳臻 <span class="role">执行董事 & 联席CEO</span></div>
+   126|<div class="quote">"This year is critical for us to deepen the execution of our high-quality development strategy. We will focus our efforts on improving the overall consumer experience, strengthening our supply chain capabilities, and fostering a healthy platform ecosystem."</div></div>
+   127|<div class="spk lj"><div class="name">刘珺 <span class="role">财务副总裁</span></div>
+   128|<div class="quote">"In the first quarter, we continued our investment in key areas critical to our high-quality development strategy. Rather than focusing on short-term results, we prioritize long-term value creation and remain committed to further deepening our investments in the future."</div></div>
+   129|<div class="ec"><div class="ec-title">Q1 2024 财报电话会</div><div class="fin"><span>营收 868亿 +131%</span><span>净利 280亿 +246%</span><span>交易服务 444亿 +327%</span></div><div class="qa"><span class="q">国内竞争：</span><span class="a">消费者跨平台比较，以消费者为中心提供价值主张</span></div><div class="qa"><span class="q">全球业务：</span><span class="a">成长阶段，覆盖70+市场，专注合规</span></div><div class="src">来源：<a href="https://xueqiu.com/1859056255/354522364" style="color:var(--cyn)">雪球完整翻译</a> ｜ 📄 Obsidian: PDD Q1 2024 电话会原文.md</div></div>
+   130|</div>
+   131|</div>
+   132|
+   133|<!-- Q2 2024 -->
+   134|<div class="tl-item">
+   135|<div class="tl-card">
+   136|<div class="tl-quarter">Q2 2024 <span class="date">2024.08.26</span> <span class="tag turn">⚠️ 转折点</span></div>
+   137|<div class="spk cl"><div class="name">陈磊</div>
+   138|<div class="quote-zh">"市场竞争日益激烈，高收入增长将不可持续。再加上全球化业务面临更严峻的国际环境，未来业务的发展充满不确定性，收入逐渐放缓是必然的结果。"</div>
+   139|<div class="quote-zh">"未来12个月，我们将以平台商家生态建设为重点，这可能会在短期内影响公司营收和利润，但长期来看，利润的下降将是大趋势。"</div>
+   140|<div class="quote-zh">"从第三季度开始，利润将逐渐呈下降趋势，并且短期内会出现波动或反弹。从长远来看，盈利能力下降是不可避免的。"</div></div>
+   141|<div class="spk zjz"><div class="name">赵佳臻</div>
+   142|<div class="quote-zh">"在这个过程中，牺牲短期的利润是必须的。管理层已经达成共识，愿意为长期的健康付出巨大的当下代价。未来几个季度的利润也许会有波动、反弹，但长期利润降低的趋势是不可避免的。"</div></div>
+   143|<div class="spk lj"><div class="name">刘珺</div>
+   144|<div class="quote">"Revenue growth rate has slowed quarter-to-quarter, and the trend is likely to continue because of intensified competition and external challenges."</div>
+   145|<div class="quote-zh">"我们的业务不会遵循线性发展。过去几个季度的盈利并不代表未来。我们的盈利能力在短期有所上升，但长期来看我们会逐渐走低。"</div>
+   146|<div class="quote-zh">"当前没有必要进行资本层面的回购或分红。在可预见的未来几年内，这种措施也没有必要。"</div></div>
+   147|<div class="ec"><div class="ec-title">Q2 2024 财报电话会 ⚠️ 关键转折</div><div class="fin"><span>营收 971亿 +86%</span><span>净利 320亿</span><span>Non-GAAP 344亿</span></div><div class="qa"><span class="q">美银-股东回报：</span><span class="a">利润长期下降通道；不回购不分红</span></div><div class="qa"><span class="q">中金-全球风险：</span><span class="a">非商业因素干扰增加；高增长不可持续</span></div><div class="qa"><span class="q">百亿减免：</span><span class="a">为优质商家提供100亿交易费减免</span></div><div class="src">来源：<a href="https://caifuhao.eastmoney.com/news/20240826232020737711960" style="color:var(--cyn)">东方财富</a> ｜ 📄 Obsidian: PDD Q2 2024 电话会原文.md</div></div>
+   148|</div>
+   149|</div>
+   150|
+   151|<!-- Q3 2024 -->
+   152|<div class="tl-item">
+   153|<div class="tl-card">
+   154|<div class="tl-quarter">Q3 2024 <span class="date">2024.11.21</span> <span class="tag steady">延续</span></div>
+   155|<div class="spk cl"><div class="name">陈磊</div>
+   156|<div class="quote">"Over the past quarter, our focus remained on driving the high-quality development of the platforms. We are committed to investing consistently and patiently in our platform ecosystem to deliver impactful results over the long run."</div></div>
+   157|<div class="spk zjz"><div class="name">赵佳臻</div>
+   158|<div class="quote">"In the third quarter, we stepped up the investments in our platform ecosystem through merchant support policies and trust and safety updates. High-quality merchants are encouraged to further strengthen their product and service offerings, thereby fostering a virtuous cycle."</div>
+   159|<div class="quote-zh">电话会议补充："电子商务整体竞争依然激烈。我们的增长在长期内不会呈线性发展。我们团队的逐渐老化和能力不足可能会导致我们错失一些宏观机会。"</div></div>
+   160|<div class="spk lj"><div class="name">刘珺</div>
+   161|<div class="quote">"Our topline growth further moderated quarter-on-quarter amid intensified competition and ongoing external challenges. In our pursuit of high-quality development, we will continue to invest resolutely in building a healthy and sustainable ecosystem, which will be reflected in our results."</div></div>
+   162|<div class="ec"><div class="ec-title">Q3 2024 财报电话会</div><div class="fin"><span>营收 993.5亿 +44% ⚠️低于预期</span><span>净利 249.8亿</span><span>盘前跌超16%</span></div><div class="qa"><span class="q">团队老化：</span><span class="a">赵佳臻坦承"团队逐渐老化和能力不足"，此后再未提及</span></div><div class="qa"><span class="q">增速放缓：</span><span class="a">广告+24%↓，交易服务+72%↓</span></div><div class="src">来源：<a href="https://finance.sina.cn/usstock/mggd/2024-11-21/detail-incwvyre1162376.d.html" style="color:var(--cyn)">新浪财经</a> ｜ 📄 Obsidian: PDD Q3 2024 电话会原文.md</div></div>
+   163|</div>
+   164|</div>
+   165|
+   166|<!-- Q4 2024 -->
+   167|<div class="tl-item">
+   168|<div class="tl-card">
+   169|<div class="tl-quarter">Q4 2024 <span class="date">2025.03.20</span> <span class="tag steady">全年总结</span></div>
+   170|<div class="spk cl"><div class="name">陈磊</div>
+   171|<div class="quote">"In 2024, we remained committed to driving sustainable growth for both our platform ecosystem and the broader supply chain. Through targeted innovations in platform operations and industry support policies, we continue to drive our high-quality development strategy to benefit the broader e-commerce ecosystem."</div></div>
+   172|<div class="spk zjz"><div class="name">赵佳臻</div>
+   173|<div class="quote">"Over the past year, we invested consistently in our platform ecosystem. Leveraging our digital capabilities, we continued to give back to consumers and support quality merchants, building an inclusive ecosystem that creates value for all participants."</div></div>
+   174|<div class="spk lj"><div class="name">刘珺</div>
+   175|<div class="quote">"This quarter, we delivered stable financial results supported by the resolute execution of our high-quality development strategy. Looking ahead, we will continue to prioritize investments in the platform ecosystem as the cornerstone of our long-term value creation strategy."</div>
+   176|<div class="quote-zh">电话会议补充："仅通过短期财务表现或资本回报来评估公司业绩，并不符合我们当前的发展阶段。"</div></div>
+   177|<div class="ec"><div class="ec-title">Q4 2024 财报电话会（全年）</div><div class="fin"><span>营收 1106亿 +24%</span><span>Non-GAAP净利 298.5亿 +17%</span><span>全年 3938亿 +59%</span></div><div class="qa"><span class="q">美银-生态目标：</span><span class="a">供给侧深度变革是重心，同质化竞争需打破</span></div><div class="qa"><span class="q">花旗-竞争：</span><span class="a">竞争是行业常态；合规经营，积极沟通</span></div><div class="qa"><span class="q">瑞银-利润波动：</span><span class="a">短期波动是建立健康生态必经之路</span></div><div class="src">来源：<a href="https://xueqiu.com/S/PDD/328251316" style="color:var(--cyn)">雪球</a> ｜ 📄 Obsidian: PDD Q4 2024 电话会原文.md</div></div>
+   178|</div>
+   179|</div>
+   180|
+   181|<!-- Q1 2025 -->
+   182|<div class="tl-item">
+   183|<div class="tl-card">
+   184|<div class="tl-quarter">Q1 2025 <span class="date">2025.05.27</span> <span class="tag shift">千亿扶持</span></div>
+   185|<div class="spk cl"><div class="name">陈磊</div>
+   186|<div class="quote-zh">"在外部环境不确定性加剧的情况下，拼多多果断支持消费者和商家，将他们的需求放在平台之前。从长远来看，这些努力可能会在短期甚至相当长的一段时间内对我们的盈利能力产生影响。然而，我们是一家注重长期价值的公司，不会根据季度财务结果评估战略决策。相反，我们的重点是五年、十年甚至更长时间内的长期内在价值。"</div></div>
+   187|<div class="spk zjz"><div class="name">赵佳臻</div>
+   188|<div class="quote-zh">"将百亿减免等举措升级为千亿扶持，要求公司上下共同努力，全面投入这一新战略。当然，这样的投入意味着我们平台的收益短期会下降。但是我们平台的中小商家将收获增长的稳定性和高质量差异化发展的窗口期，我认为这样做是应该的，也是非常值得的。"</div></div>
+   189|<div class="spk lj"><div class="name">刘珺</div>
+   190|<div class="quote-zh">"在第一季度，我们看到收入增长放缓。展望未来，我们的财务业绩可能会继续反映生态系统持续投资的影响，因为我们在不确定的时期支持商家和消费者。"</div></div>
+   191|<div class="ec"><div class="ec-title">Q1 2025 财报电话会</div><div class="fin"><span>营收 ~957亿 +10.2%</span><span>EPS 远低预期</span></div><div class="qa"><span class="q">百亿→千亿：</span><span class="a">"百亿减免"升级为"千亿扶持"</span></div><div class="qa"><span class="q">短期影响：</span><span class="a">可能在短期甚至相当长时间内影响盈利能力</span></div><div class="src">来源：<a href="https://xueqiu.com/7534557211/336671475" style="color:var(--cyn)">雪球全文</a> + <a href="https://finance.sina.com.cn/tech/2025-05-27/doc-inexzhru0017622.shtml" style="color:var(--cyn)">新浪</a> ｜ 📄 Obsidian: PDD Q1 2025 电话会原文.md</div></div>
+   192|</div>
+   193|</div>
+   194|
+   195|<!-- Q2 2025 -->
+   196|<div class="tl-item">
+   197|<div class="tl-card">
+   198|<div class="tl-quarter">Q2 2025 <span class="date">2025.08.25</span> <span class="tag steady">延续</span></div>
+   199|<div class="spk cl"><div class="name">陈磊</div>
+   200|<div class="quote-zh">"在过去一个季度，我们继续投资于商家支持计划，并对在更健康和更可持续的平台生态系统方面取得的进展感到鼓舞。我们仍然坚定地致力于支持生态系统的活力，将长期影响优先于短期结果。"</div></div>
+   201|<div class="spk zjz"><div class="name">赵佳臻</div>
+   202|<div class="quote-zh">"在第二季度，我们投入了大量资源，推出了一套全面的商户支持措施。我们对未来的机会感到兴奋，因为我们非常注重提高商家的效率。"</div></div>
+   203|<div class="spk lj"><div class="name">刘珺</div>
+   204|<div class="quote-zh">"在激烈的竞争中，收入增长在本季度进一步放缓。由于我们仍然专注于长期价值创造，持续投资可能会继续影响短期盈利能力。"</div></div>
+   205|<div class="ec"><div class="ec-title">Q2 2025 财报电话会</div><div class="qa"><span class="q">千亿扶持落地：</span><span class="a">平台拿出真金白银反哺商家和产业</span></div><div class="qa"><span class="q">百亿费率下调：</span><span class="a">已为商家创造可观成本节约</span></div><div class="qa"><span class="q">全球业务：</span><span class="a">探索新商业模式，与商家共同应对市场周期波动</span></div><div class="src">来源：<a href="https://wallstreetcn.com/articles/3754076" style="color:var(--cyn)">华尔街见闻</a> ｜ 📄 Obsidian: PDD Q2 2025 电话会原文.md</div></div>
+   206|</div>
+   207|</div>
+   208|
+   209|<!-- Q3 2025 -->
+   210|<div class="tl-item">
+   211|<div class="tl-card">
+   212|<div class="tl-quarter">Q3 2025 <span class="date">2025.11.18</span> <span class="tag deep">十周年</span></div>
+   213|<div class="spk cl"><div class="name">陈磊</div>
+   214|<div class="quote-zh">"今年是公司成立的第十周年。十年前，我们着手创建一个惠及大众的平台。展望未来，随着我们规模的扩大，我们准备承担更大的社会责任，继续我们服务于更广大公共利益和整个电商生态系统长期前景的旅程。"</div></div>
+   215|<div class="spk zjz"><div class="name">赵佳臻</div>
+   216|<div class="quote-zh">"在竞争日益激烈的环境中，我们仍然坚定地坚持长期主义。作为一个公共平台，我们将继续投资于商户支持计划，推动产业升级和平台的长期可持续发展。"</div></div>
+   217|<div class="spk lj"><div class="name">刘珺</div>
+   218|<div class="quote-zh">"在第三季度，收入增长继续放缓，反映了竞争格局的持续演变和外部不确定性。随着我们推出更大的商户支持计划和生态系统投资，财务结果可能会继续逐季度波动。"</div></div>
+   219|<div class="ec"><div class="ec-title">Q3 2025 财报电话会（十周年）</div><div class="fin"><span>营收 1082.8亿 +9% ⚠️首次个位数</span><span>净利 293.3亿 +17%</span><span>研发 37亿 创新高</span></div><div class="qa"><span class="q">美银-广告放缓：</span><span class="a">行业新一轮投入周期，"千亿扶持"将加码</span></div><div class="qa"><span class="q">花旗-监管：</span><span class="a">积极学习适应，但不确定性显著；生态投资正向反馈</span></div><div class="qa"><span class="q">瑞银-利润率：</span><span class="a">同比环比双降，相较同行可能阶段性劣势</span></div><div class="src">来源：<a href="https://xueqiu.com/6736524712/362575215" style="color:var(--cyn)">雪球</a> + <a href="https://wallstreetcn.com/articles/3759650" style="color:var(--cyn)">华尔街见闻</a> ｜ 📄 Obsidian: PDD Q3 2025 电话会原文.md</div></div>
+   220|</div>
+   221|</div>
+   222|
+   223|<!-- Q4 2025 -->
+   224|<div class="tl-item">
+   225|<div class="tl-card">
+   226|<div class="tl-quarter">Q4 2025 <span class="date">2026.03.25</span> <span class="tag shift">供应链转向</span></div>
+   227|<div class="spk cl"><div class="name">陈磊</div>
+   228|<div class="quote-zh">"过去一年，我们坚定聚焦高质量发展战略。我们将继续秉持长期主义理念，加大对服务各方利益相关方的资源投入，展望未来十年的增长。"</div></div>
+   229|<div class="spk zjz"><div class="name">赵佳臻</div>
+   230|<div class="quote-zh">"2026年是我们下一个十年征程的起点。迈入新篇章，供应链投入是我们最坚定的方向。我们将全力以赴投入大量资源，为整个生态创造长期价值。"</div></div>
+   231|<div class="spk lj"><div class="name">刘珺</div>
+   232|<div class="quote-zh">"外部环境与竞争格局正快速变化。为满足消费者不断升级的需求，我们必须持续探索与投入。这些投入坚定且长期，不可避免会对财务表现产生影响。"</div></div>
+   233|<div class="ec"><div class="ec-title">Q4 2025 财报电话会（供应链转向）</div><div class="qa"><span class="q">供应链投入：</span><span class="a">"供应链投入是最坚定的方向"</span></div><div class="qa"><span class="q">两个方向：</span><span class="a">供应链整合+品牌自营</span></div><div class="src">来源：<a href="https://xueqiu.com/9851207199/381139262" style="color:var(--cyn)">雪球</a> ｜ 📄 Obsidian: PDD Q4 2025 电话会原文.md</div></div>
+   234|</div>
+   235|</div>
+   236|
+   237|<!-- Q1 2026 -->
+   238|<div class="tl-item">
+   239|<div class="tl-card">
+   240|<div class="tl-quarter">Q1 2026 <span class="date">2026.05.27</span> <span class="tag deep">深度转型</span></div>
+   241|<div class="spk cl"><div class="name">陈磊</div>
+   242|<div class="quote">"This quarter marks the start of deep transformations in our business, our internal processes and our organization. We are actively stepping up to our responsibilities as a platform enterprise to create greater value for our users, the industries and the society as a whole."</div></div>
+   243|<div class="spk zjz"><div class="name">赵佳臻</div>
+   244|<div class="quote">"As we head into the next decade of our journey, supply chain investments will be our core strategic priority. We will commit significant resources to building the first-party brand business, unlocking new opportunities for our supply chain partners, and driving exceptional value for our customers."</div></div>
+   245|<div class="spk lj"><div class="name">刘珺</div>
+   246|<div class="quote">"We are investing resolutely in our supply chain capabilities. These investments are the cornerstone of a resilient and thriving platform ecosystem, and we are prepared to invest over the long term."</div></div>
+   247|<div class="ec"><div class="ec-title">Q1 2026 财报电话会 ⭐ 深度转型</div><div class="fin"><span>营收 1062亿 +11% 低于预期</span><span>净利 125亿 -15%</span><span>交易服务563亿首超广告499亿</span><span>⚠️财务负责人刘珺→李炯</span></div><div class="qa"><span class="q">花旗-品牌自营转型：</span><span class="a">不是颠覆性转型而是延伸，平台承担风险让制造端专注品质</span></div><div class="qa"><span class="q">高盛-1000亿投向：</span><span class="a">全链路投入，产业带深度整合，快递进村升级，电商西进物流成本降80%</span></div><div class="qa"><span class="q">美银-新模式竞争：</span><span class="a">前端模式无论怎么创新，底层供应链是竞争核心</span></div><div class="qa"><span class="q">新拼姆：</span><span class="a">成立专项公司(上海)，首期150亿注资，三年1000亿</span></div><div class="src">来源：<a href="https://finance.sina.com.cn/tech/2026-05-27/doc-inhzizpk9155086.shtml" style="color:var(--cyn)">新浪财经</a> ｜ 📄 Obsidian: PDD Q1 2026 电话会原文.md</div></div>
+   248|</div>
+   249|</div>
+   250|
+   251|</div><!-- end tl -->
+   252|</div>
+   253|
+   254|<!-- Keyword Evolution -->
+   255|<div class="sec">
+   256|<div class="st">关键词演变</div>
+   257|<div class="tw">
+   258|<h3>核心关键词逐季追踪</h3>
+   259|<table>
+   260|<thead><tr><th>季度</th><th>陈磊 关键词</th><th>赵佳臻 关键词</th><th>刘珺 关键词</th><th>战略基调</th></tr></thead>
+   261|<tbody>
+   262|<tr><td>Q1 2024</td><td>信赖、长期内在价值</td><td>高质量发展、消费者体验、供应链能力</td><td>短期结果不重要、长期价值</td><td style="color:var(--grn)">温和开局</td></tr>
+   263|<tr class="hl"><td>Q2 2024</td><td style="color:var(--red)">利润下降不可避免、收入放缓必然</td><td style="color:var(--red)">牺牲短期利润是必须的</td><td style="color:var(--red)">不分红不回购、盈利走低</td><td style="color:var(--red)">⚠️ 急转</td></tr>
+   264|<tr><td>Q3 2024</td><td>一致且耐心地投资</td><td>商家支持、良性循环</td><td>收入进一步放缓、投资坚定</td><td style="color:var(--acc)">承压延续</td></tr>
+   265|<tr><td>Q4 2024</td><td>可持续增长、供应链</td><td>回馈消费者、包容生态</td><td>生态投资是长期价值基石</td><td style="color:var(--acc)">全年定调</td></tr>
+   266|<tr class="hl"><td>Q1 2025</td><td>5-10年长期内在价值、不看季度</td><td style="color:var(--acc)">百亿减免→千亿扶持</td><td>收入放缓、投资持续</td><td style="color:var(--acc)">升级加码</td></tr>
+   267|<tr><td>Q2 2025</td><td>长期影响优先于短期</td><td>商家效率、全面支持</td><td>竞争激烈、影响短期盈利</td><td style="color:var(--acc)">延续</td></tr>
+   268|<tr><td>Q3 2025</td><td>十周年、社会责任</td><td>长期主义、产业升级</td><td>季度波动</td><td style="color:var(--pur)">叙事升级</td></tr>
+   269|<tr class="hl"><td>Q4 2025</td><td>长期主义、未来十年</td><td style="color:var(--pur)">供应链投入是最坚定方向</td><td style="color:var(--red)">不可避免影响财务</td><td style="color:var(--pur)">战略转向</td></tr>
+   270|<tr><td>Q1 2026</td><td style="color:var(--pur)">深度转型、社会责任</td><td style="color:var(--pur)">供应链是核心战略优先级、自有品牌</td><td style="color:var(--pur)">坚定投资供应链、长期投入</td><td style="color:var(--pur)">新阶段</td></tr>
+   271|</tbody>
+   272|</table>
+   273|</div>
+   274|</div>
+   275|
+   276|<!-- Consistency Analysis -->
+   277|<div class="sec">
+   278|<div class="st">一致性与变化分析</div>
+   279|<div class="ag">
+   280|<div class="ac"><div class="t g">✅ 高度一致</div><h4>「长期主义」始终如一</h4><p>9个季度中，三位管理层从未偏离"长期价值优先于短期结果"的叙事。从Q1 2024的"prioritize long-term value creation"到Q1 2026的"prepared to invest over the long term"，核心措辞几乎未变。</p>
+   281|<div class="meter"><div class="meter-fill" style="width:95%;background:var(--grn)"></div></div></div>
+   282|
+   283|<div class="ac"><div class="t g">✅ 高度一致</div><h4>「利润下行预期」持续预告</h4><p>从Q2 2024的"利润下降不可避免"开始，每季度都在为利润承压做预期管理。Q1 2025"短期甚至相当长时间影响盈利"，Q4 2025"不可避免影响财务"。兑现率100%——利润确实在持续下降。</p>
+   284|<div class="meter"><div class="meter-fill" style="width:90%;background:var(--grn)"></div></div></div>
+   285|
+   286|<div class="ac"><div class="t w">⚠️ 逐步升级</div><h4>投资规模从"百亿"到"千亿"到"千亿供应链"</h4><p>Q1 2024: 模糊的"key areas"→Q1 2025: "百亿减免→千亿扶持"→Q4 2025: "供应链投入是最坚定方向"→Q1 2026: "自有品牌业务、供应链核心战略优先级"。方向一致但力度持续加码，没有回头迹象。</p>
+   287|<div class="meter"><div class="meter-fill" style="width:75%;background:var(--acc)"></div></div></div>
+   288|
+   289|<div class="ac"><div class="t w">⚠️ 叙事转变</div><h4>从「平台生态」到「供应链+自有品牌」</h4><p>2024全年核心词是"平台生态""商家支持"。Q4 2025突然转向"供应链投入"，Q1 2026正式提出"first-party brand business"（自有品牌/新拼姆）。从做平台到做自营，商业模型在变。</p>
+   290|<div class="meter"><div class="meter-fill" style="width:55%;background:var(--acc)"></div></div></div>
+   291|
+   292|<div class="ac"><div class="t b">❌ 前后矛盾</div><h4>「收入放缓」的说法在Q2 2024最激进，后转为被动承认</h4><p>Q2 2024陈磊主动说"收入逐渐放缓是必然的结果"，但后续季度改为被动式"收入增长继续放缓"（客观描述），不再用"必然""不可避免"修饰收入端，只对利润端用"不可避免"。收入端语气弱化了。</p>
+   293|<div class="meter"><div class="meter-fill" style="width:40%;background:var(--red)"></div></div></div>
+   294|
+   295|<div class="ac"><div class="t b">❌ 兑现存疑</div><h4>「团队老化」「能力不足」——说了然后不再提</h4><p>Q3 2024赵佳臻坦承"团队的逐渐老化和能力不足可能会导致我们错失宏观机会"，此后再未提及。这不是一个被追踪和跟进的承诺，更像是电话会上的失言。</p>
+   296|<div class="meter"><div class="meter-fill" style="width:20%;background:var(--red)"></div></div></div>
+   297|</div>
+   298|
+   299|<!-- Phase summary -->
+   300|<div class="tw">
+   301|<h3>三个阶段</h3>
+   302|<table>
+   303|<thead><tr><th>阶段</th><th>季度</th><th>特征</th><th>核心叙事</th><th>利润走势</th></tr></thead>
+   304|<tbody>
+   305|<tr><td style="color:var(--grn)">1. 温和定调</td><td>24Q1</td><td>高质量发展开局年，措辞克制</td><td>"投资关键领域、不看短期"</td><td style="color:var(--grn)">仍在增长</td></tr>
+   306|<tr class="hl"><td style="color:var(--red)">2. 预期管理</td><td>24Q2–25Q2</td><td>Q2急转"利润下行不可避免"，此后每季重复</td><td>"百亿→千亿扶持、长期主义"</td><td style="color:var(--red)">持续下降</td></tr>
+   307|<tr><td style="color:var(--pur)">3. 战略转向</td><td>25Q3–26Q1</td><td>十周年叙事→供应链→自有品牌</td><td>"深度转型、供应链核心、新拼姆"</td><td style="color:var(--red)">降中反弹？</td></tr>
+   308|</tbody>
+   309|</table>
+   310|</div>
+   311|</div>
+   312|
+   313|<!-- Key Question -->
+   314|<div class="sec">
+   315|<div class="st">待验证问题</div>
+   316|<div class="ag">
+   317|<div class="ac"><div class="t b">核心风险</div><h4>从平台到自营，商业模式在变但未承认</h4><p>"first-party brand business"意味着PDD从撮合交易的平台变成自己也卖货的自营商。这改变了毛利结构、库存风险、资本需求。管理层用"供应链投资"一词包装，但本质是商业模型转型。投资者是否充分理解了这个转变？</p></div>
+   318|<div class="ac"><div class="t p">跟踪指标</div><h4>三个季度后需要验证的承诺</h4><p>①新拼姆1000亿投入的ROI——钱花到哪里了？②自有品牌收入占比——从0到多少？③履约成本占收入比——成本增速是否降到营收增速以下？④4361亿现金+952亿长期投资的回报率——浮亏是否一次性？</p></div>
+   319|<div class="ac"><div class="t i">一致性评分</div><h4>管理层叙事一致但战略方向在变</h4><p>「长期主义」口号9季度不变，但投资方向从"商家生态"→"千亿扶持"→"供应链+自有品牌"，每次加码都有新的叙事包装。一贯的是"要花钱"的结论，变化的是"花在哪里"的理由。</p></div>
+   320|<div class="ac"><div class="t w">段永平式检验</div><h4>说的和做的一致吗？</h4><p>亚马逊说投物流→FBA全球铺开。PDD说投供应链→目前只看到成本在涨、利润在降。四个验证指标（GMV、用户留存、履约成本占比、ROIC）里两个不披露，两个在恶化。还需要2-3个季度观察。</p></div>
+   321|</div>
+   322|</div>
+   323|
+   324|<div class="ft">
+   325|数据来源：PDD Holdings SEC filings (6-K/20-F) + GlobeNewswire 新闻稿 + 财报电话会议 ｜ 2024.05–2026.05<br>
+   326|仅供参考，不构成投资建议
+   327|</div>
+   328|
+   329|</div>
+   330|</body>
+   331|</html>
