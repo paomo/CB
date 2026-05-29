@@ -1,0 +1,359 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PDD Holdings 海外业务分析 (2019-2025)</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.7/dist/chart.umd.min.js"></script>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { 
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: #0f1117; color: #e0e0e0; line-height: 1.6;
+        }
+        .container { max-width: 1100px; margin: 0 auto; padding: 40px 20px; }
+        h1 { font-size: 28px; font-weight: 700; margin-bottom: 8px; color: #fff; }
+        h2 { font-size: 20px; font-weight: 600; margin: 40px 0 16px; color: #8b9dc3; border-bottom: 1px solid #2a2d3a; padding-bottom: 8px; }
+        h3 { font-size: 16px; font-weight: 600; margin: 20px 0 10px; color: #aab4d0; }
+        .subtitle { color: #8b9dc3; font-size: 14px; margin-bottom: 30px; }
+        .note { background: #1a1d28; border-left: 3px solid #e2b340; padding: 12px 16px; margin: 16px 0; font-size: 13px; border-radius: 0 6px 6px 0; }
+        .note strong { color: #e2b340; }
+        table { width: 100%; border-collapse: collapse; margin: 16px 0; font-size: 13px; }
+        th { background: #1a1d28; color: #8b9dc3; font-weight: 600; padding: 10px 12px; text-align: right; border-bottom: 2px solid #2a2d3a; white-space: nowrap; }
+        th:first-child { text-align: left; }
+        td { padding: 8px 12px; text-align: right; border-bottom: 1px solid #1e2030; }
+        td:first-child { text-align: left; font-weight: 500; color: #aab4d0; }
+        tr:hover td { background: #151824; }
+        .positive { color: #4ade80; }
+        .negative { color: #f87171; }
+        .chart-wrapper { background: #1a1d28; border-radius: 12px; padding: 24px; margin: 20px 0; }
+        .kpi-row { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 16px; margin: 20px 0; }
+        .kpi-card { background: #1a1d28; border-radius: 10px; padding: 20px; border: 1px solid #2a2d3a; }
+        .kpi-label { font-size: 12px; color: #8b9dc3; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 4px; }
+        .kpi-value { font-size: 24px; font-weight: 700; }
+        .kpi-sub { font-size: 12px; color: #666; margin-top: 4px; }
+        .section-intro { font-size: 14px; color: #9ca3af; margin-bottom: 16px; }
+        .highlight { color: #4ade80; font-weight: 600; }
+        .highlight-neg { color: #f87171; font-weight: 600; }
+        footer { margin-top: 60px; padding-top: 20px; border-top: 1px solid #2a2d3a; font-size: 12px; color: #555; }
+    </style>
+</head>
+<body>
+<div class="container">
+    <h1>PDD Holdings 海外业务分析</h1>
+    <p class="subtitle">基于 20-F 年报地理分部数据 · 2019-2025 · 单位：人民币亿元</p>
+
+    <div class="note">
+        <strong>重要说明：</strong>PDD 在 20-F 中以单一报告分部披露，<strong>不单独披露海外营收</strong>。
+        地理分部仅披露税前利润（Pre-tax Income）。以下分析基于"中国 vs 其他国家"的税前利润拆分。
+        FY2022 起海外业务（Temu）贡献显著亏损，FY2024 首次转正，FY2025 再次转亏。
+    </div>
+
+    <!-- KPI Cards -->
+    <div class="kpi-row">
+        <div class="kpi-card">
+            <div class="kpi-label">FY2025 总营收</div>
+            <div class="kpi-value">4,318</div>
+            <div class="kpi-sub">同比 +9.7%</div>
+        </div>
+        <div class="kpi-card">
+            <div class="kpi-label">FY2025 净利润</div>
+            <div class="kpi-value">978</div>
+            <div class="kpi-sub">同比 -13.0%</div>
+        </div>
+        <div class="kpi-card">
+            <div class="kpi-label">FY2025 海外税前利润</div>
+            <div class="kpi-value negative">-61.2</div>
+            <div class="kpi-sub">FY2024 为 +63.8 亿</div>
+        </div>
+        <div class="kpi-card">
+            <div class="kpi-label">FY2025 中国税前利润</div>
+            <div class="kpi-value">12,570</div>
+            <div class="kpi-sub">同比 -0.5%</div>
+        </div>
+    </div>
+
+    <!-- Chart: Pre-tax Income by Geography -->
+    <h2>税前利润：中国 vs 海外</h2>
+    <div class="chart-wrapper">
+        <canvas id="pretaxChart" height="320"></canvas>
+    </div>
+
+    <!-- Data Table -->
+    <h2>核心数据表</h2>
+    <table>
+        <thead>
+            <tr>
+                <th>指标</th>
+                <th>FY2019</th>
+                <th>FY2020</th>
+                <th>FY2021</th>
+                <th>FY2022</th>
+                <th>FY2023</th>
+                <th>FY2024</th>
+                <th>FY2025</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>总营收</td>
+                <td>301</td>
+                <td>595</td>
+                <td>939</td>
+                <td>1,306</td>
+                <td>2,476</td>
+                <td>3,938</td>
+                <td>4,318</td>
+            </tr>
+            <tr>
+                <td>营收同比</td>
+                <td>—</td>
+                <td>+97.6%</td>
+                <td>+57.9%</td>
+                <td>+39.0%</td>
+                <td>+89.7%</td>
+                <td>+59.0%</td>
+                <td>+9.7%</td>
+            </tr>
+            <tr>
+                <td>净利润</td>
+                <td class="negative">-69.7</td>
+                <td class="negative">-71.8</td>
+                <td class="positive">77.7</td>
+                <td class="positive">315.4</td>
+                <td class="positive">600.3</td>
+                <td class="positive">1,124.3</td>
+                <td class="positive">978.4</td>
+            </tr>
+            <tr>
+                <td>净利率</td>
+                <td class="negative">-23.1%</td>
+                <td class="negative">-12.1%</td>
+                <td>8.3%</td>
+                <td>24.2%</td>
+                <td>24.2%</td>
+                <td>28.5%</td>
+                <td>22.7%</td>
+            </tr>
+            <tr style="border-top: 2px solid #2a2d3a;">
+                <td><strong>中国税前利润</strong></td>
+                <td class="negative">-42.3</td>
+                <td class="negative">-34.2</td>
+                <td class="positive">160.3</td>
+                <td class="positive">441.7</td>
+                <td class="positive">733.7</td>
+                <td class="positive">1,263.3</td>
+                <td class="positive">1,256.9</td>
+            </tr>
+            <tr>
+                <td><strong>海外税前利润</strong></td>
+                <td class="negative">-27.4</td>
+                <td class="negative">-37.6</td>
+                <td class="negative">-63.3</td>
+                <td class="negative">-79.0</td>
+                <td class="negative">-1.5</td>
+                <td class="positive">63.8</td>
+                <td class="negative">-61.2</td>
+            </tr>
+            <tr>
+                <td><strong>合计税前利润</strong></td>
+                <td class="negative">-69.7</td>
+                <td class="negative">-71.8</td>
+                <td class="positive">97.0</td>
+                <td class="positive">362.6</td>
+                <td class="positive">718.8</td>
+                <td class="positive">1,327.0</td>
+                <td class="positive">1,195.8</td>
+            </tr>
+            <tr>
+                <td>海外税前利润占比</td>
+                <td>39.3%</td>
+                <td>52.4%</td>
+                <td>-65.2%</td>
+                <td>-21.8%</td>
+                <td>-0.2%</td>
+                <td>4.8%</td>
+                <td>-5.1%</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <!-- Chart: Overseas Pre-tax Income Trend -->
+    <h2>海外税前利润趋势</h2>
+    <div class="chart-wrapper">
+        <canvas id="overseasChart" height="260"></canvas>
+    </div>
+
+    <!-- Analysis -->
+    <h2>关键观察</h2>
+    
+    <h3>1. Temu 上线前（FY2019-2020）：海外亏损可控</h3>
+    <p class="section-intro">
+        Temu 于 2022 年 9 月在美国上线。FY2019-2020 的海外亏损主要来自跨境支付、汇率等非业务因素，规模在 27-38 亿元。
+    </p>
+
+    <h3>2. Temu 高速扩张期（FY2021-2023）：海外亏损扩大后收窄</h3>
+    <p class="section-intro">
+        FY2021 海外税前亏损 63.3 亿 → FY2022 亏损扩大至 79.0 亿 → FY2023 迅速收窄至 <span class="highlight">1.5 亿</span>。
+        期间 Temu 从美国扩展至全球数十个市场，营销投入巨大，但单位经济改善迅速。
+    </p>
+
+    <h3>3. FY2024：海外首次盈利</h3>
+    <p class="section-intro">
+        海外税前利润 <span class="highlight">+63.8 亿</span>，标志着 Temu 模式跑通。
+        中国业务税前利润 1,263 亿，海外仅占 4.8%，但增量贡献显著。
+    </p>
+
+    <h3>4. FY2025：海外再度转亏</h3>
+    <p class="section-intro">
+        海外税前利润 <span class="highlight-neg">-61.2 亿</span>，从 FY2024 的 +63.8 亿急转直下。
+        可能原因：①新增市场开拓成本；②关税/合规成本上升；③半托管模式投入加大；
+        ④小包免税政策（de minimis）变化预期导致前置投入。中国业务基本持平（1,257 亿 vs 1,263 亿），
+        整体净利润同比下滑 13%。
+    </p>
+
+    <h3>5. 营收增速显著放缓</h3>
+    <p class="section-intro">
+        FY2023 营收同比 +89.7% → FY2024 +59.0% → FY2025 <span class="highlight-neg">+9.7%</span>。
+        高增长期结束，进入稳态运营阶段。国内电商竞争加剧（抖音、淘天），海外 Temu 面临政策风险。
+    </p>
+
+    <!-- Chart: Revenue Growth -->
+    <h2>营收增速变化</h2>
+    <div class="chart-wrapper">
+        <canvas id="growthChart" height="240"></canvas>
+    </div>
+
+    <div class="note" style="margin-top: 30px;">
+        <strong>数据来源：</strong>PDD Holdings Inc. 20-F 年报（FY2021-FY2025），XBRL 地理分部数据。
+        所有金额单位为人民币。PDD 不在 20-F 中单独披露海外营收，仅披露税前利润按地理分部。
+        FY2019-2020 海外业务不含 Temu（Temu 于 2022 年 9 月上线）。
+    </div>
+
+    <footer>
+        分析日期：2026-05-29 · 数据来源：SEC EDGAR · 本报告仅供研究参考，不构成投资建议
+    </footer>
+</div>
+
+<script>
+// Data
+const years = ['FY2019','FY2020','FY2021','FY2022','FY2023','FY2024','FY2025'];
+const pretaxChina = [-422.6, -341.6, 1603.3, 4416.6, 7337.2, 12632.6, 12569.6];
+const pretaxOverseas = [-274.1, -376.4, -633.0, -790.2, -14.9, 637.5, -612.1];
+const revenue = [301.4, 594.9, 939.5, 1305.6, 2476.4, 3938.4, 4318.5];
+const revenueGrowth = [null, 97.6, 57.9, 39.0, 89.7, 59.0, 9.7];
+
+// Chart 1: Pre-tax Income by Geography
+new Chart(document.getElementById('pretaxChart'), {
+    type: 'bar',
+    data: {
+        labels: years,
+        datasets: [
+            {
+                label: '中国税前利润',
+                data: pretaxChina,
+                backgroundColor: 'rgba(96, 165, 250, 0.8)',
+                borderColor: 'rgba(96, 165, 250, 1)',
+                borderWidth: 1
+            },
+            {
+                label: '海外税前利润',
+                data: pretaxOverseas,
+                backgroundColor: 'rgba(248, 113, 113, 0.8)',
+                borderColor: 'rgba(248, 113, 113, 1)',
+                borderWidth: 1
+            }
+        ]
+    },
+    options: {
+        responsive: true,
+        plugins: {
+            legend: { labels: { color: '#8b9dc3', font: { size: 12 } } },
+            tooltip: {
+                callbacks: {
+                    label: ctx => `${ctx.dataset.label}: ${ctx.parsed.y.toFixed(1)} 亿元`
+                }
+            }
+        },
+        scales: {
+            x: { ticks: { color: '#8b9dc3' }, grid: { color: '#1e2030' } },
+            y: {
+                ticks: { color: '#8b9dc3', callback: v => v + '亿' },
+                grid: { color: '#1e2030' }
+            }
+        }
+    }
+});
+
+// Chart 2: Overseas Pre-tax Income Trend (waterfall-like bar)
+new Chart(document.getElementById('overseasChart'), {
+    type: 'bar',
+    data: {
+        labels: years,
+        datasets: [{
+            label: '海外税前利润',
+            data: pretaxOverseas,
+            backgroundColor: pretaxOverseas.map(v => v >= 0 ? 'rgba(74, 222, 128, 0.8)' : 'rgba(248, 113, 113, 0.8)'),
+            borderColor: pretaxOverseas.map(v => v >= 0 ? 'rgba(74, 222, 128, 1)' : 'rgba(248, 113, 113, 1)'),
+            borderWidth: 1
+        }]
+    },
+    options: {
+        responsive: true,
+        plugins: {
+            legend: { display: false },
+            tooltip: {
+                callbacks: {
+                    label: ctx => `海外税前利润: ${ctx.parsed.y.toFixed(1)} 亿元`
+                }
+            }
+        },
+        scales: {
+            x: { ticks: { color: '#8b9dc3' }, grid: { color: '#1e2030' } },
+            y: {
+                ticks: { color: '#8b9dc3', callback: v => v + '亿' },
+                grid: { color: '#1e2030' }
+            }
+        }
+    }
+});
+
+// Chart 3: Revenue Growth
+new Chart(document.getElementById('growthChart'), {
+    type: 'line',
+    data: {
+        labels: years.slice(1),
+        datasets: [{
+            label: '营收同比增速 (%)',
+            data: revenueGrowth.slice(1),
+            borderColor: 'rgba(226, 179, 64, 1)',
+            backgroundColor: 'rgba(226, 179, 64, 0.1)',
+            fill: true,
+            tension: 0.3,
+            pointRadius: 6,
+            pointBackgroundColor: 'rgba(226, 179, 64, 1)'
+        }]
+    },
+    options: {
+        responsive: true,
+        plugins: {
+            legend: { display: false },
+            tooltip: {
+                callbacks: {
+                    label: ctx => `同比增速: ${ctx.parsed.y.toFixed(1)}%`
+                }
+            }
+        },
+        scales: {
+            x: { ticks: { color: '#8b9dc3' }, grid: { color: '#1e2030' } },
+            y: {
+                ticks: { color: '#8b9dc3', callback: v => v + '%' },
+                grid: { color: '#1e2030' },
+                min: 0
+            }
+        }
+    }
+});
+</script>
+</body>
+</html>
